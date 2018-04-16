@@ -34,7 +34,6 @@ type  // new µ¦²¤¼È¦s­È
     D61_BestBuyAve, D62_BestSellAve: Extended;
     D71_1stHigh, D72_1stLow: Extended;
 
-  //  TodayHigh, TodayLow: Extended;
   end;
 
 type

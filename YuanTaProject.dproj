@@ -83,6 +83,8 @@
 			<DCCReference Include="K_Value\getK_Value.pas"/>
 			<DCCReference Include="Strategy\Special_Strategy.pas"/>
 			<DCCReference Include="Thread_Handle\ThreadHandle.pas"/>
+			<DCCReference Include="MrChou\AdjustField.pas"/>
+			<DCCReference Include="MrChou\Calculate_Grid.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

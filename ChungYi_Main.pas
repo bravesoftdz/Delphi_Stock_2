@@ -378,6 +378,27 @@ type
     TabSheet4: TTabSheet;
     Panel8: TPanel;
     dbcb_1st_Item: TDBComboBox;
+    dbcb_2nd_Item: TDBComboBox;
+    dbcb_3rd_Item: TDBComboBox;
+    dbcb_4th_Item: TDBComboBox;
+    dbg_TradeRecord: TDBGrid;
+    dbe_X: TDBEdit;
+    dbe_Y: TDBEdit;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label88: TLabel;
+    dbe_Z: TDBEdit;
+    dbnOption: TDBNavigator;
+    grid_Calculate: TStringGrid;
+    grid_2nd: TStringGrid;
+    Label90: TLabel;
+    grid_3rd: TStringGrid;
+    dtpChouEnd: TDateTimePicker;
+    Label89: TLabel;
+    dtpChouStart: TDateTimePicker;
+    dbcShowA4: TDBCheckBox;
+    btnTable2: TButton;
+    btnTable3: TButton;
     procedure btnLogOnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -408,6 +429,10 @@ type
     procedure dbcTestModeMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure tsOrderRecordShow(Sender: TObject);
+    procedure TabSheet4Show(Sender: TObject);
+    procedure dbcbItemChange(Sender: TObject);
+    procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure dbe_XExit(Sender: TObject);
 
   private
     { Private declarations }
@@ -471,12 +496,13 @@ var
   BalanceGate: Boolean; // 是否手動平倉, 控制 TradeQty
 
   hSKQ: THandle = 0;
+  InsertMode: boolean;
 
 implementation
 
 uses Registry, RegistryGetSet, DMRecord, DataParsing, Quote,
      String_Form, Quote_uSKQ, Stock_OptionOrder, Strategy, StringList_Fun, SetParameter,
-     DB_Handle, DB_Type, getK_Value;
+     DB_Handle, DB_Type, getK_Value, AdjustField, Calculate_Grid;
 
 {$R *.dfm}
 
@@ -549,6 +575,8 @@ begin
  dtpDeleteE.Date:= Date;
  dtpDeleteOrderS.Date:= Date;
  dtpDeleteOrderE.Date:= Date;
+ dtpChouStart.Date:= Date;
+ dtpChouEnd.Date:= Date;
 
  // 取得目前產品
  GetNowStock(NowStock, NowQty);
@@ -929,6 +957,34 @@ begin
  GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
 end;
 
+procedure TfmChungYi.PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
+begin
+  InsertMode:= false;
+end;
+
+procedure TfmChungYi.TabSheet4Show(Sender: TObject);
+var IsShowA4: boolean;
+begin
+  InsertMode:= true;
+  DataModule1.asq_Option.Active:= True;
+  DataModule1.asq_Option.Open;
+  DataModule1.asqQU_TradeRecord.Active:= True;
+ // DataModule1.asqQU_TradeRecord.SQL.Text:=
+ //  'select datetime(d, t) FROM (SELECT date(TradeDate) as d, time(TickTime) as t) as dt '
+ //   + ' from TradeRecord order by SN desc limit 10000';
+
+    DataModule1.asqQU_TradeRecord.SQL.Text:=
+   'select * from TradeRecord where StockNO="' + cbbCommNO.Text + '" '
+   + ' and TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) +  '"'
+   + ' order by SN asc limit 100000';
+  DataModule1.asqQU_TradeRecord.Open;
+
+  IsShowA4:= DataModule1.asq_Option.FieldByName('Option5').AsString= 'T';
+  MoveField(dbg_TradeRecord);
+  RunTable_1st(dbg_TradeRecord, grid_Calculate, grid_2nd, grid_3rd,
+    StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text), StrToFloat(dbe_Z.Text), IsShowA4);
+  MoveField(dbg_TradeRecord);
+end;
 
 procedure TfmChungYi.tsOrderRecordShow(Sender: TObject);
 var IsTestMode: String;
@@ -941,11 +997,29 @@ begin
   DataModule1.asqQU_Record.Open;
 end;
 
+procedure TfmChungYi.dbcbItemChange(Sender: TObject);
+var IsShowA4: boolean;
+begin
+  TabSheet4Show(nil);
+  {
+  IsShowA4:= DataModule1.asq_Option.FieldByName('Option5').AsString= 'T';
+  MoveField(dbg_TradeRecord);
+  RunTable_1st(dbg_TradeRecord, grid_Calculate, grid_2nd, grid_3rd,
+    StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text), StrToFloat(dbe_Z.Text), IsShowA4);
+  MoveField(dbg_TradeRecord);
+  }
+end;
+
 procedure TfmChungYi.dbcTestModeMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   DataModule1.asq_Configu.Edit;
   DataModule1.asq_Configu.Post;
+end;
+
+procedure TfmChungYi.dbe_XExit(Sender: TObject);
+begin
+  if(TDBEDit(Sender).Text= '') then TDBEDit(Sender).Text:= '0';
 end;
 
 procedure TfmChungYi.dbnaviParamClick(Sender: TObject; Button: TNavigateBtn);

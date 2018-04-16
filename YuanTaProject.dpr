@@ -34,7 +34,9 @@ uses
   K_Calculate in 'K_Value\K_Calculate.pas',
   getK_Value in 'K_Value\getK_Value.pas',
   Special_Strategy in 'Strategy\Special_Strategy.pas',
-  ThreadHandle in 'Thread_Handle\ThreadHandle.pas';
+  ThreadHandle in 'Thread_Handle\ThreadHandle.pas',
+  AdjustField in 'MrChou\AdjustField.pas',
+  Calculate_Grid in 'MrChou\Calculate_Grid.pas';
 
 {$R *.res}
 

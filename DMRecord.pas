@@ -39,15 +39,6 @@ type
     asqQU_Figure: TASQLite3Query;
     asqUpSQL_Figure: TASQLite3UpdateSQL;
     dsFigure: TDataSource;
-    asqQU_TradeRecordSN: TIntegerField;
-    asqQU_TradeRecordStockNO: TStringField;
-    asqQU_TradeRecordTradeDate: TDateField;
-    asqQU_TradeRecordTickTime: TTimeField;
-    asqQU_TradeRecordBuyPrice: TFloatField;
-    asqQU_TradeRecordSellPrice: TFloatField;
-    asqQU_TradeRecordTradePrice: TFloatField;
-    asqQU_TradeRecordQty: TIntegerField;
-    asqQU_TradeRecordAveP: TFloatField;
     asqQU_FigureSN: TIntegerField;
     asqQU_FigureStockNO: TStringField;
     asqQU_FigureTradeDate: TDateField;
@@ -291,6 +282,10 @@ type
     asq_Inventory: TASQLite3Query;
     asqUpSQL_Inventory: TASQLite3UpdateSQL;
     dsConfigu: TDataSource;
+    Cre_Option: TASQLite3Query;
+    asq_Option: TASQLite3Query;
+    asqUpSQL_Option: TASQLite3UpdateSQL;
+    dsOption: TDataSource;
 
 
     function AssignSN(TableNM: String): Integer;
@@ -314,7 +309,7 @@ var
   DataModule1: TDataModule1;
   IndexNO: Integer;
 
-  DB_Ver: String= '8';
+  DB_Ver: String= '11';
 
 implementation
 

@@ -3,7 +3,7 @@ object fmChungYi: TfmChungYi
   Top = 0
   Caption = #32676#30410#19979#21934#20171#38754
   ClientHeight = 711
-  ClientWidth = 745
+  ClientWidth = 752
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object fmChungYi: TfmChungYi
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 745
+    Width = 752
     Height = 123
     Align = alTop
     Caption = 'Panel1'
@@ -149,7 +149,7 @@ object fmChungYi: TfmChungYi
   object PageControl1: TPageControl
     Left = 0
     Top = 123
-    Width = 745
+    Width = 752
     Height = 588
     ActivePage = TabSheet4
     Align = alClient
@@ -160,12 +160,13 @@ object fmChungYi: TfmChungYi
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
       Caption = #24115#34399#31649#29702
       object ListView1: TListView
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
         BevelInner = bvNone
@@ -204,21 +205,21 @@ object fmChungYi: TfmChungYi
       object CoolBar2: TCoolBar
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 146
         Bands = <
           item
             Control = Panel3
             ImageIndex = -1
             MinHeight = 166
-            Width = 735
+            Width = 742
           end>
         EdgeInner = esNone
         EdgeOuter = esNone
         object Panel3: TPanel
           Left = 11
           Top = 0
-          Width = 726
+          Width = 733
           Height = 166
           Align = alClient
           BevelOuter = bvNone
@@ -406,7 +407,7 @@ object fmChungYi: TfmChungYi
       object ListView3: TListView
         Left = 0
         Top = 146
-        Width = 737
+        Width = 744
         Height = 411
         Align = alClient
         Columns = <
@@ -461,7 +462,7 @@ object fmChungYi: TfmChungYi
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 121
         Align = alTop
         TabOrder = 0
@@ -611,7 +612,7 @@ object fmChungYi: TfmChungYi
       object dbgridStartEnd: TDBGrid
         Left = 0
         Top = 121
-        Width = 737
+        Width = 744
         Height = 436
         Align = alClient
         DataSource = DataModule1.dsStartEnd
@@ -731,7 +732,7 @@ object fmChungYi: TfmChungYi
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 97
         Align = alTop
         TabOrder = 0
@@ -924,7 +925,7 @@ object fmChungYi: TfmChungYi
       object DBGrid_Record: TDBGrid
         Left = 0
         Top = 97
-        Width = 737
+        Width = 744
         Height = 460
         Align = alClient
         DataSource = DataModule1.dsRecord
@@ -1124,7 +1125,7 @@ object fmChungYi: TfmChungYi
       object StringGrid1: TStringGrid
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
         FixedCols = 0
@@ -1139,7 +1140,7 @@ object fmChungYi: TfmChungYi
       object ListV_Interest: TListView
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
         Columns = <
@@ -1179,7 +1180,7 @@ object fmChungYi: TfmChungYi
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
         Caption = 'Panel2'
@@ -2349,7 +2350,7 @@ object fmChungYi: TfmChungYi
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 49
         Align = alTop
         TabOrder = 0
@@ -2408,7 +2409,7 @@ object fmChungYi: TfmChungYi
       object DBGrid_Figure: TDBGrid
         Left = 0
         Top = 49
-        Width = 737
+        Width = 744
         Height = 508
         Align = alClient
         DataSource = DataModule1.dsFigure
@@ -2509,7 +2510,7 @@ object fmChungYi: TfmChungYi
       object Panel7: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
         Caption = 'Panel2'
@@ -3959,23 +3960,62 @@ object fmChungYi: TfmChungYi
     object TabSheet4: TTabSheet
       Caption = #32000#37636#21443#25976
       ImageIndex = 8
+      OnShow = TabSheet4Show
       object Panel8: TPanel
         Left = 0
         Top = 0
-        Width = 737
+        Width = 744
         Height = 557
         Align = alClient
-        Caption = 'Panel8'
         TabOrder = 0
-        ExplicitLeft = 27
-        ExplicitTop = 168
-        ExplicitWidth = 185
-        ExplicitHeight = 41
+        object Label86: TLabel
+          Left = 331
+          Top = 11
+          Width = 13
+          Height = 16
+          Caption = 'X:'
+        end
+        object Label87: TLabel
+          Left = 415
+          Top = 11
+          Width = 12
+          Height = 16
+          Caption = 'Y:'
+        end
+        object Label88: TLabel
+          Left = 502
+          Top = 11
+          Width = 12
+          Height = 16
+          Caption = 'Z:'
+        end
+        object Label90: TLabel
+          Left = 2
+          Top = 46
+          Width = 24
+          Height = 12
+          Caption = #21312#38291
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBtnText
+          Font.Height = -12
+          Font.Name = #26032#32048#26126#39636
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label89: TLabel
+          Left = 147
+          Top = 43
+          Width = 9
+          Height = 16
+          Caption = '~'
+        end
         object dbcb_1st_Item: TDBComboBox
-          Left = 32
-          Top = 24
-          Width = 131
+          Left = 2
+          Top = 8
+          Width = 73
           Height = 24
+          DataField = 'Option1'
+          DataSource = DataModule1.dsOption
           ItemHeight = 16
           Items.Strings = (
             'A. '#26178#38291
@@ -3988,6 +4028,207 @@ object fmChungYi: TfmChungYi
             'H. '#22996#36067
             'I. '#22343#20729)
           TabOrder = 0
+          OnChange = dbcbItemChange
+        end
+        object dbcb_2nd_Item: TDBComboBox
+          Left = 81
+          Top = 8
+          Width = 75
+          Height = 24
+          DataField = 'Option2'
+          DataSource = DataModule1.dsOption
+          ItemHeight = 16
+          Items.Strings = (
+            'A. '#26178#38291
+            'B. '#36023#36914
+            'C. '#36067#20986
+            'D. '#25104#20132
+            'E. '#21934#37327
+            'F. '#32317#37327
+            'G. '#22996#36023
+            'H. '#22996#36067
+            'I. '#22343#20729)
+          TabOrder = 1
+          OnChange = dbcbItemChange
+        end
+        object dbcb_3rd_Item: TDBComboBox
+          Left = 162
+          Top = 8
+          Width = 75
+          Height = 24
+          DataField = 'Option3'
+          DataSource = DataModule1.dsOption
+          ItemHeight = 16
+          Items.Strings = (
+            'A. '#26178#38291
+            'B. '#36023#36914
+            'C. '#36067#20986
+            'D. '#25104#20132
+            'E. '#21934#37327
+            'F. '#32317#37327
+            'G. '#22996#36023
+            'H. '#22996#36067
+            'I. '#22343#20729)
+          TabOrder = 2
+          OnChange = dbcbItemChange
+        end
+        object dbcb_4th_Item: TDBComboBox
+          Left = 243
+          Top = 8
+          Width = 75
+          Height = 24
+          DataField = 'Option4'
+          DataSource = DataModule1.dsOption
+          ItemHeight = 16
+          Items.Strings = (
+            'A. '#26178#38291
+            'B. '#36023#36914
+            'C. '#36067#20986
+            'D. '#25104#20132
+            'E. '#21934#37327
+            'F. '#32317#37327
+            'G. '#22996#36023
+            'H. '#22996#36067
+            'I. '#22343#20729)
+          TabOrder = 3
+          OnChange = dbcbItemChange
+        end
+        object dbg_TradeRecord: TDBGrid
+          Left = 0
+          Top = 72
+          Width = 344
+          Height = 457
+          DataSource = DataModule1.dsTradeRecord
+          TabOrder = 4
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -13
+          TitleFont.Name = 'Tahoma'
+          TitleFont.Style = []
+        end
+        object dbe_X: TDBEdit
+          Left = 345
+          Top = 8
+          Width = 61
+          Height = 24
+          DataField = 'Field_X'
+          DataSource = DataModule1.dsOption
+          TabOrder = 5
+          OnExit = dbe_XExit
+        end
+        object dbe_Y: TDBEdit
+          Left = 429
+          Top = 8
+          Width = 61
+          Height = 24
+          DataField = 'Field_Y'
+          DataSource = DataModule1.dsOption
+          TabOrder = 6
+          OnExit = dbe_XExit
+        end
+        object dbe_Z: TDBEdit
+          Left = 516
+          Top = 8
+          Width = 61
+          Height = 24
+          DataField = 'Field_Z'
+          DataSource = DataModule1.dsOption
+          TabOrder = 7
+          OnExit = dbe_XExit
+        end
+        object dbnOption: TDBNavigator
+          Left = 662
+          Top = 7
+          Width = 58
+          Height = 25
+          DataSource = DataModule1.dsOption
+          VisibleButtons = [nbPost]
+          TabOrder = 8
+        end
+        object grid_Calculate: TStringGrid
+          Left = 345
+          Top = 72
+          Width = 400
+          Height = 129
+          ColCount = 6
+          TabOrder = 9
+        end
+        object grid_2nd: TStringGrid
+          Left = 345
+          Top = 216
+          Width = 400
+          Height = 153
+          ColCount = 6
+          TabOrder = 10
+        end
+        object grid_3rd: TStringGrid
+          Left = 345
+          Top = 368
+          Width = 400
+          Height = 161
+          ColCount = 6
+          TabOrder = 11
+        end
+        object dtpChouEnd: TDateTimePicker
+          Left = 163
+          Top = 39
+          Width = 105
+          Height = 22
+          Date = 40939.531195381950000000
+          Time = 40939.531195381950000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 12
+          OnChange = dbcbItemChange
+        end
+        object dtpChouStart: TDateTimePicker
+          Left = 35
+          Top = 39
+          Width = 105
+          Height = 22
+          Date = 40939.531195381950000000
+          Time = 40939.531195381950000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 13
+        end
+        object dbcShowA4: TDBCheckBox
+          Left = 588
+          Top = 12
+          Width = 65
+          Height = 17
+          Caption = #39023#31034'A4'
+          DataField = 'Option5'
+          DataSource = DataModule1.dsOption
+          TabOrder = 14
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        object btnTable2: TButton
+          Left = 345
+          Top = 41
+          Width = 75
+          Height = 25
+          Caption = #36664#20986#34920'2'
+          TabOrder = 15
+          Visible = False
+        end
+        object btnTable3: TButton
+          Left = 429
+          Top = 41
+          Width = 75
+          Height = 25
+          Caption = #36664#20986#34920'3'
+          TabOrder = 16
+          Visible = False
         end
       end
     end
@@ -4020,7 +4261,7 @@ object fmChungYi: TfmChungYi
   object SKCenterLib1: TSKCenterLib
     AutoConnect = False
     ConnectKind = ckRunningOrNew
-    Left = 584
-    Top = 8
+    Left = 624
+    Top = 16
   end
 end

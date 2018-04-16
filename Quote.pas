@@ -177,7 +177,8 @@ procedure GetTime(HH, MM, SS, Total: Integer); stdcall; export; // Server time �
 implementation
 
 uses DMRecord, GeneralFunction, Strategy, ChungYi_Main, DataDownLoad, StringList_Fun,
-     SQLFunction, Stock_OptionOrder, CheckNetwork, DB_Handle, DB_GetData, getK_Value;
+     SQLFunction, Stock_OptionOrder, CheckNetwork, DB_Handle, DB_GetData, getK_Value,
+     AdjustField;
 
 {$R *.dfm}
 procedure TfmQuote.btnLoginClick(Sender: TObject);
@@ -505,23 +506,28 @@ begin
         + FormatFloat('0.000', TK.nBid / iDot) + ', ' +
         FormatFloat('0.000', TK.nAsk / iDot) + ', ' + FormatFloat('0.000', TK.nClose / iDot) + ', ' +
         IntToStr(TK.nQty) + ', ' + FloatToStr(Ave5P);
+
       LastSN:= LastSN + 1;
+      AddChou_Field(AllSQL, SK, iDot, InsertMode, LastSN);
 
       if(AllSQLList= nil) then
         Abort;
-      AllSQLList.Add(IntToStr(LastSN) + ',' + AllSQL);
-      // 最後一秒抓取資料的判讀
-      if Ticktime= '13:44:59' then begin
-       fmQuote.LastTimer.Enabled:= True;
-       AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
-       // 處理 IndexTable
-       if LastMinute then LastIndexSN:= LastIndexSN + 1; // 只有第一次加, 給 13:45:00
-       LastMinute:= False;
+      if(AllSQLList.Count > 0) then begin
+        AllSQLList.Add(IntToStr(LastSN) + ',' + AllSQL);
+        // 最後一秒抓取資料的判讀
+        if Ticktime= '13:44:59' then begin
+          fmQuote.LastTimer.Enabled:= True;
+          AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
+          // 處理 IndexTable
+          if LastMinute then LastIndexSN:= LastIndexSN + 1; // 只有第一次加, 給 13:45:00
+          LastMinute:= False;
 
-       SQLStr:= fmQuote.cbbStockNO.Text + ',' + DateToStr(fmQuote.dtpDate.Date) + ',' + '13:45:00' + ','
-         + FloatToStr(OpenP) + ',' + FloatToStr(NowHigh) + ',' + FloatToStr(NowLow) + ','
-         + FloatToStr(CloseP) + ',' + IntToStr(MinuteQty) + ',' + FloatToStr(Ave5P) + ',' + RedGreen;
+          SQLStr:= fmQuote.cbbStockNO.Text + ',' + DateToStr(fmQuote.dtpDate.Date) + ',' + '13:45:00' + ','
+            + FloatToStr(OpenP) + ',' + FloatToStr(NowHigh) + ',' + FloatToStr(NowLow) + ','
+            + FloatToStr(CloseP) + ',' + IntToStr(MinuteQty) + ',' + FloatToStr(Ave5P) + ',' + RedGreen;
+        end;
       end;
+
 
       // 中間每一筆均更新
       if CloseP= 0 then OpenP:= TK.nClose / iDot; // 成交價 (即開盤價)
@@ -531,11 +537,6 @@ begin
       Ave5P:= Round((Ave5P_4Total + CloseP) / 5);
       Ave10P:= Round((Ave10P_4Total + CloseP) / 10);
       Ave20P:= Round((Ave20P_4Total + CloseP) / 20);
-
-      if UpDown = '' then begin // 判斷K棒當收在均線上 or下方
-       if (CloseP >= Ave5P) then UpDown:= '1'
-       else if (CloseP < Ave5P) then UpDown:= '-1';
-      end;
 
       FirstTime:= False;
 
@@ -702,8 +703,7 @@ begin
    AllSQLList.LoadFromFile('AllTXF00Data_' + cbbStockNO.Text + '.Txt');
 
    // 判斷是否已載入資料庫
-   if AllSQLList.Count > 0 then
-   begin
+   if AllSQLList.Count > 0 then begin
     TempList.Text:= AllSQLList.Strings[AllSQLList.Count - 1];
     TempList.Delimiter:= ',';
     TempList.DelimitedText:= TempList.Text;
@@ -1252,8 +1252,20 @@ procedure TfmQuote.SKQuoteLib1NotifyTicks(ASender: TObject; sMarketNo,
 var HistoryTickTime: String;
     i, iSt: Integer;
 begin
-
-
+ {
+   SK_New.sDecimal:= ForeingSK.sDecimal;
+   SK_New.nOpen:= ForeingSK.nOpen;
+   SK_New.nHigh:= ForeingSK.nHigh;
+   SK_New.nLow:= ForeingSK.nLow;
+   SK_New.nClose:= nClose;
+   SK_New.nTickQty:= nQty;
+   SK_New.nRef:= ForeingSK.nRef;
+   SK_New.nBid:= nBid;
+   SK_New.nTQty:= TQty_History;
+   SK_New.nAsk:= nAsk;
+   SK_New.nBc:= ForeingSK.nBc;
+   SK_New.nAc:= ForeingSK.nAc;
+  }
  SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarketNo, sIndex, SK_New);
  InputTicks(sMarketNo, nPtr, SK_New, TK_New, SK_New.bstrStockNo, SK_New.bstrStockName, sIndex);
 
@@ -1548,7 +1560,6 @@ begin
   MainChart.LeftAxis.Minimum:= 0;
   sStrategy_new.D67_TodayHighest:= 0;
   sStrategy_new.D68_TodayLowest:= 0;
-
 end;
 
 initialization

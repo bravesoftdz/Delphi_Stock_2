@@ -27,13 +27,11 @@ begin
   DataModule1.Cre_Index.ExecSQL;
 //  Cre_Index.Commit;
   DataModule1.Cre_Record.ExecSQL;
-//  Cre_Record.Commit;
 
   DataModule1.Cre_Figure.ExecSQL;
-//  Cre_Figure.Commit;
   DataModule1.Cre_StartEnd.ExecSQL;
-//  Cre_StartEnd.Commit;
   DataModule1.Cre_Inventory.ExecSQL;
+  DataModule1.Cre_Option.ExecSQL;
 end;
 
 procedure PrepareConnect();
@@ -60,7 +58,7 @@ begin
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'RecordMsg', DataModule1.asqQU_Temp2);
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbStartEnd', DataModule1.asqQU_Temp2);
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbConfigure', DataModule1.asqQU_Temp2);
-//   DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbInventory', DataModule1.asqQU_Temp2);
+   DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbOption', DataModule1.asqQU_Temp2);
 
    if DataModule1.asq_Configu.RecordCount> 0 then begin
      DataModule1.asqQU_Temp.SQL.Text:= 'Update tbConfigure set DB_Version="' + DB_Ver + '"' ;
@@ -102,8 +100,8 @@ begin
   InputSQL_query.ExecSQL;
   InputSQL_query.SQL.Text:= 'DROP TABLE IF EXISTS back_tbConfigure ';
   InputSQL_query.ExecSQL;
-//  InputSQL_query.SQL.Text:= 'DROP TABLE IF EXISTS back_tbInventory ';
-//  InputSQL_query.ExecSQL;
+  InputSQL_query.SQL.Text:= 'DROP TABLE IF EXISTS back_tbOption ';
+  InputSQL_query.ExecSQL;
 
 end;
 
@@ -125,8 +123,8 @@ begin
   InputSQL_query.ExecSQL;
   InputSQL_query.SQL.Text:= 'ALTER TABLE tbConfigure RENAME TO back_tbConfigure';
   InputSQL_query.ExecSQL;
-//  InputSQL_query.SQL.Text:= 'ALTER TABLE tbInventory RENAME TO back_tbInventory';
-//  InputSQL_query.ExecSQL;
+  InputSQL_query.SQL.Text:= 'ALTER TABLE tbOption RENAME TO back_tbOption';
+  InputSQL_query.ExecSQL;
 
 end;
 

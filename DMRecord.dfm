@@ -2,15 +2,17 @@ object DataModule1: TDataModule1
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 425
-  Width = 880
+  Width = 1037
   object asqDB_StockRecord: TASQLite3DB
     TimeOut = 0
     CharacterEncoding = 'UTF8'
     Database = 'FutureParam.db3'
     DefaultExt = '.db3'
     Version = '3.7.4'
-    DriverDLL = 'sqlite3.dll'
-    Connected = False
+    DriverDLL = 
+      'E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\bin\sqlite' +
+      '3.dll'
+    Connected = True
     MustExist = False
     ExecuteInlineSQL = True
     Left = 120
@@ -48,34 +50,6 @@ object DataModule1: TDataModule1
     UpdateSQL = asqUpSQL_TradeRecord
     Left = 88
     Top = 176
-    object asqQU_TradeRecordSN: TIntegerField
-      FieldName = 'SN'
-    end
-    object asqQU_TradeRecordStockNO: TStringField
-      FieldName = 'StockNO'
-      Size = 255
-    end
-    object asqQU_TradeRecordTradeDate: TDateField
-      FieldName = 'TradeDate'
-    end
-    object asqQU_TradeRecordTickTime: TTimeField
-      FieldName = 'TickTime'
-    end
-    object asqQU_TradeRecordBuyPrice: TFloatField
-      FieldName = 'BuyPrice'
-    end
-    object asqQU_TradeRecordSellPrice: TFloatField
-      FieldName = 'SellPrice'
-    end
-    object asqQU_TradeRecordTradePrice: TFloatField
-      FieldName = 'TradePrice'
-    end
-    object asqQU_TradeRecordQty: TIntegerField
-      FieldName = 'Qty'
-    end
-    object asqQU_TradeRecordAveP: TFloatField
-      FieldName = 'AveP'
-    end
   end
   object asqUpSQL_TradeRecord: TASQLite3UpdateSQL
     InsertSQL.Strings = (
@@ -106,8 +80,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from TradeRecord')
     UpdateSQL = asqUpSQL_Temp
-    Left = 816
-    Top = 128
+    Left = 971
+    Top = 104
   end
   object asqUpSQL_Temp: TASQLite3UpdateSQL
     InsertSQL.Strings = (
@@ -116,13 +90,13 @@ object DataModule1: TDataModule1
       'Update TradeRecord * where SN:=SN')
     DeleteSQL.Strings = (
       'Delete from TradeRecord where SN=:SN')
-    Left = 816
-    Top = 280
+    Left = 984
+    Top = 248
   end
   object dsTemp: TDataSource
     DataSet = asqQU_Temp
-    Left = 816
-    Top = 336
+    Left = 974
+    Top = 328
   end
   object asqQU_Param: TASQLite3Query
     AutoCommit = False
@@ -782,7 +756,10 @@ object DataModule1: TDataModule1
         'Create table IF not EXISTS TradeRecord(SN Integer Primary Key Au' +
         'toincrement, StockNO varchar(5) , TradeDate Date , TickTime Time' +
         ' , BuyPrice Float , SellPrice Float , TradePrice Float , Qty Int' +
-        'eger , AveP Float );')
+        'eger , AveP Float, BuyQty Float,  SellQty Float, TickQty Float);'
+      
+        'CREATE INDEX  IF not EXISTS StockNO ON TradeRecord (SN, StockNO,' +
+        ' TradeDate,  TickTime );')
     UpdateSQL = asqUpSQL_TradeRecord
     Left = 88
     Top = 104
@@ -1486,8 +1463,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from TradeRecord')
     UpdateSQL = asqUpSQL_Temp
-    Left = 816
-    Top = 200
+    Left = 971
+    Top = 184
   end
   object Cre_Inventory: TASQLite3Query
     AutoCommit = False
@@ -1544,5 +1521,60 @@ object DataModule1: TDataModule1
     DataSet = asq_Configu
     Left = 608
     Top = 336
+  end
+  object Cre_Option: TASQLite3Query
+    AutoCommit = False
+    SQLiteDateFormat = True
+    Connection = asqDB_StockRecord
+    MaxResults = 0
+    StartResult = 0
+    TypeLess = False
+    SQLCursor = True
+    ReadOnly = False
+    UniDirectional = False
+    BeforePost = asq_StartEndBeforePost
+    RawSQL = False
+    SQL.Strings = (
+      
+        'Create table IF not EXISTS tbOption(SN Integer Primary Key Autoi' +
+        'ncrement , Option1 varchar(16) ,Option2 varchar(16)  ,Option3 va' +
+        'rchar(16) ,Option4 varchar(16) , Option5 varchar(16) , Option6 v' +
+        'archar(16), Field_X Integer,  Field_Y Integer, Field_Z Integer )' +
+        ';')
+    UpdateSQL = asqUpSQL_Option
+    Left = 800
+    Top = 112
+  end
+  object asq_Option: TASQLite3Query
+    AutoCommit = False
+    SQLiteDateFormat = True
+    Connection = asqDB_StockRecord
+    MaxResults = 0
+    StartResult = 0
+    TypeLess = False
+    SQLCursor = True
+    ReadOnly = False
+    UniDirectional = False
+    RawSQL = False
+    SQL.Strings = (
+      'select * from tbOption')
+    UpdateSQL = asqUpSQL_Option
+    Left = 795
+    Top = 184
+  end
+  object asqUpSQL_Option: TASQLite3UpdateSQL
+    InsertSQL.Strings = (
+      'insert into tbOption *')
+    UpdateSQL.Strings = (
+      'Update tbOption * ')
+    DeleteSQL.Strings = (
+      'Delete from tbOption where SN=:SN')
+    Left = 798
+    Top = 264
+  end
+  object dsOption: TDataSource
+    DataSet = asq_Option
+    Left = 806
+    Top = 328
   end
 end
