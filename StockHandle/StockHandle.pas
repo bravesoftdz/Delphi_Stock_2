@@ -22,6 +22,8 @@ begin
   DataModule1.asqQU_Temp.First;
   if(DataModule1.asqQU_Temp.RecordCount > 0) then begin
     StockNO:= DataModule1.asqQU_Temp.FieldByName('StockNO').AsString;
+    if(StockNO= '') then
+      StockNO:= 'TX00';
 //    StartTime:= DataModule1.asqQU_Temp.FieldByName('StartTime').AsString;
 //    EndTime:= DataModule1.asqQU_Temp.FieldByName('StartTime').AsString;
     BuySellQty:= DataModule1.asqQU_Temp.FieldByName('BuySellQty').AsString;

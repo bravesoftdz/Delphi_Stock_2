@@ -2,6 +2,7 @@ object DataModule1: TDataModule1
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 425
+  HorizontalOffset = 5
   Width = 1037
   object asqDB_StockRecord: TASQLite3DB
     TimeOut = 0
@@ -1542,8 +1543,8 @@ object DataModule1: TDataModule1
         'archar(16), Field_X Integer,  Field_Y Integer, Field_Z Integer )' +
         ';')
     UpdateSQL = asqUpSQL_Option
-    Left = 800
-    Top = 112
+    Left = 776
+    Top = 104
   end
   object asq_Option: TASQLite3Query
     AutoCommit = False
@@ -1559,8 +1560,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from tbOption')
     UpdateSQL = asqUpSQL_Option
-    Left = 795
-    Top = 184
+    Left = 771
+    Top = 176
   end
   object asqUpSQL_Option: TASQLite3UpdateSQL
     InsertSQL.Strings = (
@@ -1569,12 +1570,175 @@ object DataModule1: TDataModule1
       'Update tbOption * ')
     DeleteSQL.Strings = (
       'Delete from tbOption where SN=:SN')
-    Left = 798
-    Top = 264
+    Left = 774
+    Top = 256
   end
   object dsOption: TDataSource
     DataSet = asq_Option
-    Left = 806
-    Top = 328
+    Left = 782
+    Top = 320
+  end
+  object asqUpSQL_NewParam: TASQLite3UpdateSQL
+    InsertSQL.Strings = (
+      'insert into tbNewParam *')
+    UpdateSQL.Strings = (
+      'Update tbNewParam * ')
+    DeleteSQL.Strings = (
+      'Delete from tbNewParam where SN=:SN')
+    Left = 864
+    Top = 272
+  end
+  object asq_NewParam: TASQLite3Query
+    AutoCommit = False
+    SQLiteDateFormat = True
+    Connection = asqDB_StockRecord
+    MaxResults = 0
+    StartResult = 0
+    TypeLess = False
+    SQLCursor = True
+    ReadOnly = False
+    UniDirectional = False
+    RawSQL = False
+    SQL.Strings = (
+      'select * from tbNewParam')
+    UpdateSQL = asqUpSQL_NewParam
+    Left = 851
+    Top = 208
+  end
+  object dsNewParam: TDataSource
+    DataSet = asq_NewParam
+    Left = 862
+    Top = 336
+  end
+  object Cre_NewParam: TASQLite3Query
+    AutoCommit = False
+    SQLiteDateFormat = True
+    Connection = asqDB_StockRecord
+    MaxResults = 0
+    StartResult = 0
+    TypeLess = False
+    SQLCursor = True
+    ReadOnly = False
+    UniDirectional = False
+    BeforePost = asq_StartEndBeforePost
+    RawSQL = False
+    SQL.Strings = (
+      
+        'CREATE TABLE tbNewParam(SN Integer Primary Key Autoincrement, Mo' +
+        'duleNM varchar(20) , Desc varchar(20) , '
+      
+        '  Spec_1_Check varchar(1), Spec_1_1 varchar(10), Spec_1_2 varcha' +
+        'r(10), Spec_1_3 varchar(10), Spec_1_Rate varchar(10),'
+      
+        '  PreOrder_Check varchar(1), PreOrder_Rate varchar(10), PreOrder' +
+        '_1_Check varchar(1), PreOrder_1 varchar(10), PreOrder_2_Check va' +
+        'rchar(1), PreOrder_2 varchar(10), PreOrder_3_Check varchar(1), P' +
+        'reOrder_3 varchar(10),'
+      
+        '       PreOrder_4_Check varchar(1), PreOrder_4 varchar(10), PreO' +
+        'rder_5_Check varchar(1), PreOrder_5 varchar(10), '
+      
+        '  Profit_Check varchar(1), Profit_Rate varchar(10), Profit_1_Che' +
+        'ck varchar(1), Profit_1_1 varchar(10), Profit_1_2 varchar(10), '
+      
+        '       Profit_2_Check varchar(1), Profit_2_1 varchar(10), Profit' +
+        '_2_2 varchar(10), Profit_2_3 varchar(10), '
+      
+        '       Profit_3_Check varchar(10), Profit_3_1_1 varchar(10), Pro' +
+        'fit_3_1_2 varchar(10), Profit_3_2_1 varchar(10), Profit_3_2_2 va' +
+        'rchar(10),'
+      
+        #9#9'Profit_3_3_1 varchar(10), Profit_3_3_2 varchar(10), Profit_3_4' +
+        '_1 varchar(10), Profit_3_4_2 varchar(10), Profit_3_5_1 varchar(1' +
+        '0), Profit_3_5_2 varchar(10),'
+      
+        '  Spec_2_Check varchar(1), Spec_2_1 varchar(10), Spec_2_2 varcha' +
+        'r(10), Spec_2_3 varchar(10), Spec_2_Rate varchar(10), '
+      
+        '  InventAnti_Check varchar(1), InventAnti_Rate varchar(10), Inve' +
+        'ntAnti_1_Check varchar(1), InventAnti_1 varchar(10), InventAnti_' +
+        '2_Check varchar(1), InventAnti_2_1 varchar(10), InventAnti_2_2 v' +
+        'archar(10),'
+      
+        '       InventAnti_3_Check varchar(1), InventAnti_3 varchar(10), ' +
+        'InventAnti_4_Check varchar(1), InventAnti_4 varchar(10), InventA' +
+        'nti_5_Check varchar(1), InventAnti_5 varchar(10), '
+      
+        '  Float_Check varchar(1), Float_Rate varchar(10), Float_1_Check ' +
+        'varchar(1), Float_1_1 varchar(10), Float_1_2 varchar(10), Float_' +
+        '2_Check varchar(1), Float_2_1 varchar(10), '
+      
+        '       Float_3_Check varchar(1), Float_3_1 varchar(10), Float_3_' +
+        '2 varchar(10), Float_4_Check varchar(1), Float_4_1 varchar(10), ' +
+        'Float_4_2 varchar(10),'
+      
+        '       Float_5_Check varchar(1), Float_5_1 varchar(10), Float_6_' +
+        'Check varchar(1),'
+      
+        '  Internal_Check varchar(1), Internal_Rate varchar(10), Internal' +
+        '_1_Check varchar(1), Internal_1_1 varchar(10), Internal_1_2 varc' +
+        'har(10),'
+      
+        '       Internal_2_Check varchar(1), Internal_2_1 varchar(10), In' +
+        'ternal_2_2 varchar(10), Internal_2_3 varchar(10), Internal_2_Rat' +
+        'e varchar(10),'
+      
+        '       Internal_3_Check varchar(1), Internal_3_1 varchar(10), In' +
+        'ternal_3_2 varchar(10), Internal_3_3 varchar(10), Internal_3_Rat' +
+        'e varchar(10),'
+      
+        '       Internal_4_Check varchar(1), Internal_5_Check varchar(1),' +
+        ' Internal_6_Check varchar(1), '
+      
+        '       Internal_7_Check varchar(1), Internal_7_Rate varchar(10),' +
+        ' Internal_8_Check varchar(1), Internal_8_Rate varchar(10), Inter' +
+        'nal_9_Check varchar(1), Internal_9_Rate varchar(10),'
+      
+        '       Internal_10_Check varchar(1), Internal_10_1_1 varchar(10)' +
+        ', Internal_10_1_2 varchar(10), Internal_10_1_3 varchar(10), Inte' +
+        'rnal_10_Rate varchar(10),'
+      
+        '       Internal_11_Check varchar(1), Internal_11_1_1 varchar(10)' +
+        ', Internal_11_1_2 varchar(10),'
+      
+        '  Engine_Check varchar(1), Engine_Rate varchar(10), Engine_1_Che' +
+        'ck varchar(1), Engine_1_1 varchar(10), Engine_2_Check varchar(1)' +
+        ', Engine_2_1 varchar(10),'
+      
+        '       Engine_3_Check varchar(1), Engine_3_1 varchar(10), Engine' +
+        '_3_2 varchar(10), Engine_4_Check varchar(1), Engine_4_1 varchar(' +
+        '10), Engine_5_Check varchar(1), Engine_6_Check varchar(1), Engin' +
+        'e_6_1 varchar(10),'
+      
+        '       Engine_7_Check varchar(1), Engine_7_1 varchar(10), Engine' +
+        '_8_Check varchar(1), Engine_8_1 varchar(10), Engine_9_Check varc' +
+        'har(1), Engine_9_1 varchar(10),'
+      
+        '       Engine_10_Check varchar(1), Engine_10_1 varchar(10), Engi' +
+        'ne_11_Check varchar(1), Engine_11_1 varchar(10),'
+      
+        '       Engine_12_Check varchar(1), Engine_12_1 varchar(10), Engi' +
+        'ne_13_Check varchar(1), Engine_14_Check varchar(1), Engine_14_1 ' +
+        'varchar(10), Engine_15_Check varchar(1), Engine_15_1 varchar(10)' +
+        ','
+      
+        '       Engine_16_Check varchar(1), Engine_16_1 varchar(10), Engi' +
+        'ne_17_Check varchar(1), Engine_17_1 varchar(10), Engine_18_Check' +
+        ' varchar(1), Engine_18_1 varchar(10),'
+      
+        '       Engine_19_Check varchar(1), Engine_19_1 varchar(10), Engi' +
+        'ne_20_Check varchar(1), Engine_20_1 varchar(10), Engine_21_Check' +
+        ' varchar(1), Engine_21_1 varchar(10),'
+      
+        '  KeepOrder_Check varchar(1), KeepOrder_Rate varchar(10), KeepOr' +
+        'der_1_Check varchar(1), KeepOrder_1_1 varchar(10), KeepOrder_1_2' +
+        ' varchar(10), KeepOrder_2_Check varchar(1),'
+      
+        '       KeepOrder_3_Check varchar(1), KeepOrder_4_Check varchar(1' +
+        '), KeepOrder_4_1 varchar(10), KeepOrder_4_2 varchar(10),  KeepOr' +
+        'der_5_Check varchar(1),  KeepOrder_6_Check varchar(1));')
+    UpdateSQL = asqUpSQL_Option
+    Left = 848
+    Top = 112
   end
 end

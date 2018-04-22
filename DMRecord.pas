@@ -286,6 +286,10 @@ type
     asq_Option: TASQLite3Query;
     asqUpSQL_Option: TASQLite3UpdateSQL;
     dsOption: TDataSource;
+    asqUpSQL_NewParam: TASQLite3UpdateSQL;
+    asq_NewParam: TASQLite3Query;
+    dsNewParam: TDataSource;
+    Cre_NewParam: TASQLite3Query;
 
 
     function AssignSN(TableNM: String): Integer;
@@ -372,6 +376,8 @@ begin
 
  DataModule1.asq_Configu.Active:= True;
  DataModule1.asq_Configu.Open;
+ DataModule1.asq_NewParam.Active:= True;
+ DataModule1.asq_NewParam.Open;
 end;
 
 

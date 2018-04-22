@@ -3,7 +3,7 @@ object fmChungYi: TfmChungYi
   Top = 0
   Caption = #32676#30410#19979#21934#20171#38754
   ClientHeight = 711
-  ClientWidth = 752
+  ClientWidth = 774
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,15 +18,16 @@ object fmChungYi: TfmChungYi
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 752
-    Height = 123
+    Width = 774
+    Height = 59
     Align = alTop
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
+    ExplicitWidth = 752
     object lbFail: TLabel
-      Left = 225
-      Top = 73
+      Left = 262
+      Top = 43
       Width = 224
       Height = 16
       Caption = #20132#26131#22833#25943', 10'#31186#24460#33258#21205#37325#26032#19979#21934
@@ -39,36 +40,36 @@ object fmChungYi: TfmChungYi
       Visible = False
     end
     object GroupBox1: TGroupBox
-      Left = 18
-      Top = 8
-      Width = 705
-      Height = 59
+      Left = 4
+      Top = 0
+      Width = 744
+      Height = 41
       Caption = #36899#32218#36039#35338
       TabOrder = 0
       object Label1: TLabel
-        Left = 18
-        Top = 26
+        Left = 80
+        Top = 12
         Width = 35
         Height = 13
         Caption = #30331#20837'ID'
       end
       object Label2: TLabel
-        Left = 154
-        Top = 26
+        Left = 216
+        Top = 12
         Width = 48
         Height = 13
         Caption = #30331#20837#23494#30908
       end
       object Label3: TLabel
-        Left = 302
-        Top = 26
+        Left = 364
+        Top = 12
         Width = 48
         Height = 13
         Caption = #26399#36008#24115#34399
       end
       object btnLogOn: TButton
-        Left = 502
-        Top = 21
+        Left = 566
+        Top = 9
         Width = 75
         Height = 25
         Caption = #30331#20837
@@ -77,24 +78,24 @@ object fmChungYi: TfmChungYi
         OnClick = btnLogOnClick
       end
       object edUserid: TEdit
-        Left = 61
-        Top = 23
+        Left = 123
+        Top = 9
         Width = 88
         Height = 21
         PasswordChar = '*'
         TabOrder = 0
       end
       object edPassWord: TEdit
-        Left = 207
-        Top = 23
+        Left = 269
+        Top = 9
         Width = 89
         Height = 21
         PasswordChar = '*'
         TabOrder = 1
       end
       object cbAccount: TComboBox
-        Left = 356
-        Top = 23
+        Left = 418
+        Top = 9
         Width = 126
         Height = 21
         Style = csDropDownList
@@ -107,7 +108,6 @@ object fmChungYi: TfmChungYi
         Width = 113
         Height = 65
         TabOrder = 4
-        OnDocumentComplete = WebBrowser1DocumentComplete
         ControlData = {
           4C000000AE0B0000B80600000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -115,43 +115,43 @@ object fmChungYi: TfmChungYi
           8000000000000000000000000000000000000000000000000000000000000000
           00000000000000000100000000000000000000000000000000000000}
       end
-    end
-    object btnCredit: TButton
-      Left = 137
-      Top = 73
-      Width = 75
-      Height = 25
-      Caption = #35712#21462#24977#35657
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-      Visible = False
-      OnClick = btnCreditClick
-    end
-    object dbcTestMode: TDBCheckBox
-      Left = 22
-      Top = 77
-      Width = 57
-      Height = 17
-      Caption = #28204#35430#29256
-      DataField = 'TestMode'
-      DataSource = DataModule1.dsConfigu
-      TabOrder = 2
-      ValueChecked = '1'
-      ValueUnchecked = '0'
-      OnMouseUp = dbcTestModeMouseUp
+      object btnCredit: TButton
+        Left = -1
+        Top = 13
+        Width = 75
+        Height = 25
+        Caption = #35712#21462#24977#35657
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        Visible = False
+        OnClick = btnCreditClick
+      end
+      object dbcTestMode: TDBCheckBox
+        Left = 660
+        Top = 11
+        Width = 57
+        Height = 17
+        Caption = #28204#35430#29256
+        DataField = 'TestMode'
+        DataSource = DataModule1.dsConfigu
+        TabOrder = 6
+        ValueChecked = '1'
+        ValueUnchecked = '0'
+        OnMouseUp = dbcTestModeMouseUp
+      end
     end
   end
-  object PageControl1: TPageControl
+  object PageControl_Main: TPageControl
     Left = 0
-    Top = 123
-    Width = 752
-    Height = 588
-    ActivePage = TabSheet4
+    Top = 59
+    Width = 774
+    Height = 652
+    ActivePage = tsParam_New
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -160,14 +160,19 @@ object fmChungYi: TfmChungYi
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    OnChanging = PageControl1Changing
-    object TabSheet1: TTabSheet
+    OnChanging = PageControl_MainChanging
+    ExplicitTop = 123
+    ExplicitWidth = 752
+    ExplicitHeight = 588
+    object tsAccount: TTabSheet
       Caption = #24115#34399#31649#29702
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object ListView1: TListView
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
@@ -197,29 +202,35 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 0
         ViewStyle = vsReport
+        ExplicitTop = -1
+        ExplicitWidth = 744
+        ExplicitHeight = 557
       end
     end
-    object TabSheet2: TTabSheet
+    object tsAutoOrder: TTabSheet
       Caption = #33258#21205#19979#21934#35373#23450
       ImageIndex = 1
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object CoolBar2: TCoolBar
         Left = 0
         Top = 0
-        Width = 744
+        Width = 766
         Height = 146
         Bands = <
           item
             Control = Panel3
             ImageIndex = -1
             MinHeight = 166
-            Width = 742
+            Width = 764
           end>
         EdgeInner = esNone
         EdgeOuter = esNone
+        ExplicitWidth = 744
         object Panel3: TPanel
           Left = 11
           Top = 0
-          Width = 733
+          Width = 755
           Height = 166
           Align = alClient
           BevelOuter = bvNone
@@ -407,8 +418,8 @@ object fmChungYi: TfmChungYi
       object ListView3: TListView
         Left = 0
         Top = 146
-        Width = 744
-        Height = 411
+        Width = 766
+        Height = 475
         Align = alClient
         Columns = <
           item
@@ -454,18 +465,23 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 1
         ViewStyle = vsReport
+        ExplicitWidth = 744
+        ExplicitHeight = 411
       end
     end
-    object tabSheetTimeScope: TTabSheet
+    object tsTimeScope: TTabSheet
       Caption = #36215#35350#26178#38291
       ImageIndex = 6
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 744
+        Width = 766
         Height = 121
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 744
         object Label56: TLabel
           Left = 370
           Top = 53
@@ -612,8 +628,8 @@ object fmChungYi: TfmChungYi
       object dbgridStartEnd: TDBGrid
         Left = 0
         Top = 121
-        Width = 744
-        Height = 436
+        Width = 766
+        Height = 500
         Align = alClient
         DataSource = DataModule1.dsStartEnd
         Font.Charset = DEFAULT_CHARSET
@@ -729,13 +745,16 @@ object fmChungYi: TfmChungYi
       Caption = #19979#21934#35352#37636#21450#25613#30410
       ImageIndex = 3
       OnShow = tsOrderRecordShow
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 744
+        Width = 766
         Height = 97
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 744
         object Label11: TLabel
           Left = 205
           Top = 20
@@ -925,8 +944,8 @@ object fmChungYi: TfmChungYi
       object DBGrid_Record: TDBGrid
         Left = 0
         Top = 97
-        Width = 744
-        Height = 460
+        Width = 766
+        Height = 524
         Align = alClient
         DataSource = DataModule1.dsRecord
         Font.Charset = DEFAULT_CHARSET
@@ -1122,14 +1141,18 @@ object fmChungYi: TfmChungYi
     object tsOpenInterest: TTabSheet
       Caption = #26410#24179#20489#20839#23481
       ImageIndex = 5
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object StringGrid1: TStringGrid
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         FixedCols = 0
         TabOrder = 0
+        ExplicitWidth = 744
+        ExplicitHeight = 557
         ColWidths = (
           140
           169
@@ -1140,8 +1163,8 @@ object fmChungYi: TfmChungYi
       object ListV_Interest: TListView
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         Columns = <
           item
@@ -1172,16 +1195,21 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 1
         ViewStyle = vsReport
+        ExplicitWidth = 744
+        ExplicitHeight = 557
       end
     end
-    object TabSheet3: TTabSheet
+    object tsParam: TTabSheet
       Caption = #21443#25976#35373#23450
       ImageIndex = 5
+      TabVisible = False
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         Caption = 'Panel2'
         Font.Charset = ANSI_CHARSET
@@ -1192,6 +1220,8 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         ShowCaption = False
         TabOrder = 0
+        ExplicitWidth = 744
+        ExplicitHeight = 557
         object Label39: TLabel
           Left = 14
           Top = 35
@@ -2347,13 +2377,17 @@ object fmChungYi: TfmChungYi
     object tsTrend: TTabSheet
       Caption = #36264#21218#22294#36039#26009
       ImageIndex = 6
+      TabVisible = False
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 744
+        Width = 766
         Height = 49
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 744
         object Label48: TLabel
           Left = 263
           Top = 21
@@ -2409,8 +2443,8 @@ object fmChungYi: TfmChungYi
       object DBGrid_Figure: TDBGrid
         Left = 0
         Top = 49
-        Width = 744
-        Height = 508
+        Width = 766
+        Height = 572
         Align = alClient
         DataSource = DataModule1.dsFigure
         Font.Charset = DEFAULT_CHARSET
@@ -2504,14 +2538,16 @@ object fmChungYi: TfmChungYi
           end>
       end
     end
-    object tsParameter: TTabSheet
+    object tsParam_New: TTabSheet
       Caption = #21443#25976
       ImageIndex = 7
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel7: TPanel
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         Caption = 'Panel2'
         Font.Charset = ANSI_CHARSET
@@ -2522,16 +2558,18 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         ShowCaption = False
         TabOrder = 0
+        ExplicitWidth = 744
+        ExplicitHeight = 557
         object Label60: TLabel
-          Left = 14
-          Top = 35
+          Left = 466
+          Top = 7
           Width = 48
           Height = 12
           Caption = #27169#24335#21517#31281
         end
         object Label61: TLabel
-          Left = 148
-          Top = 35
+          Left = 600
+          Top = 7
           Width = 48
           Height = 12
           Caption = #27169#24335#25551#36848
@@ -2542,21 +2580,22 @@ object fmChungYi: TfmChungYi
           Font.Style = []
           ParentFont = False
         end
-        object DBNavigator1: TDBNavigator
+        object dbnNewParam: TDBNavigator
           Left = 12
           Top = 0
-          Width = 531
+          Width = 441
           Height = 25
-          DataSource = DataModule1.dsParam
+          DataSource = DataModule1.dsNewParam
           VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbEdit, nbPost, nbCancel]
           TabOrder = 2
           OnClick = dbnaviParamClick
         end
-        object DBGrid1: TDBGrid
-          Left = 624
-          Top = -1
+        object dbg_NewParam: TDBGrid
+          Left = 139
+          Top = 0
           Width = 106
           Height = 36
+          DataSource = DataModule1.dsNewParam
           TabOrder = 3
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clWindowText
@@ -2565,27 +2604,27 @@ object fmChungYi: TfmChungYi
           TitleFont.Style = []
           Visible = False
         end
-        object DBEdit51: TDBEdit
-          Left = 74
-          Top = 31
+        object dbeModelNM: TDBEdit
+          Left = 526
+          Top = 3
           Width = 62
           Height = 20
           DataField = 'ModuleNM'
-          DataSource = DataModule1.dsParam
+          DataSource = DataModule1.dsNewParam
           TabOrder = 0
         end
-        object DBEdit52: TDBEdit
-          Left = 202
-          Top = 31
-          Width = 341
+        object dbeDesc_new: TDBEdit
+          Left = 654
+          Top = 3
+          Width = 74
           Height = 20
           DataField = 'Desc'
-          DataSource = DataModule1.dsParam
+          DataSource = DataModule1.dsNewParam
           TabOrder = 1
         end
-        object GroupBox10: TGroupBox
-          Left = 12
-          Top = 57
+        object Group_Special_1: TGroupBox
+          Left = 13
+          Top = 31
           Width = 718
           Height = 40
           Caption = #29305#20363#19968
@@ -2618,58 +2657,59 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #36948#25104#22519#34892
           end
-          object DBCheckBox1: TDBCheckBox
+          object dbcSpec_1_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit1: TDBEdit
+          object dbeSpec_1_1: TDBEdit
             Left = 119
             Top = 14
             Width = 47
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_1_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
+            OnKeyDown = Num_Only_KeyDown
           end
-          object DBEdit2: TDBEdit
+          object dbeSpec_1_2: TDBEdit
             Left = 245
             Top = 14
             Width = 62
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
           end
-          object DBEdit4: TDBEdit
+          object dbeSpec_1_3: TDBEdit
             Left = 395
             Top = 13
             Width = 62
             Height = 20
-            DataField = 'C4'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_1_3'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
           end
-          object DBEdit6: TDBEdit
+          object dbeSpec_1_Rate: TDBEdit
             Left = 537
             Top = 14
             Width = 62
             Height = 20
-            DataField = 'C7'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_1_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
           end
         end
         object GroupBox9: TGroupBox
           Left = 12
-          Top = 95
+          Top = 70
           Width = 718
           Height = 40
           Caption = #21069#20489#21934#21028#35712
@@ -2681,136 +2721,136 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #27604#37325
           end
-          object DBCheckBox2: TDBCheckBox
+          object dbcPreOrder_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit3: TDBEdit
+          object dbePreOrder_Rate: TDBEdit
             Left = 98
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBEdit5: TDBEdit
+          object dbePreOrder_1: TDBEdit
             Left = 219
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
           end
-          object DBCheckBox3: TDBCheckBox
+          object dbcPreOrder_1_Check: TDBCheckBox
             Left = 130
             Top = 16
             Width = 83
             Height = 17
             Caption = #36555#21028'1'#24235#23384#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox4: TDBCheckBox
+          object dbcPreOrder_2_Check: TDBCheckBox
             Left = 250
             Top = 17
             Width = 83
             Height = 17
             Caption = #36555#21028'2'#26152#25910
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit7: TDBEdit
+          object dbePreOrder_2: TDBEdit
             Left = 323
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
           end
-          object DBCheckBox5: TDBCheckBox
+          object dbcPreOrder_3_Check: TDBCheckBox
             Left = 358
             Top = 17
             Width = 47
             Height = 17
             Caption = #36555#21028'3'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_3_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 6
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit8: TDBEdit
+          object dbePreOrder_3: TDBEdit
             Left = 411
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_3'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 7
           end
-          object DBCheckBox6: TDBCheckBox
+          object dbcPreOrder_4_Check: TDBCheckBox
             Left = 445
             Top = 17
             Width = 47
             Height = 17
             Caption = #36555#21028'4'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_4_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit9: TDBEdit
+          object dbePreOrder_4: TDBEdit
             Left = 498
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_4'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
           end
-          object DBCheckBox7: TDBCheckBox
-            Left = 534
-            Top = 17
+          object dbcPreOrder_5_Check: TDBCheckBox
+            Left = 528
+            Top = 15
             Width = 119
             Height = 17
             Caption = #36555#21028'5 (F2a/b)'#21069'K'#25490
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_5_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 10
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit10: TDBEdit
+          object dbePreOrder_5: TDBEdit
             Left = 653
             Top = 15
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'PreOrder_5'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 11
           end
         end
         object GroupBox14: TGroupBox
-          Left = 12
-          Top = 133
+          Left = 13
+          Top = 110
           Width = 718
           Height = 68
           Caption = #29554#21033#24375#21046
@@ -2899,202 +2939,202 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = '%'#22238
           end
-          object DBCheckBox8: TDBCheckBox
+          object dbcProfit_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit11: TDBEdit
+          object dbeProfit_Rate: TDBEdit
             Left = 98
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBEdit12: TDBEdit
+          object dbeProfit_1_1: TDBEdit
             Left = 209
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_1_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
           end
-          object DBCheckBox9: TDBCheckBox
+          object dbcProfit_1_Check: TDBCheckBox
             Left = 130
             Top = 16
             Width = 83
             Height = 17
             Caption = 'P1'#29554#22238#40670#28415
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit13: TDBEdit
+          object dbeProfit_1_2: TDBEdit
             Left = 241
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
           end
-          object DBCheckBox14: TDBCheckBox
+          object dbcProfit_2_Check: TDBCheckBox
             Left = 276
             Top = 17
             Width = 83
             Height = 17
             Caption = 'P2'#29554#22238#40670#28415
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit14: TDBEdit
+          object dbeProfit_2_1: TDBEdit
             Left = 355
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 6
           end
-          object DBEdit15: TDBEdit
+          object dbeProfit_2_2: TDBEdit
             Left = 387
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_2_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 7
           end
-          object DBEdit16: TDBEdit
+          object dbeProfit_2_3: TDBEdit
             Left = 461
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_2_3'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
           end
-          object DBCheckBox15: TDBCheckBox
+          object dbcProfit_3_Check: TDBCheckBox
             Left = 12
             Top = 39
             Width = 61
             Height = 17
             Caption = 'P3'#29554#22238#38542
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit17: TDBEdit
+          object dbeProfit_3_1_1: TDBEdit
             Left = 117
             Top = 37
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_1_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 10
           end
-          object DBEdit18: TDBEdit
+          object dbeProfit_3_1_2: TDBEdit
             Left = 149
             Top = 37
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 11
           end
-          object DBEdit19: TDBEdit
+          object dbeProfit_3_2_1: TDBEdit
             Left = 242
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 12
           end
-          object DBEdit20: TDBEdit
+          object dbeProfit_3_2_2: TDBEdit
             Left = 274
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_2_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 13
           end
-          object DBEdit21: TDBEdit
+          object dbeProfit_3_3_1: TDBEdit
             Left = 369
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_3_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 14
           end
-          object DBEdit22: TDBEdit
+          object dbeProfit_3_3_2: TDBEdit
             Left = 401
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_3_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 15
           end
-          object DBEdit23: TDBEdit
+          object dbeProfit_3_4_1: TDBEdit
             Left = 498
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_4_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 16
           end
-          object DBEdit24: TDBEdit
+          object dbeProfit_3_4_2: TDBEdit
             Left = 530
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_4_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 17
           end
-          object DBEdit25: TDBEdit
+          object dbeProfit_3_5_1: TDBEdit
             Left = 630
             Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_5_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 18
           end
-          object DBEdit53: TDBEdit
+          object dbeProfit_3_5_2: TDBEdit
             Left = 659
             Top = 34
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Profit_3_5_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 19
           end
         end
         object GroupBox15: TGroupBox
           Left = 13
-          Top = 196
+          Top = 171
           Width = 718
           Height = 40
           Caption = #29305#20363#20108
@@ -3127,58 +3167,58 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #36948#25104#22519#34892
           end
-          object DBCheckBox16: TDBCheckBox
+          object dbcSpec_2_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit54: TDBEdit
+          object dbeSpec_2_1: TDBEdit
             Left = 119
             Top = 14
             Width = 47
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBEdit55: TDBEdit
+          object dbeSpec_2_2: TDBEdit
             Left = 245
             Top = 14
             Width = 62
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_2_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
           end
-          object DBEdit56: TDBEdit
+          object dbeSpec_2_3: TDBEdit
             Left = 395
             Top = 13
             Width = 62
             Height = 20
-            DataField = 'C4'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_2_3'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
           end
-          object DBEdit57: TDBEdit
+          object dbeSpec_2_Rate: TDBEdit
             Left = 537
             Top = 14
             Width = 62
             Height = 20
-            DataField = 'C7'
-            DataSource = DataModule1.dsParam
+            DataField = 'Spec_2_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
           end
         end
         object GroupBox11: TGroupBox
           Left = 12
-          Top = 235
+          Top = 210
           Width = 718
           Height = 62
           Caption = #24235#23384#21453#21521
@@ -3190,157 +3230,152 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #27604#37325
           end
-          object DBCheckBox10: TDBCheckBox
+          object Label139: TLabel
+            Left = 369
+            Top = 19
+            Width = 65
+            Height = 12
+            Caption = #40670'. '#21069'K'#25490
+          end
+          object dbcInventAnti_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit26: TDBEdit
+          object dbeInventAnti_Rate: TDBEdit
             Left = 98
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBEdit27: TDBEdit
+          object dbeInventAnti_1: TDBEdit
             Left = 219
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
           end
-          object DBCheckBox11: TDBCheckBox
+          object dbcInventAnti_1_Check: TDBCheckBox
             Left = 130
             Top = 16
             Width = 83
             Height = 17
             Caption = 'T1'#21453#36681#40670#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox17: TDBCheckBox
+          object dbcInventAnti_2_Check: TDBCheckBox
             Left = 250
             Top = 17
             Width = 83
             Height = 17
             Caption = 'T2'#21453'K'#25490#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit28: TDBEdit
+          object dbeInventAnti_2_1: TDBEdit
             Left = 337
             Top = 15
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'InventAnti_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
           end
-          object DBCheckBox19: TDBCheckBox
-            Left = 369
-            Top = 17
-            Width = 54
-            Height = 17
-            Caption = #21069'K'#25490
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 6
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
-          end
-          object DBEdit30: TDBEdit
+          object dbeInventAnti_2_2: TDBEdit
             Left = 422
             Top = 15
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 7
+            DataField = 'InventAnti_2_2'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 6
           end
-          object DBCheckBox20: TDBCheckBox
+          object dbcInventAnti_3_Check: TDBCheckBox
             Left = 461
             Top = 17
             Width = 119
             Height = 17
             Caption = 'T3'#21453#24235#22343'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 8
+            DataField = 'InventAnti_3_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 7
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit31: TDBEdit
+          object dbeInventAnti_3: TDBEdit
             Left = 580
             Top = 15
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 9
+            DataField = 'InventAnti_3'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 8
           end
-          object DBCheckBox18: TDBCheckBox
+          object dbcInventAnti_4_Check: TDBCheckBox
             Left = 13
             Top = 39
             Width = 119
             Height = 17
             Caption = 'T4'#21453#22996#37327'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 10
+            DataField = 'InventAnti_4_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 9
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit29: TDBEdit
+          object dbeInventAnti_4: TDBEdit
             Left = 132
             Top = 37
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 11
+            DataField = 'InventAnti_4'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 10
           end
-          object DBCheckBox21: TDBCheckBox
+          object dbcInventAnti_5_Check: TDBCheckBox
             Left = 167
             Top = 40
             Width = 119
             Height = 17
             Caption = 'T5'#21453#21069#22343'{b/s}'#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 12
+            DataField = 'InventAnti_5_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 11
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit32: TDBEdit
+          object dbeInventAnti_5: TDBEdit
             Left = 286
             Top = 37
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 13
+            DataField = 'InventAnti_5'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 12
           end
         end
         object GroupBox12: TGroupBox
-          Left = 12
-          Top = 297
+          Left = 13
+          Top = 273
           Width = 718
           Height = 62
           Caption = #30436#25972#38283#38281
@@ -3352,150 +3387,240 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #27604#37325
           end
-          object DBCheckBox22: TDBCheckBox
+          object Label91: TLabel
+            Left = 270
+            Top = 19
+            Width = 24
+            Height = 12
+            Caption = #40670#22343
+          end
+          object Label92: TLabel
+            Left = 326
+            Top = 19
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label93: TLabel
+            Left = 412
+            Top = 19
+            Width = 36
+            Height = 12
+            Caption = #22343#39640#20302
+          end
+          object Label94: TLabel
+            Left = 486
+            Top = 19
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label95: TLabel
+            Left = 691
+            Top = 19
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label96: TLabel
+            Left = 644
+            Top = 19
+            Width = 12
+            Height = 12
+            Caption = #26681
+          end
+          object Label97: TLabel
+            Left = 136
+            Top = 42
+            Width = 12
+            Height = 12
+            Caption = #26681
+          end
+          object Label98: TLabel
+            Left = 183
+            Top = 42
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label99: TLabel
+            Left = 332
+            Top = 41
+            Width = 12
+            Height = 12
+            Caption = #26681
+          end
+          object dbcFloat_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Float_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit33: TDBEdit
+          object dbeFloat_Rate: TDBEdit
             Left = 98
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Float_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBCheckBox23: TDBCheckBox
+          object dbcFloat_1_Check: TDBCheckBox
             Left = 130
             Top = 16
-            Width = 69
+            Width = 105
             Height = 17
-            Caption = 'S1'#30436#21069#22343
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = 'S1'#30436#21069#22343'  '#21069#22343#25490
+            DataField = 'Float_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox24: TDBCheckBox
-            Left = 250
-            Top = 17
-            Width = 83
-            Height = 17
-            Caption = 'T2'#21453'K'#25490#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+          object dbeFloat_1_2: TDBEdit
+            Left = 294
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Float_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
           end
-          object DBEdit35: TDBEdit
-            Left = 337
-            Top = 15
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+          object dbcFloat_2_Check: TDBCheckBox
+            Left = 344
+            Top = 17
+            Width = 61
+            Height = 17
+            Caption = 'S2'#30436'K'#21050
+            DataField = 'Float_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
           end
-          object DBCheckBox25: TDBCheckBox
-            Left = 369
-            Top = 17
-            Width = 54
-            Height = 17
-            Caption = #21069'K'#25490
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+          object dbeFloat_2_1: TDBEdit
+            Left = 454
+            Top = 15
+            Width = 26
+            Height = 20
+            DataField = 'Float_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
           end
-          object DBEdit36: TDBEdit
-            Left = 422
-            Top = 15
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 6
-          end
-          object DBCheckBox26: TDBCheckBox
-            Left = 461
-            Top = 17
-            Width = 119
+          object dbcFloat_3_Check: TDBCheckBox
+            Left = 504
+            Top = 18
+            Width = 113
             Height = 17
-            Caption = 'T3'#21453#24235#22343'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 7
+            Caption = 'S3 '#30436#36681#21521' '#21069'K'#25490
+            DataField = 'Float_3_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 6
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit37: TDBEdit
-            Left = 580
+          object dbeFloat_3_2: TDBEdit
+            Left = 659
             Top = 15
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Float_3_2'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 7
+          end
+          object dbeFloat_1_1: TDBEdit
+            Left = 238
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Float_1_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
           end
-          object DBCheckBox27: TDBCheckBox
-            Left = 13
-            Top = 39
-            Width = 119
-            Height = 17
-            Caption = 'T4'#21453#22996#37327'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+          object dbeFloat_3_1: TDBEdit
+            Left = 612
+            Top = 15
+            Width = 26
+            Height = 20
+            DataField = 'Float_3_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
+          end
+          object dbcFloat_4_Check: TDBCheckBox
+            Left = 12
+            Top = 39
+            Width = 102
+            Height = 17
+            Caption = 'S4'#30436'K'#31361' '#21069'K'#25490
+            DataField = 'Float_4_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 10
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit38: TDBEdit
-            Left = 132
+          object dbeFloat_4_1: TDBEdit
+            Left = 109
             Top = 37
+            Width = 21
+            Height = 20
+            DataField = 'Float_4_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 11
+          end
+          object dbeFloat_4_2: TDBEdit
+            Left = 151
+            Top = 38
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 10
+            DataField = 'Float_4_2'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 12
+          end
+          object dbcFloat_5_Check: TDBCheckBox
+            Left = 205
+            Top = 39
+            Width = 102
+            Height = 17
+            Caption = 'S5'#30436#27874#27573' '#21069'K'#25490
+            DataField = 'Float_5_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 13
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeFloat_5_1: TDBEdit
+            Left = 307
+            Top = 37
+            Width = 21
+            Height = 20
+            DataField = 'Float_5_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 14
           end
           object DBCheckBox28: TDBCheckBox
-            Left = 167
-            Top = 40
-            Width = 119
+            Left = 350
+            Top = 39
+            Width = 77
             Height = 17
-            Caption = 'T5'#21453#21069#22343'{b/s}'#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 11
+            Caption = 'S6'#30436#37327#22343
+            DataField = 'Float_6_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 15
             ValueChecked = 'T'
             ValueUnchecked = 'F'
-          end
-          object DBEdit39: TDBEdit
-            Left = 286
-            Top = 37
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 12
           end
         end
         object GroupBox13: TGroupBox
-          Left = 12
-          Top = 359
+          Left = 13
+          Top = 341
           Width = 718
-          Height = 62
+          Height = 105
           Caption = #20839#35338#30906
           TabOrder = 10
           object Label81: TLabel
@@ -3505,301 +3630,1047 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #27604#37325
           end
-          object DBCheckBox12: TDBCheckBox
+          object Label100: TLabel
+            Left = 277
+            Top = 19
+            Width = 42
+            Height = 12
+            Caption = #26681'. '#36264#22238
+          end
+          object Label101: TLabel
+            Left = 352
+            Top = 19
+            Width = 9
+            Height = 12
+            Caption = '%'
+          end
+          object Label102: TLabel
+            Left = 514
+            Top = 19
+            Width = 15
+            Height = 12
+            Caption = #26681'.'
+          end
+          object Label103: TLabel
+            Left = 640
+            Top = 19
+            Width = 42
+            Height = 12
+            Caption = #26681'. '#36948#25104
+          end
+          object Label110: TLabel
+            Left = 558
+            Top = 19
+            Width = 53
+            Height = 12
+            Caption = ' '#40670'. '#21069'K'#25490
+          end
+          object Label109: TLabel
+            Left = 203
+            Top = 41
+            Width = 69
+            Height = 12
+            Caption = ' '#40670'. '#21069#39640#20302#22343
+          end
+          object Label111: TLabel
+            Left = 302
+            Top = 41
+            Width = 42
+            Height = 12
+            Caption = #40670'. '#36948#25104
+          end
+          object Label112: TLabel
+            Left = 13
+            Top = 61
+            Width = 24
+            Height = 12
+            Caption = #36948#25104
+          end
+          object Label114: TLabel
+            Left = 496
+            Top = 65
+            Width = 54
+            Height = 12
+            Caption = #40670'. '#21069#22343#25910
+          end
+          object Label115: TLabel
+            Left = 586
+            Top = 65
+            Width = 54
+            Height = 12
+            Caption = #40670'. '#21069#22343#25490
+          end
+          object Label113: TLabel
+            Left = 675
+            Top = 63
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label116: TLabel
+            Left = 13
+            Top = 82
+            Width = 24
+            Height = 12
+            Caption = #36948#25104
+          end
+          object Label104: TLabel
+            Left = 159
+            Top = 39
+            Width = 12
+            Height = 12
+            Caption = #26681
+          end
+          object Label117: TLabel
+            Left = 240
+            Top = 85
+            Width = 54
+            Height = 12
+            Caption = #40670'. '#21069#22343#25490
+          end
+          object Label118: TLabel
+            Left = 330
+            Top = 88
+            Width = 12
+            Height = 12
+            Caption = #22343
+          end
+          object dbcInternal_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit34: TDBEdit
+          object dbeInternal_Rate: TDBEdit
             Left = 98
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBCheckBox13: TDBCheckBox
+          object dbcInternal_1_Check: TDBCheckBox
             Left = 130
             Top = 16
-            Width = 69
+            Width = 115
             Height = 17
-            Caption = 'S1'#30436#21069#22343
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = 'HD1'#20729#36264#22238'  '#21069'K'#25490
+            DataField = 'Internal_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox29: TDBCheckBox
-            Left = 250
-            Top = 17
-            Width = 83
-            Height = 17
-            Caption = 'T2'#21453'K'#25490#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 3
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
-          end
-          object DBEdit40: TDBEdit
-            Left = 337
-            Top = 15
+          object dbeInternal_1_1: TDBEdit
+            Left = 245
+            Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_1_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 3
+          end
+          object dbeInternal_1_2: TDBEdit
+            Left = 323
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Internal_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
           end
-          object DBCheckBox30: TDBCheckBox
-            Left = 369
-            Top = 17
-            Width = 54
+          object dbcInternal_2_Check: TDBCheckBox
+            Left = 367
+            Top = 16
+            Width = 115
             Height = 17
-            Caption = #21069'K'#25490
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = 'HD2'#20729#36264#21218' '#21069'K'#25490
+            DataField = 'Internal_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit41: TDBEdit
-            Left = 422
-            Top = 15
+          object dbeInternal_2_1: TDBEdit
+            Left = 482
+            Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 6
           end
-          object DBCheckBox31: TDBCheckBox
-            Left = 461
-            Top = 17
-            Width = 119
-            Height = 17
-            Caption = 'T3'#21453#24235#22343'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 7
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
-          end
-          object DBEdit42: TDBEdit
-            Left = 580
-            Top = 15
+          object dbeInternal_2_3: TDBEdit
+            Left = 613
+            Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_2_3'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 7
+          end
+          object dbeInternal_2_Rate: TDBEdit
+            Left = 688
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Internal_2_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
           end
-          object DBCheckBox32: TDBCheckBox
-            Left = 13
-            Top = 39
-            Width = 119
-            Height = 17
-            Caption = 'T4'#21453#22996#37327'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+          object dbeInternal_2_2: TDBEdit
+            Left = 529
+            Top = 14
+            Width = 28
+            Height = 20
+            DataField = 'Internal_2_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
           end
-          object DBEdit43: TDBEdit
-            Left = 132
-            Top = 37
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 10
-          end
-          object DBCheckBox33: TDBCheckBox
-            Left = 167
-            Top = 40
-            Width = 119
+          object dbcInternal_3_Check: TDBCheckBox
+            Left = 12
+            Top = 38
+            Width = 115
             Height = 17
-            Caption = 'T5'#21453#21069#22343'{b/s}'#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 11
+            Caption = 'HD3'#20729#25910#24341' '#21069'K'#25490
+            DataField = 'Internal_3_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 10
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit44: TDBEdit
-            Left = 286
-            Top = 37
+          object dbeInternal_3_1: TDBEdit
+            Left = 127
+            Top = 36
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Internal_3_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 11
+          end
+          object dbeInternal_3_2: TDBEdit
+            Left = 174
+            Top = 36
+            Width = 28
+            Height = 20
+            DataField = 'Internal_3_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 12
+          end
+          object dbeInternal_3_3: TDBEdit
+            Left = 275
+            Top = 36
+            Width = 26
+            Height = 20
+            DataField = 'Internal_3_3'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 13
+          end
+          object dbeInternal_3_Rate: TDBEdit
+            Left = 346
+            Top = 36
+            Width = 26
+            Height = 20
+            DataField = 'Internal_3_Rate'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 14
+          end
+          object dbcInternal_4_Check: TDBCheckBox
+            Left = 378
+            Top = 39
+            Width = 80
+            Height = 17
+            Caption = 'HD4'#37327#31361#30772
+            DataField = 'Internal_4_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 15
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbcInternal_5_Check: TDBCheckBox
+            Left = 458
+            Top = 38
+            Width = 80
+            Height = 17
+            Caption = 'HD5'#37327#24375#24369
+            DataField = 'Internal_5_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 16
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbcInternal_6_Check: TDBCheckBox
+            Left = 538
+            Top = 40
+            Width = 80
+            Height = 17
+            Caption = 'HD6'#37327#26368#20339
+            DataField = 'Internal_6_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 17
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbcInternal_7_Check: TDBCheckBox
+            Left = 624
+            Top = 40
+            Width = 80
+            Height = 17
+            Caption = 'HD7'#22343#31359#36234
+            DataField = 'Internal_7_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 18
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeInternal_7_Rate: TDBEdit
+            Left = 43
+            Top = 58
+            Width = 26
+            Height = 20
+            DataField = 'Internal_7_Rate'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 19
+          end
+          object dbcInternal_8_Check: TDBCheckBox
+            Left = 75
+            Top = 59
+            Width = 103
+            Height = 17
+            Caption = 'HD8'#22343#27874#27573' '#36948#25104
+            DataField = 'Internal_8_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 20
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeInternal_8_Rate: TDBEdit
+            Left = 180
+            Top = 59
+            Width = 26
+            Height = 20
+            DataField = 'Internal_8_Rate'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 21
+          end
+          object dbcInternal_9_Check: TDBCheckBox
+            Left = 212
+            Top = 62
+            Width = 103
+            Height = 17
+            Caption = 'HD9'#22343#26178#24046' '#36948#25104
+            DataField = 'Internal_9_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 22
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeInternal_9_Rate: TDBEdit
+            Left = 317
+            Top = 62
+            Width = 26
+            Height = 20
+            DataField = 'Internal_9_Rate'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 23
+          end
+          object dbcInternal_10_Check: TDBCheckBox
+            Left = 349
+            Top = 63
+            Width = 115
+            Height = 17
+            Caption = 'HD10'#22343#30436#36264' '#30070'K'#38283
+            DataField = 'Internal_10_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 24
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeInternal_10_1_1: TDBEdit
+            Left = 464
+            Top = 61
+            Width = 26
+            Height = 20
+            DataField = 'Internal_10_1_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 25
+          end
+          object dbeInternal_10_1_2: TDBEdit
+            Left = 554
+            Top = 61
+            Width = 26
+            Height = 20
+            DataField = 'Internal_10_1_2'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 26
+          end
+          object dbeInternal_10_1_3: TDBEdit
+            Left = 643
+            Top = 62
+            Width = 26
+            Height = 20
+            DataField = 'Internal_10_1_3'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 27
+          end
+          object dbeInternal_10_Rate: TDBEdit
+            Left = 43
+            Top = 79
+            Width = 26
+            Height = 20
+            DataField = 'Internal_10_Rate'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 28
+          end
+          object dbcInternal_11_Check: TDBCheckBox
+            Left = 75
+            Top = 81
+            Width = 131
+            Height = 17
+            Caption = 'HD11'#32156#21512#20540' '#21069#39640#20302#22343
+            DataField = 'Internal_11_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 29
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeInternal_11_1_1: TDBEdit
+            Left = 208
+            Top = 82
+            Width = 26
+            Height = 20
+            DataField = 'Internal_11_1_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 30
+          end
+          object dbeInternal_11_1_2: TDBEdit
+            Left = 296
+            Top = 83
+            Width = 28
+            Height = 20
+            DataField = 'Internal_11_1_2'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 31
           end
         end
         object GroupBox16: TGroupBox
-          Left = 12
-          Top = 421
+          Left = 13
+          Top = 447
           Width = 718
-          Height = 62
+          Height = 110
           Caption = #24341#25806#26781#20214#21015
           TabOrder = 11
           object Label82: TLabel
-            Left = 69
+            Left = 66
             Top = 17
             Width = 24
             Height = 12
             Caption = #27604#37325
           end
-          object DBCheckBox34: TDBCheckBox
+          object Label119: TLabel
+            Left = 223
+            Top = 17
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label120: TLabel
+            Left = 349
+            Top = 17
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label121: TLabel
+            Left = 562
+            Top = 17
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label122: TLabel
+            Left = 466
+            Top = 17
+            Width = 63
+            Height = 12
+            Caption = #22343'.'#21069#39640#20302#22343
+          end
+          object Label123: TLabel
+            Left = 676
+            Top = 17
+            Width = 12
+            Height = 12
+            Caption = #26681
+          end
+          object Label124: TLabel
+            Left = 146
+            Top = 38
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label125: TLabel
+            Left = 270
+            Top = 38
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label126: TLabel
+            Left = 398
+            Top = 36
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label127: TLabel
+            Left = 526
+            Top = 36
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label128: TLabel
+            Left = 654
+            Top = 38
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label129: TLabel
+            Left = 123
+            Top = 59
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label130: TLabel
+            Left = 251
+            Top = 59
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label131: TLabel
+            Left = 403
+            Top = 62
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label132: TLabel
+            Left = 526
+            Top = 62
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label133: TLabel
+            Left = 649
+            Top = 61
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label134: TLabel
+            Left = 118
+            Top = 82
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label135: TLabel
+            Left = 241
+            Top = 82
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label136: TLabel
+            Left = 364
+            Top = 84
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label137: TLabel
+            Left = 487
+            Top = 85
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object Label138: TLabel
+            Left = 610
+            Top = 88
+            Width = 12
+            Height = 12
+            Caption = #40670
+          end
+          object dbcEngine_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'Engine_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit45: TDBEdit
-            Left = 98
+          object dbeEngine_Rate: TDBEdit
+            Left = 94
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'Engine_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBCheckBox35: TDBCheckBox
-            Left = 130
+          object dbcEngine_1_Check: TDBCheckBox
+            Left = 126
             Top = 16
-            Width = 69
+            Width = 70
             Height = 17
-            Caption = 'S1'#30436#21069#22343
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = '01'#30070#22343#25910
+            DataField = 'Engine_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox36: TDBCheckBox
-            Left = 250
-            Top = 17
+          object dbeEngine_1_1: TDBEdit
+            Left = 193
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Engine_1_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 3
+          end
+          object dbcEngine_2_Check: TDBCheckBox
+            Left = 241
+            Top = 16
             Width = 83
             Height = 17
-            Caption = 'T2'#21453'K'#25490#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 3
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
-          end
-          object DBEdit46: TDBEdit
-            Left = 337
-            Top = 15
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            Caption = '02'#21069#39640#20302#22343
+            DataField = 'Engine_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
           end
-          object DBCheckBox37: TDBCheckBox
-            Left = 369
-            Top = 17
-            Width = 54
-            Height = 17
-            Caption = #21069'K'#25490
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+          object dbeEngine_2_1: TDBEdit
+            Left = 319
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Engine_2_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
           end
-          object DBEdit47: TDBEdit
-            Left = 422
-            Top = 15
-            Width = 26
-            Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 6
-          end
-          object DBCheckBox38: TDBCheckBox
-            Left = 461
-            Top = 17
-            Width = 119
+          object dbcEngine_3_Check: TDBCheckBox
+            Left = 367
+            Top = 16
+            Width = 72
             Height = 17
-            Caption = 'T3'#21453#24235#22343'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
-            TabOrder = 7
+            Caption = '03'#21069#22343#25490
+            DataField = 'Engine_3_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 6
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit48: TDBEdit
-            Left = 580
-            Top = 15
+          object dbeEngine_3_1: TDBEdit
+            Left = 434
+            Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Engine_3_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 7
+          end
+          object dbeEngine_3_2: TDBEdit
+            Left = 532
+            Top = 14
+            Width = 26
+            Height = 20
+            DataField = 'Engine_3_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
           end
-          object DBCheckBox39: TDBCheckBox
-            Left = 13
-            Top = 39
-            Width = 119
+          object dbcEngine_4_Check: TDBCheckBox
+            Left = 580
+            Top = 16
+            Width = 61
             Height = 17
-            Caption = 'T4'#21453#22996#37327'{b/s} '#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = '04'#21069'K'#25490
+            DataField = 'Engine_4_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit49: TDBEdit
-            Left = 132
-            Top = 37
+          object dbeEngine_4_1: TDBEdit
+            Left = 643
+            Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'Engine_4_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 10
           end
-          object DBCheckBox40: TDBCheckBox
-            Left = 167
-            Top = 40
-            Width = 119
+          object dbcEngine_5_Check: TDBCheckBox
+            Left = 12
+            Top = 37
+            Width = 37
             Height = 17
-            Caption = 'T5'#21453#21069#22343'{b/s}'#24235#20729
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            Caption = '05'
+            DataField = 'Engine_5_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 11
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit50: TDBEdit
-            Left = 286
+          object dbcEngine_6_Check: TDBCheckBox
+            Left = 49
             Top = 37
+            Width = 70
+            Height = 17
+            Caption = '06'#30070'K'#38283
+            DataField = 'Engine_6_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 12
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_6_1: TDBEdit
+            Left = 116
+            Top = 35
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
-            TabOrder = 12
+            DataField = 'Engine_6_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 13
+          end
+          object dbcEngine_7_Check: TDBCheckBox
+            Left = 164
+            Top = 37
+            Width = 81
+            Height = 17
+            Caption = '07'#21069#39640#20302#22343
+            DataField = 'Engine_7_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 14
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_7_1: TDBEdit
+            Left = 240
+            Top = 35
+            Width = 26
+            Height = 20
+            DataField = 'Engine_7_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 15
+          end
+          object dbcEngine_8_Check: TDBCheckBox
+            Left = 288
+            Top = 35
+            Width = 81
+            Height = 17
+            Caption = '08{'#21069#39640#20302#22343
+            DataField = 'Engine_8_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 16
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_8_1: TDBEdit
+            Left = 368
+            Top = 33
+            Width = 26
+            Height = 20
+            DataField = 'Engine_8_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 17
+          end
+          object dbcEngine_9_Check: TDBCheckBox
+            Left = 416
+            Top = 35
+            Width = 81
+            Height = 17
+            Caption = '09'#30070#22343#25910'M2'
+            DataField = 'Engine_9_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 18
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_9_1: TDBEdit
+            Left = 496
+            Top = 33
+            Width = 26
+            Height = 20
+            DataField = 'Engine_9_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 19
+          end
+          object dbcEngine_10_Check: TDBCheckBox
+            Left = 544
+            Top = 35
+            Width = 81
+            Height = 17
+            Caption = '10'#21069#39640#20302#22343
+            DataField = 'Engine_10_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 20
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_10_1: TDBEdit
+            Left = 624
+            Top = 35
+            Width = 26
+            Height = 20
+            DataField = 'Engine_10_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 21
+          end
+          object dbcEngine_11_Check: TDBCheckBox
+            Left = 13
+            Top = 56
+            Width = 81
+            Height = 17
+            Caption = '11'#21069#39640#20302#22343
+            DataField = 'Engine_11_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 22
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_11_1: TDBEdit
+            Left = 93
+            Top = 56
+            Width = 26
+            Height = 20
+            DataField = 'Engine_11_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 23
+          end
+          object dbcEngine_12_Check: TDBCheckBox
+            Left = 141
+            Top = 56
+            Width = 81
+            Height = 17
+            Caption = '12'#21069#39640#20302#22343
+            DataField = 'Engine_12_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 24
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_12_1: TDBEdit
+            Left = 221
+            Top = 56
+            Width = 26
+            Height = 20
+            DataField = 'Engine_12_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 25
+          end
+          object dbcEngine_13_Check: TDBCheckBox
+            Left = 268
+            Top = 58
+            Width = 33
+            Height = 17
+            Caption = '13'
+            DataField = 'Engine_13_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 26
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbcEngine_14_Check: TDBCheckBox
+            Left = 298
+            Top = 59
+            Width = 74
+            Height = 17
+            Caption = '14'#30070'K'#39640#20302
+            DataField = 'Engine_14_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 27
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_14_1: TDBEdit
+            Left = 372
+            Top = 59
+            Width = 26
+            Height = 20
+            DataField = 'Engine_14_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 28
+          end
+          object dbcEngine_15_Check: TDBCheckBox
+            Left = 421
+            Top = 59
+            Width = 74
+            Height = 17
+            Caption = '15'#21069'K'#39640#20302
+            DataField = 'Engine_15_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 29
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_15_1: TDBEdit
+            Left = 495
+            Top = 59
+            Width = 26
+            Height = 20
+            DataField = 'Engine_15_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 30
+          end
+          object dbcEngine_16_Check: TDBCheckBox
+            Left = 544
+            Top = 58
+            Width = 74
+            Height = 17
+            Caption = '16'#38283#39640#20302
+            DataField = 'Engine_16_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 31
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_16_1: TDBEdit
+            Left = 618
+            Top = 58
+            Width = 26
+            Height = 20
+            DataField = 'Engine_16_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 32
+          end
+          object dbcEngine_17_Check: TDBCheckBox
+            Left = 13
+            Top = 79
+            Width = 74
+            Height = 17
+            Caption = '17'#21069#39640#20302#22343
+            DataField = 'Engine_17_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 33
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_17_1: TDBEdit
+            Left = 87
+            Top = 79
+            Width = 26
+            Height = 20
+            DataField = 'Engine_17_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 34
+          end
+          object dbcEngine_18_Check: TDBCheckBox
+            Left = 136
+            Top = 79
+            Width = 74
+            Height = 17
+            Caption = '18'#21069#39640#20302#22343
+            DataField = 'Engine_18_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 35
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_18_1: TDBEdit
+            Left = 210
+            Top = 79
+            Width = 26
+            Height = 20
+            DataField = 'Engine_18_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 36
+          end
+          object dbcEngine_19_Check: TDBCheckBox
+            Left = 259
+            Top = 81
+            Width = 74
+            Height = 17
+            Caption = '19'#30070'K'#38283
+            DataField = 'Engine_19_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 37
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_19_1: TDBEdit
+            Left = 333
+            Top = 81
+            Width = 26
+            Height = 20
+            DataField = 'Engine_19_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 38
+          end
+          object dbcEngine_20_Check: TDBCheckBox
+            Left = 382
+            Top = 82
+            Width = 74
+            Height = 17
+            Caption = '20'#21069#38283#25910
+            DataField = 'Engine_20_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 39
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_20_1: TDBEdit
+            Left = 456
+            Top = 82
+            Width = 26
+            Height = 20
+            DataField = 'Engine_20_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 40
+          end
+          object dbcEngine_21_Check: TDBCheckBox
+            Left = 505
+            Top = 85
+            Width = 74
+            Height = 17
+            Caption = '21'#21069'K'#39640#20302
+            DataField = 'Engine_21_Check'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 41
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
+          end
+          object dbeEngine_21_1: TDBEdit
+            Left = 579
+            Top = 85
+            Width = 26
+            Height = 20
+            DataField = 'Engine_21_1'
+            DataSource = DataModule1.dsNewParam
+            TabOrder = 42
           end
         end
         object GroupBox17: TGroupBox
           Left = 12
-          Top = 483
+          Top = 555
           Width = 718
           Height = 62
           Caption = #30041#20489#21934#21028#35712
@@ -3825,131 +4696,131 @@ object fmChungYi: TfmChungYi
             Height = 12
             Caption = #21069#26085#22343#25910
           end
-          object DBCheckBox41: TDBCheckBox
+          object dbcKeepOrder_Check: TDBCheckBox
             Left = 12
             Top = 16
             Width = 51
             Height = 17
             Caption = #38283' / '#38364
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 0
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit58: TDBEdit
+          object dbeKeepOrder_Rate: TDBEdit
             Left = 150
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C1'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_Rate'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object DBCheckBox43: TDBCheckBox
+          object dbcKeepOrder_1_Check: TDBCheckBox
             Left = 190
             Top = 17
             Width = 96
             Height = 17
             Caption = #30041#21028'1 '#30070#26085#22343#25910
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 2
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit59: TDBEdit
+          object dbeKeepOrder_1_1: TDBEdit
             Left = 292
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_1_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 3
           end
-          object DBEdit60: TDBEdit
+          object dbeKeepOrder_1_2: TDBEdit
             Left = 376
             Top = 14
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_1_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 4
           end
-          object DBCheckBox42: TDBCheckBox
+          object dbcKeepOrder_2_Check: TDBCheckBox
             Left = 409
             Top = 17
             Width = 49
             Height = 17
             Caption = #30041#21028'2'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_2_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 5
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox44: TDBCheckBox
+          object dbcKeepOrder_3_Check: TDBCheckBox
             Left = 475
             Top = 17
             Width = 49
             Height = 17
             Caption = #30041#21028'3'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_3_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 6
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox45: TDBCheckBox
+          object dbcKeepOrder_4_Check: TDBCheckBox
             Left = 11
             Top = 39
             Width = 96
             Height = 17
             Caption = #30041#21028'4'#30070#26085#22343#25910
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_4_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 7
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBEdit61: TDBEdit
+          object dbeKeepOrder_4_1: TDBEdit
             Left = 113
             Top = 36
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_4_1'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 8
           end
-          object DBEdit62: TDBEdit
+          object dbeKeepOrder_4_2: TDBEdit
             Left = 197
             Top = 36
             Width = 26
             Height = 20
-            DataField = 'C2'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_4_2'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 9
           end
-          object DBCheckBox46: TDBCheckBox
+          object dbcKeepOrder_5_Check: TDBCheckBox
             Left = 230
             Top = 39
             Width = 49
             Height = 17
             Caption = #30041#21028'5'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_5_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 10
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object DBCheckBox47: TDBCheckBox
+          object dbcKeepOrder_6_Check: TDBCheckBox
             Left = 296
             Top = 39
             Width = 49
             Height = 17
             Caption = #30041#21028'6'
-            DataField = 'C_Open'
-            DataSource = DataModule1.dsParam
+            DataField = 'KeepOrder_6_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 11
             ValueChecked = 'T'
             ValueUnchecked = 'F'
@@ -3957,17 +4828,21 @@ object fmChungYi: TfmChungYi
         end
       end
     end
-    object TabSheet4: TTabSheet
+    object tsTableDDE: TTabSheet
       Caption = #32000#37636#21443#25976
       ImageIndex = 8
-      OnShow = TabSheet4Show
+      OnShow = tsTableDDEShow
+      ExplicitWidth = 744
+      ExplicitHeight = 557
       object Panel8: TPanel
         Left = 0
         Top = 0
-        Width = 744
-        Height = 557
+        Width = 766
+        Height = 621
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 744
+        ExplicitHeight = 557
         object Label86: TLabel
           Left = 331
           Top = 11
@@ -4097,7 +4972,7 @@ object fmChungYi: TfmChungYi
           Left = 0
           Top = 72
           Width = 344
-          Height = 457
+          Height = 489
           DataSource = DataModule1.dsTradeRecord
           TabOrder = 4
           TitleFont.Charset = DEFAULT_CHARSET
@@ -4148,23 +5023,23 @@ object fmChungYi: TfmChungYi
         object grid_Calculate: TStringGrid
           Left = 345
           Top = 72
-          Width = 400
-          Height = 129
+          Width = 416
+          Height = 161
           ColCount = 6
           TabOrder = 9
         end
         object grid_2nd: TStringGrid
           Left = 345
-          Top = 216
-          Width = 400
+          Top = 239
+          Width = 416
           Height = 153
           ColCount = 6
           TabOrder = 10
         end
         object grid_3rd: TStringGrid
           Left = 345
-          Top = 368
-          Width = 400
+          Top = 398
+          Width = 416
           Height = 161
           ColCount = 6
           TabOrder = 11
@@ -4236,32 +5111,40 @@ object fmChungYi: TfmChungYi
   object BalanceTimer: TTimer
     Enabled = False
     OnTimer = BalanceTimerTimer
-    Left = 568
-    Top = 56
+    Left = 520
+    Top = 8
   end
   object BackupBuyTimer: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = BackupBuyTimerTimer
-    Left = 656
-    Top = 56
+    Left = 712
+    Top = 8
   end
   object OpenInterestTimer: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = OpenInterestTimerTimer
-    Left = 432
-    Top = 56
+    Left = 440
+    Top = 8
   end
   object GetDateTimer: TTimer
+    Interval = 5000
     OnTimer = GetDateTimerTimer
-    Left = 88
-    Top = 72
+    Left = 136
+    Top = 8
   end
   object SKCenterLib1: TSKCenterLib
     AutoConnect = False
     ConnectKind = ckRunningOrNew
     Left = 624
     Top = 16
+  end
+  object ChouTimer: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = ChouTimerTimer
+    Left = 208
+    Top = 8
   end
 end

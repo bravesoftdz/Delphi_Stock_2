@@ -287,6 +287,7 @@ begin
   m2ndGrid.Cells[5, 0]:= 'e';  // 'b2-b1'
 
   m3rdGrid.RowCount:= List_4[1].Count + 1;  // table 3
+  m3rdGrid.Cells[0, 0]:= 'SN';
   m3rdGrid.Cells[1, 0]:= 'a';
   m3rdGrid.Cells[2, 0]:= 'b';
   m3rdGrid.Cells[3, 0]:= 'c';
@@ -317,6 +318,7 @@ begin
       m2ndGrid.Cells[4, table2_no]:= List_2[4].Strings[i];
       m2ndGrid.Cells[5, table2_no]:= List_2[0].Strings[i];
 
+      {
       // a4 to a2
       if(not ShowA4 or (i >= List_2[1].Count - 2)) then
         continue;
@@ -326,7 +328,22 @@ begin
       m3rdGrid.Cells[3, table2_no]:= List_4[3].Strings[i];
       m3rdGrid.Cells[4, table2_no]:= List_4[4].Strings[i];
       m3rdGrid.Cells[5, table2_no]:= List_4[0].Strings[i];
+      }
     end;
+  end;
+
+  table2_no:= 0;
+  for i := 0 to List_4[1].Count - 1 do begin
+      table2_no:= table2_no + 1;
+    // a4 to a2
+      if(not ShowA4) then
+        continue;
+      m3rdGrid.Cells[0, table2_no]:= IntToStr(table2_no);  // title
+      m3rdGrid.Cells[1, table2_no]:= List_4[1].Strings[i];
+      m3rdGrid.Cells[2, table2_no]:= List_4[2].Strings[i];
+      m3rdGrid.Cells[3, table2_no]:= List_4[3].Strings[i];
+      m3rdGrid.Cells[4, table2_no]:= List_4[4].Strings[i];
+      m3rdGrid.Cells[5, table2_no]:= List_4[0].Strings[i];
   end;
 
 
@@ -354,12 +371,23 @@ begin
   end;
 
   // Table adjust
+  mdbGrid.Columns[0].Width:= 130;
+  for i := 1 to 3 do
+    mdbGrid.Columns[i].Width:= 55;
+
   mStringGrid.ColWidths[0]:= 50;
-  mStringGrid.ColWidths[1]:= 50;
   m2ndGrid.ColWidths[0]:= 50;
   m3rdGrid.ColWidths[0]:= 50;
-  m2ndGrid.ColWidths[1]:= 100;  // DateTime
-  m3rdGrid.ColWidths[1]:= 100;
+  for i := 1 to mStringGrid.ColCount - 1 do
+    mStringGrid.ColWidths[i]:= 50;
+  for i := 1 to m2ndGrid.ColCount - 1 do
+    m2ndGrid.ColWidths[i]:= 50;
+  for i := 1 to m3rdGrid.ColCount - 1 do
+    m3rdGrid.ColWidths[i]:= 50;
+
+  mStringGrid.ColWidths[1]:= 130; // DateTime
+  m2ndGrid.ColWidths[1]:= 130;
+  m3rdGrid.ColWidths[1]:= 130;
 end;
 
 procedure GridClear(mStringGrid: TStringGrid);

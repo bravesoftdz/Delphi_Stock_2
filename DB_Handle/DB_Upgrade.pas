@@ -59,6 +59,7 @@ begin
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbStartEnd', DataModule1.asqQU_Temp2);
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbConfigure', DataModule1.asqQU_Temp2);
    DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbOption', DataModule1.asqQU_Temp2);
+   DB_Upgrade.InsertTable(DataModule1.asqQU_Temp, 'tbNewParam', DataModule1.asqQU_Temp2);
 
    if DataModule1.asq_Configu.RecordCount> 0 then begin
      DataModule1.asqQU_Temp.SQL.Text:= 'Update tbConfigure set DB_Version="' + DB_Ver + '"' ;
@@ -102,6 +103,8 @@ begin
   InputSQL_query.ExecSQL;
   InputSQL_query.SQL.Text:= 'DROP TABLE IF EXISTS back_tbOption ';
   InputSQL_query.ExecSQL;
+  InputSQL_query.SQL.Text:= 'DROP TABLE IF EXISTS back_tbNewParam ';
+  InputSQL_query.ExecSQL;
 
 end;
 
@@ -124,6 +127,8 @@ begin
   InputSQL_query.SQL.Text:= 'ALTER TABLE tbConfigure RENAME TO back_tbConfigure';
   InputSQL_query.ExecSQL;
   InputSQL_query.SQL.Text:= 'ALTER TABLE tbOption RENAME TO back_tbOption';
+  InputSQL_query.ExecSQL;
+  InputSQL_query.SQL.Text:= 'ALTER TABLE tbOption RENAME TO back_tbNewParam';
   InputSQL_query.ExecSQL;
 
 end;

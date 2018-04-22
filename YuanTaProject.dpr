@@ -33,7 +33,7 @@ uses
   CheckNetwork in 'GeneralFun\CheckNetwork.pas',
   K_Calculate in 'K_Value\K_Calculate.pas',
   getK_Value in 'K_Value\getK_Value.pas',
-  Special_Strategy in 'Strategy\Special_Strategy.pas',
+  Strategy_Special in 'Strategy\Strategy_Special.pas',
   ThreadHandle in 'Thread_Handle\ThreadHandle.pas',
   AdjustField in 'MrChou\AdjustField.pas',
   Calculate_Grid in 'MrChou\Calculate_Grid.pas';
@@ -44,6 +44,8 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDataModule1, DataModule1);
+  //  Public_Variant.UserNM:= 'JackyChou';
+  Public_Variant.UserNM:= 'MrHuang';
   Application.CreateForm(TfmChungYi, fmChungYi);
   //  Application.CreateForm(TFMD, FMD);
   Application.Run;

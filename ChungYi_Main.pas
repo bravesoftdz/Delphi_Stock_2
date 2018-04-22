@@ -18,10 +18,10 @@ type
     btnLogOn: TButton;
     edUserid: TEdit;
     edPassWord: TEdit;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
+    PageControl_Main: TPageControl;
+    tsAccount: TTabSheet;
     ListView1: TListView;
-    TabSheet2: TTabSheet;
+    tsAutoOrder: TTabSheet;
     CoolBar2: TCoolBar;
     Panel3: TPanel;
     btnAutoBuy: TButton;
@@ -51,7 +51,7 @@ type
     rgTradeType: TRadioGroup;
     rgBuySell: TRadioGroup;
     cbAccount: TComboBox;
-    TabSheet3: TTabSheet;
+    tsParam: TTabSheet;
     Panel2: TPanel;
     GroupBox3: TGroupBox;
     GroupBox5: TGroupBox;
@@ -127,7 +127,6 @@ type
     dbeD3_1: TDBEdit;
     dbeD4_1: TDBEdit;
     Label12: TLabel;
-    btnCredit: TButton;
     BalanceTimer: TTimer;
     BackupBuyTimer: TTimer;
     OpenInterestTimer: TTimer;
@@ -204,7 +203,7 @@ type
     cbOpen5: TCheckBox;
     cbOpen1: TCheckBox;
     SKCenterLib1: TSKCenterLib;
-    tabSheetTimeScope: TTabSheet;
+    tsTimeScope: TTabSheet;
     Panel4: TPanel;
     dbeStart: TDBEdit;
     dbcheckEnable: TDBCheckBox;
@@ -222,160 +221,131 @@ type
     dbcomboOrderType: TDBComboBox;
     ccbProduct: TComboBox;
     Label59: TLabel;
-    dbcTestMode: TDBCheckBox;
-    tsParameter: TTabSheet;
+    tsParam_New: TTabSheet;
     Panel7: TPanel;
     Label60: TLabel;
     Label61: TLabel;
-    DBNavigator1: TDBNavigator;
-    DBGrid1: TDBGrid;
-    DBEdit51: TDBEdit;
-    DBEdit52: TDBEdit;
-    GroupBox10: TGroupBox;
+    dbnNewParam: TDBNavigator;
+    dbg_NewParam: TDBGrid;
+    dbeModelNM: TDBEdit;
+    dbeDesc_new: TDBEdit;
+    Group_Special_1: TGroupBox;
     Label63: TLabel;
     Label64: TLabel;
     Label66: TLabel;
     Label68: TLabel;
-    DBCheckBox1: TDBCheckBox;
-    DBEdit1: TDBEdit;
-    DBEdit2: TDBEdit;
-    DBEdit4: TDBEdit;
-    DBEdit6: TDBEdit;
+    dbcSpec_1_Check: TDBCheckBox;
+    dbeSpec_1_1: TDBEdit;
+    dbeSpec_1_2: TDBEdit;
+    dbeSpec_1_3: TDBEdit;
+    dbeSpec_1_Rate: TDBEdit;
     GroupBox9: TGroupBox;
     Label62: TLabel;
-    DBCheckBox2: TDBCheckBox;
-    DBEdit3: TDBEdit;
-    DBEdit5: TDBEdit;
-    DBCheckBox3: TDBCheckBox;
-    DBCheckBox4: TDBCheckBox;
-    DBEdit7: TDBEdit;
-    DBCheckBox5: TDBCheckBox;
-    DBEdit8: TDBEdit;
-    DBCheckBox6: TDBCheckBox;
-    DBEdit9: TDBEdit;
-    DBCheckBox7: TDBCheckBox;
-    DBEdit10: TDBEdit;
+    dbcPreOrder_Check: TDBCheckBox;
+    dbePreOrder_Rate: TDBEdit;
+    dbePreOrder_1: TDBEdit;
+    dbcPreOrder_1_Check: TDBCheckBox;
+    dbcPreOrder_2_Check: TDBCheckBox;
+    dbePreOrder_2: TDBEdit;
+    dbcPreOrder_3_Check: TDBCheckBox;
+    dbePreOrder_3: TDBEdit;
+    dbcPreOrder_4_Check: TDBCheckBox;
+    dbePreOrder_4: TDBEdit;
+    dbcPreOrder_5_Check: TDBCheckBox;
+    dbePreOrder_5: TDBEdit;
     GroupBox14: TGroupBox;
     Label65: TLabel;
-    DBCheckBox8: TDBCheckBox;
-    DBEdit11: TDBEdit;
-    DBEdit12: TDBEdit;
-    DBCheckBox9: TDBCheckBox;
-    DBEdit13: TDBEdit;
-    DBCheckBox14: TDBCheckBox;
-    DBEdit14: TDBEdit;
-    DBEdit15: TDBEdit;
+    dbcProfit_Check: TDBCheckBox;
+    dbeProfit_Rate: TDBEdit;
+    dbeProfit_1_1: TDBEdit;
+    dbcProfit_1_Check: TDBCheckBox;
+    dbeProfit_1_2: TDBEdit;
+    dbcProfit_2_Check: TDBCheckBox;
+    dbeProfit_2_1: TDBEdit;
+    dbeProfit_2_2: TDBEdit;
     Label67: TLabel;
-    DBEdit16: TDBEdit;
-    DBCheckBox15: TDBCheckBox;
-    DBEdit17: TDBEdit;
+    dbeProfit_2_3: TDBEdit;
+    dbcProfit_3_Check: TDBCheckBox;
+    dbeProfit_3_1_1: TDBEdit;
     Label69: TLabel;
-    DBEdit18: TDBEdit;
+    dbeProfit_3_1_2: TDBEdit;
     Label70: TLabel;
     Label71: TLabel;
-    DBEdit19: TDBEdit;
-    DBEdit20: TDBEdit;
+    dbeProfit_3_2_1: TDBEdit;
+    dbeProfit_3_2_2: TDBEdit;
     Label72: TLabel;
     Label73: TLabel;
-    DBEdit21: TDBEdit;
-    DBEdit22: TDBEdit;
+    dbeProfit_3_3_1: TDBEdit;
+    dbeProfit_3_3_2: TDBEdit;
     Label74: TLabel;
     Label75: TLabel;
-    DBEdit23: TDBEdit;
-    DBEdit24: TDBEdit;
+    dbeProfit_3_4_1: TDBEdit;
+    dbeProfit_3_4_2: TDBEdit;
     Label76: TLabel;
     Label77: TLabel;
-    DBEdit25: TDBEdit;
-    DBEdit53: TDBEdit;
+    dbeProfit_3_5_1: TDBEdit;
+    dbeProfit_3_5_2: TDBEdit;
     Label78: TLabel;
     GroupBox15: TGroupBox;
     Label105: TLabel;
     Label106: TLabel;
     Label107: TLabel;
     Label108: TLabel;
-    DBCheckBox16: TDBCheckBox;
-    DBEdit54: TDBEdit;
-    DBEdit55: TDBEdit;
-    DBEdit56: TDBEdit;
-    DBEdit57: TDBEdit;
+    dbcSpec_2_Check: TDBCheckBox;
+    dbeSpec_2_1: TDBEdit;
+    dbeSpec_2_2: TDBEdit;
+    dbeSpec_2_3: TDBEdit;
+    dbeSpec_2_Rate: TDBEdit;
     GroupBox11: TGroupBox;
     Label79: TLabel;
-    DBCheckBox10: TDBCheckBox;
-    DBEdit26: TDBEdit;
-    DBEdit27: TDBEdit;
-    DBCheckBox11: TDBCheckBox;
-    DBCheckBox17: TDBCheckBox;
-    DBEdit28: TDBEdit;
-    DBCheckBox19: TDBCheckBox;
-    DBEdit30: TDBEdit;
-    DBCheckBox20: TDBCheckBox;
-    DBEdit31: TDBEdit;
-    DBCheckBox18: TDBCheckBox;
-    DBEdit29: TDBEdit;
-    DBCheckBox21: TDBCheckBox;
-    DBEdit32: TDBEdit;
+    dbcInventAnti_Check: TDBCheckBox;
+    dbeInventAnti_Rate: TDBEdit;
+    dbeInventAnti_1: TDBEdit;
+    dbcInventAnti_1_Check: TDBCheckBox;
+    dbcInventAnti_2_Check: TDBCheckBox;
+    dbeInventAnti_2_1: TDBEdit;
+    dbeInventAnti_2_2: TDBEdit;
+    dbcInventAnti_3_Check: TDBCheckBox;
+    dbeInventAnti_3: TDBEdit;
+    dbcInventAnti_4_Check: TDBCheckBox;
+    dbeInventAnti_4: TDBEdit;
+    dbcInventAnti_5_Check: TDBCheckBox;
+    dbeInventAnti_5: TDBEdit;
     GroupBox12: TGroupBox;
     Label80: TLabel;
-    DBCheckBox22: TDBCheckBox;
-    DBEdit33: TDBEdit;
-    DBCheckBox23: TDBCheckBox;
-    DBCheckBox24: TDBCheckBox;
-    DBEdit35: TDBEdit;
-    DBCheckBox25: TDBCheckBox;
-    DBEdit36: TDBEdit;
-    DBCheckBox26: TDBCheckBox;
-    DBEdit37: TDBEdit;
-    DBCheckBox27: TDBCheckBox;
-    DBEdit38: TDBEdit;
-    DBCheckBox28: TDBCheckBox;
-    DBEdit39: TDBEdit;
+    dbcFloat_Check: TDBCheckBox;
+    dbeFloat_Rate: TDBEdit;
+    dbcFloat_1_Check: TDBCheckBox;
+    dbeFloat_1_2: TDBEdit;
+    dbcFloat_2_Check: TDBCheckBox;
+    dbeFloat_2_1: TDBEdit;
+    dbcFloat_3_Check: TDBCheckBox;
+    dbeFloat_3_2: TDBEdit;
     GroupBox13: TGroupBox;
     Label81: TLabel;
-    DBCheckBox12: TDBCheckBox;
-    DBEdit34: TDBEdit;
-    DBCheckBox13: TDBCheckBox;
-    DBCheckBox29: TDBCheckBox;
-    DBEdit40: TDBEdit;
-    DBCheckBox30: TDBCheckBox;
-    DBEdit41: TDBEdit;
-    DBCheckBox31: TDBCheckBox;
-    DBEdit42: TDBEdit;
-    DBCheckBox32: TDBCheckBox;
-    DBEdit43: TDBEdit;
-    DBCheckBox33: TDBCheckBox;
-    DBEdit44: TDBEdit;
+    dbcInternal_Check: TDBCheckBox;
+    dbeInternal_Rate: TDBEdit;
     GroupBox16: TGroupBox;
     Label82: TLabel;
-    DBCheckBox34: TDBCheckBox;
-    DBEdit45: TDBEdit;
-    DBCheckBox35: TDBCheckBox;
-    DBCheckBox36: TDBCheckBox;
-    DBEdit46: TDBEdit;
-    DBCheckBox37: TDBCheckBox;
-    DBEdit47: TDBEdit;
-    DBCheckBox38: TDBCheckBox;
-    DBEdit48: TDBEdit;
-    DBCheckBox39: TDBCheckBox;
-    DBEdit49: TDBEdit;
-    DBCheckBox40: TDBCheckBox;
-    DBEdit50: TDBEdit;
+    dbcEngine_Check: TDBCheckBox;
+    dbeEngine_Rate: TDBEdit;
     GroupBox17: TGroupBox;
     Label83: TLabel;
-    DBCheckBox41: TDBCheckBox;
-    DBEdit58: TDBEdit;
-    DBCheckBox43: TDBCheckBox;
-    DBEdit59: TDBEdit;
+    dbcKeepOrder_Check: TDBCheckBox;
+    dbeKeepOrder_Rate: TDBEdit;
+    dbcKeepOrder_1_Check: TDBCheckBox;
+    dbeKeepOrder_1_1: TDBEdit;
     Label84: TLabel;
-    DBEdit60: TDBEdit;
-    DBCheckBox42: TDBCheckBox;
-    DBCheckBox44: TDBCheckBox;
-    DBCheckBox45: TDBCheckBox;
-    DBEdit61: TDBEdit;
+    dbeKeepOrder_1_2: TDBEdit;
+    dbcKeepOrder_2_Check: TDBCheckBox;
+    dbcKeepOrder_3_Check: TDBCheckBox;
+    dbcKeepOrder_4_Check: TDBCheckBox;
+    dbeKeepOrder_4_1: TDBEdit;
     Label85: TLabel;
-    DBEdit62: TDBEdit;
-    DBCheckBox46: TDBCheckBox;
-    DBCheckBox47: TDBCheckBox;
-    TabSheet4: TTabSheet;
+    dbeKeepOrder_4_2: TDBEdit;
+    dbcKeepOrder_5_Check: TDBCheckBox;
+    dbcKeepOrder_6_Check: TDBCheckBox;
+    tsTableDDE: TTabSheet;
     Panel8: TPanel;
     dbcb_1st_Item: TDBComboBox;
     dbcb_2nd_Item: TDBComboBox;
@@ -399,6 +369,133 @@ type
     dbcShowA4: TDBCheckBox;
     btnTable2: TButton;
     btnTable3: TButton;
+    ChouTimer: TTimer;
+    dbeFloat_1_1: TDBEdit;
+    Label91: TLabel;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    dbeFloat_3_1: TDBEdit;
+    Label95: TLabel;
+    Label96: TLabel;
+    dbcFloat_4_Check: TDBCheckBox;
+    dbeFloat_4_1: TDBEdit;
+    Label97: TLabel;
+    dbeFloat_4_2: TDBEdit;
+    Label98: TLabel;
+    dbcFloat_5_Check: TDBCheckBox;
+    dbeFloat_5_1: TDBEdit;
+    Label99: TLabel;
+    DBCheckBox28: TDBCheckBox;
+    dbcInternal_1_Check: TDBCheckBox;
+    dbeInternal_1_1: TDBEdit;
+    Label100: TLabel;
+    dbeInternal_1_2: TDBEdit;
+    Label101: TLabel;
+    dbcInternal_2_Check: TDBCheckBox;
+    dbeInternal_2_1: TDBEdit;
+    Label102: TLabel;
+    dbeInternal_2_3: TDBEdit;
+    Label103: TLabel;
+    dbeInternal_2_Rate: TDBEdit;
+    Label110: TLabel;
+    dbeInternal_2_2: TDBEdit;
+    dbcInternal_3_Check: TDBCheckBox;
+    dbeInternal_3_1: TDBEdit;
+    dbeInternal_3_2: TDBEdit;
+    Label109: TLabel;
+    dbeInternal_3_3: TDBEdit;
+    Label111: TLabel;
+    dbeInternal_3_Rate: TDBEdit;
+    dbcInternal_4_Check: TDBCheckBox;
+    dbcInternal_5_Check: TDBCheckBox;
+    dbcInternal_6_Check: TDBCheckBox;
+    dbcInternal_7_Check: TDBCheckBox;
+    dbeInternal_7_Rate: TDBEdit;
+    Label112: TLabel;
+    dbcInternal_8_Check: TDBCheckBox;
+    dbeInternal_8_Rate: TDBEdit;
+    dbcInternal_9_Check: TDBCheckBox;
+    dbeInternal_9_Rate: TDBEdit;
+    dbcInternal_10_Check: TDBCheckBox;
+    dbeInternal_10_1_1: TDBEdit;
+    Label114: TLabel;
+    dbeInternal_10_1_2: TDBEdit;
+    Label115: TLabel;
+    dbeInternal_10_1_3: TDBEdit;
+    Label113: TLabel;
+    Label116: TLabel;
+    dbeInternal_10_Rate: TDBEdit;
+    Label104: TLabel;
+    dbcInternal_11_Check: TDBCheckBox;
+    dbeInternal_11_1_1: TDBEdit;
+    Label117: TLabel;
+    dbeInternal_11_1_2: TDBEdit;
+    Label118: TLabel;
+    dbcEngine_1_Check: TDBCheckBox;
+    dbeEngine_1_1: TDBEdit;
+    Label119: TLabel;
+    dbcEngine_2_Check: TDBCheckBox;
+    dbeEngine_2_1: TDBEdit;
+    Label120: TLabel;
+    dbcEngine_3_Check: TDBCheckBox;
+    dbeEngine_3_1: TDBEdit;
+    Label121: TLabel;
+    Label122: TLabel;
+    dbeEngine_3_2: TDBEdit;
+    dbcEngine_4_Check: TDBCheckBox;
+    dbeEngine_4_1: TDBEdit;
+    Label123: TLabel;
+    dbcEngine_5_Check: TDBCheckBox;
+    dbcEngine_6_Check: TDBCheckBox;
+    dbeEngine_6_1: TDBEdit;
+    Label124: TLabel;
+    dbcEngine_7_Check: TDBCheckBox;
+    dbeEngine_7_1: TDBEdit;
+    Label125: TLabel;
+    dbcEngine_8_Check: TDBCheckBox;
+    dbeEngine_8_1: TDBEdit;
+    Label126: TLabel;
+    dbcEngine_9_Check: TDBCheckBox;
+    dbeEngine_9_1: TDBEdit;
+    Label127: TLabel;
+    dbcEngine_10_Check: TDBCheckBox;
+    dbeEngine_10_1: TDBEdit;
+    Label128: TLabel;
+    dbcEngine_11_Check: TDBCheckBox;
+    dbeEngine_11_1: TDBEdit;
+    Label129: TLabel;
+    btnCredit: TButton;
+    dbcTestMode: TDBCheckBox;
+    dbcEngine_12_Check: TDBCheckBox;
+    dbeEngine_12_1: TDBEdit;
+    Label130: TLabel;
+    dbcEngine_13_Check: TDBCheckBox;
+    dbcEngine_14_Check: TDBCheckBox;
+    dbeEngine_14_1: TDBEdit;
+    Label131: TLabel;
+    dbcEngine_15_Check: TDBCheckBox;
+    dbeEngine_15_1: TDBEdit;
+    Label132: TLabel;
+    dbcEngine_16_Check: TDBCheckBox;
+    dbeEngine_16_1: TDBEdit;
+    Label133: TLabel;
+    dbcEngine_17_Check: TDBCheckBox;
+    dbeEngine_17_1: TDBEdit;
+    Label134: TLabel;
+    dbcEngine_18_Check: TDBCheckBox;
+    dbeEngine_18_1: TDBEdit;
+    Label135: TLabel;
+    dbcEngine_19_Check: TDBCheckBox;
+    dbeEngine_19_1: TDBEdit;
+    Label136: TLabel;
+    dbcEngine_20_Check: TDBCheckBox;
+    dbeEngine_20_1: TDBEdit;
+    Label137: TLabel;
+    dbcEngine_21_Check: TDBCheckBox;
+    dbeEngine_21_1: TDBEdit;
+    Label138: TLabel;
+    Label139: TLabel;
     procedure btnLogOnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -411,8 +508,6 @@ type
     procedure BackupBuyTimerTimer(Sender: TObject);
     procedure OpenInterestTimerTimer(Sender: TObject);
     procedure dbnaviParamClick(Sender: TObject; Button: TNavigateBtn);
-    procedure WebBrowser1DocumentComplete(ASender: TObject;
-      const pDisp: IDispatch; var URL: OleVariant);
     procedure NormalOrder(OrderType: String; BuySell: String; OrderParam: String='');
     procedure cbbDateClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
@@ -425,14 +520,18 @@ type
     procedure dbnavStartEndClick(Sender: TObject; Button: TNavigateBtn);
     procedure ccbProductDropDown(Sender: TObject);
     procedure ccbProductChange(Sender: TObject);
-    procedure dbnConfigureClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbcTestModeMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure tsOrderRecordShow(Sender: TObject);
-    procedure TabSheet4Show(Sender: TObject);
+    procedure tsTableDDEShow(Sender: TObject);
     procedure dbcbItemChange(Sender: TObject);
-    procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure PageControl_MainChanging(Sender: TObject; var AllowChange: Boolean);
     procedure dbe_XExit(Sender: TObject);
+    procedure ChouTimerTimer(Sender: TObject);
+    procedure ShowMainTable();
+    procedure Num_Only_KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+
 
   private
     { Private declarations }
@@ -536,6 +635,7 @@ end;
 procedure TfmChungYi.FormCreate(Sender: TObject);
 var NowStock, NowQty: String;
 begin
+ ShowMainTable();
  TempList:= TStringList.Create;
  TempList.LoadFromFile('Account.txt');
  if TempList.Count = 2 then
@@ -559,7 +659,7 @@ begin
  HtmlFileList:= TStringList.Create;
  DataModule1.Connection();
 
- PageControl1.ActivePageIndex := 0;
+ PageControl_Main.ActivePageIndex := 0;
  OpenInterestQty:= 0;
   SignalList:= TStringList.Create;
   DateList:= TStringList.Create;
@@ -580,14 +680,11 @@ begin
 
  // 取得目前產品
  GetNowStock(NowStock, NowQty);
- if(NowStock= '') then
-   NowStock:= 'TX00';
  cbbCommNO.Text:= NowStock;
  edtQty.Text:= NowQty;
- StockHandle.GetStockStartEnd_Str(NowStock);
+ StockHandle.GetStockStartEnd_Str(cbbCommNO.Text);
 // ParameterSetting();
 end;
-
 
 // 取得日期 timer
 procedure TfmChungYi.GetDateTimerTimer(Sender: TObject);
@@ -595,9 +692,7 @@ var SystemTime: String;
 begin // 先取得交易日期
  SystemTime:= FormatDateTime('hh:mm:ss', Time);
 
-// if SystemTime >= '08:41:00' then
- if SystemTime >= Public_Variant.StartTime then
- begin
+ if SystemTime >= Public_Variant.StartTime then begin
   GetDateTimer.Enabled:= False;
  // WebBrowser1.Navigate('http://tw.futures.finance.yahoo.com/future/l/future_1.html');
   ThisTradeDate:= DateToStr(Date);
@@ -657,27 +752,6 @@ begin
  if Assigned(TempList) then FreeAndNil(TempList);
 end;
 
-procedure TfmChungYi.WebBrowser1DocumentComplete(ASender: TObject;
-  const pDisp: IDispatch; var URL: OleVariant);
-begin
-{
- Sleep(1000);
- if btnLogOn.Enabled= False then
- begin
-  HtmlFileList.Add(Webbrowser1.OleObject.document.body.OuterHtml);
-  // 判斷日期
-  ThisTradeDate:= LineGetbetweenStr(HtmlFileList.Text, '距離台股開盤還有', 0, 0, '>', '" 0')[0];
-  if ThisTradeDate= '' then ThisTradeDate:= LineGetbetweenStr(HtmlFileList.Text, '資料日期', 0, 0, '資料日期： ', ' ')[0];
-  if ThisTradeDate= '' then
-  begin
-   if DayOfWeek(Date)= 1 then fmQuote.dtpDate.DateTime:= Date - 2;
-   if DayOfWeek(Date)= 7 then fmQuote.dtpDate.DateTime:= Date - 1;
-   ThisTradeDate:= DateToStr(fmQuote.dtpDate.DateTime);
-  end;
-  btnLogOn.Enabled:= True;
-  if TempList.Count = 2 then btnLogOn.Click;
- end;     }
-end;
 
 procedure TfmChungYi.btnLogOnClick(Sender: TObject);
 var iCode : integer;
@@ -957,24 +1031,27 @@ begin
  GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
 end;
 
-procedure TfmChungYi.PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
+procedure TfmChungYi.PageControl_MainChanging(Sender: TObject; var AllowChange: Boolean);
 begin
   InsertMode:= false;
+  ChouTimer.Enabled:= false;
 end;
 
-procedure TfmChungYi.TabSheet4Show(Sender: TObject);
+procedure TfmChungYi.tsTableDDEShow(Sender: TObject);
 var IsShowA4: boolean;
 begin
   InsertMode:= true;
   DataModule1.asq_Option.Active:= True;
   DataModule1.asq_Option.Open;
   DataModule1.asqQU_TradeRecord.Active:= True;
- // DataModule1.asqQU_TradeRecord.SQL.Text:=
- //  'select datetime(d, t) FROM (SELECT date(TradeDate) as d, time(TickTime) as t) as dt '
- //   + ' from TradeRecord order by SN desc limit 10000';
 
-    DataModule1.asqQU_TradeRecord.SQL.Text:=
+{  DataModule1.asqQU_TradeRecord.SQL.Text:=
    'select * from TradeRecord where StockNO="' + cbbCommNO.Text + '" '
+   + ' and TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) +  '"'
+   + ' order by SN asc limit 100000';
+ }
+  DataModule1.asqQU_TradeRecord.SQL.Text:=
+   'select ("TradeDate" || " " || "TickTime") AS TradeDate_new, * from TradeRecord where StockNO="' + cbbCommNO.Text + '" '
    + ' and TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) +  '"'
    + ' order by SN asc limit 100000';
   DataModule1.asqQU_TradeRecord.Open;
@@ -984,6 +1061,12 @@ begin
   RunTable_1st(dbg_TradeRecord, grid_Calculate, grid_2nd, grid_3rd,
     StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text), StrToFloat(dbe_Z.Text), IsShowA4);
   MoveField(dbg_TradeRecord);
+
+  dbg_TradeRecord.Columns[0].Title.Caption:= dbcb_1st_Item.Text;
+  dbg_TradeRecord.Columns[1].Title.Caption:= dbcb_2nd_Item.Text;
+  dbg_TradeRecord.Columns[2].Title.Caption:= dbcb_3rd_Item.Text;
+  dbg_TradeRecord.Columns[3].Title.Caption:= dbcb_4th_Item.Text;
+  ChouTimer.Enabled:= true;
 end;
 
 procedure TfmChungYi.tsOrderRecordShow(Sender: TObject);
@@ -1000,7 +1083,7 @@ end;
 procedure TfmChungYi.dbcbItemChange(Sender: TObject);
 var IsShowA4: boolean;
 begin
-  TabSheet4Show(nil);
+  tsTableDDEShow(nil);
   {
   IsShowA4:= DataModule1.asq_Option.FieldByName('Option5').AsString= 'T';
   MoveField(dbg_TradeRecord);
@@ -1015,6 +1098,21 @@ procedure TfmChungYi.dbcTestModeMouseUp(Sender: TObject; Button: TMouseButton;
 begin
   DataModule1.asq_Configu.Edit;
   DataModule1.asq_Configu.Post;
+end;
+
+
+procedure TfmChungYi.Num_Only_KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if (Key<> 48) and (Key<> 49) and (Key<> 50) and (Key<> 51) and (Key<> 52)
+      and (Key<> 53) and (Key<> 54) and (Key<> 55) and (Key<> 56)
+      and (Key<> 57) and (Key<> 58) and (Key<> 8) and (Key<> 13)
+      and (Key<> 37) and (Key<> 38)  and (Key<> 39) and (Key<> 40)
+      and (Key<> 229)
+      and (Key<> 96) and (Key<> 97) and (Key<> 98) and (Key<> 99) and (Key<> 100) and (Key<> 101) and (Key<> 102) and (Key<> 103)
+      and (Key<> 104) and (Key<> 105)
+      then // 229 is the right number keypad , 96~105 is the right number keypad
+      Key:= 0;
 end;
 
 procedure TfmChungYi.dbe_XExit(Sender: TObject);
@@ -1034,6 +1132,7 @@ end;
 
 procedure TfmChungYi.dbnavStartEndClick(Sender: TObject; Button: TNavigateBtn);
 var i, nowRecordNO: Integer;
+    NowStock, NowQty: String;
 begin
  if Button = nbInsert then begin
    dbnavStartEnd.BtnClick(nbCancel);
@@ -1054,12 +1153,13 @@ begin
       DataModule1.asq_StartEnd.Next;
     end;
     DataModule1.asq_StartEnd.RecNo:= nowRecordNO;
+
+    // 取得目前產品
+    GetNowStock(NowStock, NowQty);
+    cbbCommNO.Text:= NowStock;
+    edtQty.Text:= NowQty;
+    StockHandle.GetStockStartEnd_Str(cbbCommNO.Text);
  end;
-
-end;
-
-procedure TfmChungYi.dbnConfigureClick(Sender: TObject; Button: TNavigateBtn);
-begin
 
 end;
 
@@ -1102,6 +1202,11 @@ begin
   ccbProduct.Items.Add('全部');
 end;
 
+procedure TfmChungYi.ChouTimerTimer(Sender: TObject);
+begin
+  tsTableDDEShow(nil);
+end;
+
 procedure TfmChungYi.cbbDateClick(Sender: TObject);
 begin
  if cbbDate.Checked then
@@ -1110,6 +1215,19 @@ begin
  else DataModule1.asqQU_Figure.SQL.Text:= 'select * from Figure where StockNO="' + comboStockNO.Text + '"';
 
  DataModule1.asqQU_Figure.Open;
+end;
+
+procedure TfmChungYi.ShowMainTable();
+begin
+  if(UserNM= 'JackyChou') then begin
+    tsAutoOrder.TabVisible:= false;
+    tsParam_New.TabVisible:= false;
+    tsOrderRecord.TabVisible:= false;
+    tsOpenInterest.TabVisible:= false;
+  end else if(UserNM= 'MrHuang') then begin
+    tsTableDDE.TabVisible:= false;
+  end;
+
 end;
 
 end.

@@ -7,7 +7,7 @@ uses Classes, DBCtrls, DBGrids, SKCOMLib_TLB, SysUtils, DMRecord, Public_Variant
 procedure MoveField(mdbGrid: TDBGrid);
 procedure AddChou_Field(var InputStr: String; SK: SKSTOCK; iDot: Double; IsInsert: boolean;
     LastSN: Integer);
-function TransferField(mdbCombo: TDBComboBox): Integer;
+// function TransferField(mdbCombo: TDBComboBox): Integer;
 function FindField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid): Integer;
 
 implementation
@@ -89,6 +89,7 @@ begin
   mdbGrid.Columns[3].Visible:= true;
 end;
 
+{
 function TransferField(mdbCombo: TDBComboBox): Integer;
 begin
   if(mdbCombo.Text= 'A. 時間') then
@@ -110,12 +111,14 @@ begin
   else if(mdbCombo.Text= 'I. 均價') then
     Result:= 8;
 end;
+}
 
 function FindField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid): Integer;
 var i: Integer;
 begin
   for i := 0 to mdbGrid.Columns.Count - 1 do begin
-    if((mdbGrid.Columns.Items[i].FieldName= 'TradeDate') and (mdbCombo.Text= 'A. 時間')) then begin
+ //   if((mdbGrid.Columns.Items[i].FieldName= 'TradeDate') and (mdbCombo.Text= 'A. 時間')) then begin
+    if((mdbGrid.Columns.Items[i].FieldName= 'TradeDate_new') and (mdbCombo.Text= 'A. 時間')) then begin
         Result:= i;
         break;
     end else if((mdbGrid.Columns.Items[i].FieldName= 'BuyPrice') and (mdbCombo.Text= 'B. 買進')) then begin

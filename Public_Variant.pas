@@ -211,6 +211,7 @@ var
  Order_AfterInventory: boolean;
  OrderType: String;
  StartOverseas_Inventory: boolean;
+ UserNM: String;
 
 implementation
 
