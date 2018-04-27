@@ -2,7 +2,8 @@ unit AdjustField;
 
 interface
 
-uses Classes, DBCtrls, DBGrids, SKCOMLib_TLB, SysUtils, DMRecord, Public_Variant;
+uses Classes, DBCtrls, DBGrids, SKCOMLib_TLB, SysUtils, DMRecord, Public_Variant, MIDAS,
+    DBClient, Forms;
 
 procedure MoveField(mdbGrid: TDBGrid);
 procedure AddChou_Field(var InputStr: String; SK: SKSTOCK; iDot: Double; IsInsert: boolean;
@@ -13,25 +14,6 @@ function FindField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid): Integer;
 implementation
 
 uses Quote, ChungYi_Main;
-{
-procedure MoveField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid);
-var getIndex: String;
-    i: Integer;
-begin
-  for i := 0 to mdbGrid.Columns.Count - 1 do begin
-    mdbGrid.Columns[i].Visible:= false;
-  end;
-
-  getIndex:= TransferField(mdbCombo);
-  if(getIndex= '2,3') then begin
-    mdbGrid.Columns[2].Visible:= true;
-    mdbGrid.Columns[3].Visible:= true;
-  end else begin
-    mdbGrid.Columns[StrToInt(getIndex)].Visible:= true;
-  end;
-
-end;
- }
 
 procedure AddChou_Field(var InputStr: String; SK: SKSTOCK; iDot: Double; IsInsert: boolean;
     LastSN: Integer);
@@ -54,6 +36,7 @@ begin
         temp_str:= temp_str + '"' + TempList.Strings[i] + '"';
     end;
 
+//    DataModule1.asqQU_Temp.Active:= false;
     SQL_Str:= 'insert into TradeRecord (StockNO, TradeDate, TickTime, BuyPrice, SellPrice, '
      + ' TradePrice, Qty, AveP, BuyQty, SellQty, TickQty) values (' + temp_str + ') ';
 //    SQL_Str:= 'insert into TradeRecord values (' + temp_str + ') ';
@@ -150,6 +133,19 @@ begin
   end;
 end;
 
+{
+procedure CreateCDS();
+var table: TClientDataset;
+begin
+
+end;
+ }
+{
+DataModule1.SQLEmployee.Close;
+  DataModule1.ClientEmployee.Close;
+  DataModule1.ClientEmployee.CommandText := 'select * from employee';
+  DataModule1.ClientEmployee.open;
+}
 {
 A. 時間
 B. 買進

@@ -26,6 +26,7 @@ begin
     DataModule1.asqQU_Temp.Last;
     Result.LeftQty:= DataModule1.asqQU_Temp.FindField('LeftQty').AsInteger;
     Result.LastBuySell:= DataModule1.asqQU_Temp.FindField('BuySell').AsString;
+    Result.LastPrice:= DataModule1.asqQU_Temp.FindField('Price').AsFloat;
   end else begin
     Result.LeftQty:= 0;
   end;

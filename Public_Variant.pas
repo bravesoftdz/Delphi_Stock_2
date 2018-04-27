@@ -115,7 +115,6 @@ var
  SQLStr, TickTime: String;
  DateList: TStringList; //  擷取目前資料庫的日期序列
  SQLList, AllSQLList, SubAllList: TStringList; // 儲存下載資料
- AveList: TStringList; // 記錄每一 K 棒均值
  HistoryKList: TStringList; // 歷史 K 線記錄 (日線)
  MinuteQtyList: TStringList; // 記錄每一 K 棒成交量
  BuyQtyList, SellQtyList: TStringList; // 記錄買賣量
@@ -135,7 +134,7 @@ var
  OpenP, CloseP: Extended; // 每分鐘開盤價, 收盤價
  NowHigh: Extended= 0;  // 目前K棒最高
  NowLow: Extended= 0;
- FirstLow, FirstHigh: Extended; // 第一根K棒低點
+// FirstLow, FirstHigh: Extended; // 第一根K棒低點
  MinuteQty: Integer= 0; // 每分鐘累積成交量
  AveP, Ave5P, Ave10P, Ave20P: Extended; // 每分鐘均價
  KLineGap: Integer; // 1, 3, 5 分線間隔
@@ -187,7 +186,6 @@ var
  BreakLoop: Boolean= False; // 如果前面已下單, 下面全部直接跳離
  A4_1TimeGate: TTime= 0; //  取得可下單的時間
 
- Ave5P_4Total, Ave10P_4Total, Ave20P_4Total: Extended;
  NowBuySell: String; // 目前是買或賣
  OrderParamList: TStringList;
  StartOrder: Boolean= False; // 判斷是否K穿均

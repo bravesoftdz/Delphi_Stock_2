@@ -24,7 +24,6 @@ object fmChungYi: TfmChungYi
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 752
     object lbFail: TLabel
       Left = 262
       Top = 43
@@ -151,7 +150,7 @@ object fmChungYi: TfmChungYi
     Top = 59
     Width = 774
     Height = 652
-    ActivePage = tsParam_New
+    ActivePage = tsAutoOrder
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -161,13 +160,8 @@ object fmChungYi: TfmChungYi
     ParentFont = False
     TabOrder = 1
     OnChanging = PageControl_MainChanging
-    ExplicitTop = 123
-    ExplicitWidth = 752
-    ExplicitHeight = 588
     object tsAccount: TTabSheet
       Caption = #24115#34399#31649#29702
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object ListView1: TListView
         Left = 0
         Top = 0
@@ -202,16 +196,11 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 0
         ViewStyle = vsReport
-        ExplicitTop = -1
-        ExplicitWidth = 744
-        ExplicitHeight = 557
       end
     end
     object tsAutoOrder: TTabSheet
       Caption = #33258#21205#19979#21934#35373#23450
       ImageIndex = 1
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object CoolBar2: TCoolBar
         Left = 0
         Top = 0
@@ -226,7 +215,6 @@ object fmChungYi: TfmChungYi
           end>
         EdgeInner = esNone
         EdgeOuter = esNone
-        ExplicitWidth = 744
         object Panel3: TPanel
           Left = 11
           Top = 0
@@ -465,15 +453,11 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 1
         ViewStyle = vsReport
-        ExplicitWidth = 744
-        ExplicitHeight = 411
       end
     end
     object tsTimeScope: TTabSheet
       Caption = #36215#35350#26178#38291
       ImageIndex = 6
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -481,7 +465,6 @@ object fmChungYi: TfmChungYi
         Height = 121
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 744
         object Label56: TLabel
           Left = 370
           Top = 53
@@ -745,8 +728,6 @@ object fmChungYi: TfmChungYi
       Caption = #19979#21934#35352#37636#21450#25613#30410
       ImageIndex = 3
       OnShow = tsOrderRecordShow
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -754,7 +735,6 @@ object fmChungYi: TfmChungYi
         Height = 97
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 744
         object Label11: TLabel
           Left = 205
           Top = 20
@@ -1141,8 +1121,6 @@ object fmChungYi: TfmChungYi
     object tsOpenInterest: TTabSheet
       Caption = #26410#24179#20489#20839#23481
       ImageIndex = 5
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object StringGrid1: TStringGrid
         Left = 0
         Top = 0
@@ -1151,8 +1129,6 @@ object fmChungYi: TfmChungYi
         Align = alClient
         FixedCols = 0
         TabOrder = 0
-        ExplicitWidth = 744
-        ExplicitHeight = 557
         ColWidths = (
           140
           169
@@ -1195,16 +1171,12 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 1
         ViewStyle = vsReport
-        ExplicitWidth = 744
-        ExplicitHeight = 557
       end
     end
     object tsParam: TTabSheet
       Caption = #21443#25976#35373#23450
       ImageIndex = 5
       TabVisible = False
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -1220,8 +1192,6 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         ShowCaption = False
         TabOrder = 0
-        ExplicitWidth = 744
-        ExplicitHeight = 557
         object Label39: TLabel
           Left = 14
           Top = 35
@@ -2378,8 +2348,6 @@ object fmChungYi: TfmChungYi
       Caption = #36264#21218#22294#36039#26009
       ImageIndex = 6
       TabVisible = False
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -2387,7 +2355,6 @@ object fmChungYi: TfmChungYi
         Height = 49
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 744
         object Label48: TLabel
           Left = 263
           Top = 21
@@ -2541,8 +2508,6 @@ object fmChungYi: TfmChungYi
     object tsParam_New: TTabSheet
       Caption = #21443#25976
       ImageIndex = 7
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel7: TPanel
         Left = 0
         Top = 0
@@ -2558,8 +2523,6 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         ShowCaption = False
         TabOrder = 0
-        ExplicitWidth = 744
-        ExplicitHeight = 557
         object Label60: TLabel
           Left = 466
           Top = 7
@@ -2707,7 +2670,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 4
           end
         end
-        object GroupBox9: TGroupBox
+        object GroupPreOrder: TGroupBox
           Left = 12
           Top = 70
           Width = 718
@@ -2796,15 +2759,6 @@ object fmChungYi: TfmChungYi
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
-          object dbePreOrder_3: TDBEdit
-            Left = 411
-            Top = 14
-            Width = 26
-            Height = 20
-            DataField = 'PreOrder_3'
-            DataSource = DataModule1.dsNewParam
-            TabOrder = 7
-          end
           object dbcPreOrder_4_Check: TDBCheckBox
             Left = 445
             Top = 17
@@ -2813,18 +2767,9 @@ object fmChungYi: TfmChungYi
             Caption = #36555#21028'4'
             DataField = 'PreOrder_4_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 8
+            TabOrder = 7
             ValueChecked = 'T'
             ValueUnchecked = 'F'
-          end
-          object dbePreOrder_4: TDBEdit
-            Left = 498
-            Top = 14
-            Width = 26
-            Height = 20
-            DataField = 'PreOrder_4'
-            DataSource = DataModule1.dsNewParam
-            TabOrder = 9
           end
           object dbcPreOrder_5_Check: TDBCheckBox
             Left = 528
@@ -2834,7 +2779,7 @@ object fmChungYi: TfmChungYi
             Caption = #36555#21028'5 (F2a/b)'#21069'K'#25490
             DataField = 'PreOrder_5_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 10
+            TabOrder = 8
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -2845,10 +2790,10 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'PreOrder_5'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 11
+            TabOrder = 9
           end
         end
-        object GroupBox14: TGroupBox
+        object Group_Profit: TGroupBox
           Left = 13
           Top = 110
           Width = 718
@@ -3132,7 +3077,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 19
           end
         end
-        object GroupBox15: TGroupBox
+        object Group_Special_2: TGroupBox
           Left = 13
           Top = 171
           Width = 718
@@ -3216,7 +3161,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 4
           end
         end
-        object GroupBox11: TGroupBox
+        object Group_InventAnti: TGroupBox
           Left = 12
           Top = 210
           Width = 718
@@ -3233,7 +3178,7 @@ object fmChungYi: TfmChungYi
           object Label139: TLabel
             Left = 369
             Top = 19
-            Width = 65
+            Width = 50
             Height = 12
             Caption = #40670'. '#21069'K'#25490
           end
@@ -3373,7 +3318,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 12
           end
         end
-        object GroupBox12: TGroupBox
+        object Group_Float: TGroupBox
           Left = 13
           Top = 273
           Width = 718
@@ -3390,9 +3335,9 @@ object fmChungYi: TfmChungYi
           object Label91: TLabel
             Left = 270
             Top = 19
-            Width = 24
+            Width = 12
             Height = 12
-            Caption = #40670#22343
+            Caption = #22343
           end
           object Label92: TLabel
             Left = 326
@@ -3603,7 +3548,7 @@ object fmChungYi: TfmChungYi
             DataSource = DataModule1.dsNewParam
             TabOrder = 14
           end
-          object DBCheckBox28: TDBCheckBox
+          object dbcFloat_6_Check: TDBCheckBox
             Left = 350
             Top = 39
             Width = 77
@@ -3616,7 +3561,7 @@ object fmChungYi: TfmChungYi
             ValueUnchecked = 'F'
           end
         end
-        object GroupBox13: TGroupBox
+        object Group_Internal: TGroupBox
           Left = 13
           Top = 341
           Width = 718
@@ -3705,7 +3650,7 @@ object fmChungYi: TfmChungYi
             Top = 63
             Width = 12
             Height = 12
-            Caption = #40670
+            Caption = #22343
           end
           object Label116: TLabel
             Left = 13
@@ -4060,7 +4005,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 31
           end
         end
-        object GroupBox16: TGroupBox
+        object Group_Engine: TGroupBox
           Left = 13
           Top = 447
           Width = 718
@@ -4668,7 +4613,7 @@ object fmChungYi: TfmChungYi
             TabOrder = 42
           end
         end
-        object GroupBox17: TGroupBox
+        object Group_KeepOrder: TGroupBox
           Left = 12
           Top = 555
           Width = 718
@@ -4832,8 +4777,6 @@ object fmChungYi: TfmChungYi
       Caption = #32000#37636#21443#25976
       ImageIndex = 8
       OnShow = tsTableDDEShow
-      ExplicitWidth = 744
-      ExplicitHeight = 557
       object Panel8: TPanel
         Left = 0
         Top = 0
@@ -4841,8 +4784,6 @@ object fmChungYi: TfmChungYi
         Height = 621
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 744
-        ExplicitHeight = 557
         object Label86: TLabel
           Left = 331
           Top = 11

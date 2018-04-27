@@ -290,6 +290,8 @@ type
     asq_NewParam: TASQLite3Query;
     dsNewParam: TDataSource;
     Cre_NewParam: TASQLite3Query;
+    cds_Temp: TClientDataSet;
+    Provider_Temp: TDataSetProvider;
 
 
     function AssignSN(TableNM: String): Integer;
@@ -299,8 +301,6 @@ type
       DisplayText: Boolean);
     procedure asqQU_RecordSNSetText(Sender: TField; const Text: string);
     procedure DataModuleCreate(Sender: TObject);
-    procedure GetDdate();
-    procedure GetAve();
     procedure asq_StartEndBeforePost(DataSet: TDataSet);
 
   private
@@ -311,13 +311,13 @@ type
 
 var
   DataModule1: TDataModule1;
-  IndexNO: Integer;
 
-  DB_Ver: String= '11';
+  DB_Ver: String= '12';
 
 implementation
 
-uses Public_Variant, Quote, ChungYi_Main, Strategy, DB_Handle, K_Calculate, getK_Value;
+uses Public_Variant, Quote, ChungYi_Main, Strategy, DB_Handle, K_Calculate, getK_Value,
+     K_Line_Save;
 
 {$R *.dfm}
 
@@ -378,176 +378,6 @@ begin
  DataModule1.asq_Configu.Open;
  DataModule1.asq_NewParam.Active:= True;
  DataModule1.asq_NewParam.Open;
-end;
-
-
-procedure TDataModule1.GetDdate();
-var TempDate, AddDate, Ave5P: String;
-    I: Integer;
-begin
- if(K_LineList_Min.Count = 0) then begin
-   exit;
- end;
- {
- TransferTo5Minute(K_LineList_Min);
-
- TempList.Text:= K_LineList_Min.Strings[K_LineList_Min.Count - 1];
- TempList.Delimiter:= ',';
- TempList.DelimitedText:= TempList.Text;
- TempDate:= TempList.Strings[0];
-
- // 眔琎ぱら戳
- if TempDate = ThisTradeDate then begin // 絃
-
-  // 眔琎ら程蔼基
-  TempList.Text:= HistoryKList.Strings[HistoryKList.Count - 2];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-  LastHigh:= StrToFloat(TempList.Strings[2]);
-  LastLow:= StrToFloat(TempList.Strings[3]);
-  LastOpen:= StrToFloat(TempList.Strings[1]);
- end else begin // 絃い
-  LastDate:= TempDate;
-  IndexNO:= 1;
-  // 眔琎ら程蔼基, 秨絃基
-  TempList.Text:= HistoryKList.Strings[HistoryKList.Count - 1];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-  LastHigh:= StrToFloat(TempList.Strings[2]);
-  LastLow:= StrToFloat(TempList.Strings[3]);
-  LastOpen:= StrToFloat(TempList.Strings[1]);
- end;
-
- for I := 0 to sK_LineList.K_5_MinuteList.Count - 1  do begin
-  TempList.Text:= K_LineList_Min.Strings[I];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-
-  TempDate:= TempList.Strings[0];
-
-  if TempDate <> AddDate then begin
-   AddDate:= TempDate;
-   DateList.Add(AddDate);  // 眔ら戳
-  end;
-
-  K_OpenList.Add(TempList.Strings[2]);
-  HighList.Add(TempList.Strings[3]);
-  LowList.Add(TempList.Strings[4]);
-  K_CloseList.Add(TempList.Strings[5]);
-  MinuteQtyList.Add(TempList.Strings[6]);
-  K_List.Add(FloatToStr(StrToFloat(K_OpenList.Strings[K_OpenList.Count - 1])
-             - StrToFloat(K_CloseList.Strings[K_CloseList.Count - 1])));
-
- end;
-
- KeepListData();
-  }
-
- TransferTo5Minute(K_LineList_Min);
-
- TempList.Text:= K_LineList_Min.Strings[K_LineList_Min.Count - 1];
- TempList.Delimiter:= ',';
- TempList.DelimitedText:= TempList.Text;
-
-// TempDate:= Copy(TempList.Strings[0], 7, 4) + '/' + Copy(TempList.Strings[0], 1, 5);
- TempDate:= TempList.Strings[0];
-
- // 眔琎ぱら戳
- if TempDate = ThisTradeDate then begin // 絃
-
-  IndexNO:= 61;
-  TempList.Text:= K_LineList_Min.Strings[K_LineList_Min.Count - 62];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-
-  TempList.SaveToFile('LastK_1340.txt');
-  LastDate:= TempList.Strings[0];
-
-  // 眔琎ら程蔼基
-  TempList.Text:= HistoryKList.Strings[HistoryKList.Count - 2];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-  LastHigh:= StrToFloat(TempList.Strings[2])/100;
-  LastLow:= StrToFloat(TempList.Strings[3])/100;
-  LastOpen:= StrToFloat(TempList.Strings[1])/100;
- end else begin // 絃い
-  LastDate:= TempDate;
-  IndexNO:= 1;
-  // 眔琎ら程蔼基, 秨絃基
-  TempList.Text:= HistoryKList.Strings[HistoryKList.Count - 1];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-  LastHigh:= StrToFloat(TempList.Strings[2])/100;
-  LastLow:= StrToFloat(TempList.Strings[3])/100;
-  LastOpen:= StrToFloat(TempList.Strings[1])/100;
- end;
-
- for I := 0 to K_LineList_Min.Count - IndexNO  do begin
-  TempList.Text:= K_LineList_Min.Strings[I];
-  TempList.Delimiter:= ',';
-  TempList.DelimitedText:= TempList.Text;
-
-  TempDate:= TempList.Strings[0];
-
-  if TempDate <> AddDate then begin
-   AddDate:= TempDate;
-   DateList.Add(AddDate);  // 眔ら戳
-  end;
-
-  K_OpenList.Add(TempList.Strings[2]);
-  HighList.Add(TempList.Strings[3]);
-  LowList.Add(TempList.Strings[4]);
-  K_CloseList.Add(TempList.Strings[5]);
-  MinuteQtyList.Add(TempList.Strings[6]);
-  K_List.Add(FloatToStr(StrToFloat(K_OpenList.Strings[K_OpenList.Count - 1])
-             - StrToFloat(K_CloseList.Strings[K_CloseList.Count - 1])));
-
- end;
-
- KeepListData();
-
- {
-  // А絬
- for I := 0 to K_CloseList.Count - IndexNO - 4 do
- begin
-  Ave5P:= FloatToStr(Round((StrToFloat(K_CloseList.Strings[I])
-           + StrToFloat(K_CloseList.Strings[I + 1])
-           + StrToFloat(K_CloseList.Strings[I + 2])
-           + StrToFloat(K_CloseList.Strings[I + 3])
-           + StrToFloat(K_CloseList.Strings[I + 4]))/5));
-  AveList.Add(Ave5P);
- end;
- GetAve(); // 眔А絬玡 4, 9, 19 羆
-
- KeepListData();
- }
-end;
-
-procedure TDataModule1.GetAve();
-var temp1, temp2, temp3, temp4: String;
-begin
- Temp1:= K_CloseList.Strings[K_CloseList.Count - 4];
- Temp2:= K_CloseList.Strings[K_CloseList.Count - 3];
- Temp3:= K_CloseList.Strings[K_CloseList.Count - 2];
- Temp4:= K_CloseList.Strings[K_CloseList.Count - 1];
-
-       Ave5P_4Total:= StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 4]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 3])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 2]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 1]);
-       Ave10P_4Total:= StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 9]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 8])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 7]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 6])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 5]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 4])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 3]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 2])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 1]);
-       Ave20P_4Total:= StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 19]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 18])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 17]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 16])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 15]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 14])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 13]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 12])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 11]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 10])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 9]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 8])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 7]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 6])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 5]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 4])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 3]) + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 2])
-           + StrToFloat(K_CloseList.Strings[K_CloseList.Count  - 1]);
 end;
 
 procedure TDataModule1.asqQU_RecordSNGetText(Sender: TField; var Text: string;

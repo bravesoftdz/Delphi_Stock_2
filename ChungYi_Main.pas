@@ -239,7 +239,7 @@ type
     dbeSpec_1_2: TDBEdit;
     dbeSpec_1_3: TDBEdit;
     dbeSpec_1_Rate: TDBEdit;
-    GroupBox9: TGroupBox;
+    GroupPreOrder: TGroupBox;
     Label62: TLabel;
     dbcPreOrder_Check: TDBCheckBox;
     dbePreOrder_Rate: TDBEdit;
@@ -248,12 +248,10 @@ type
     dbcPreOrder_2_Check: TDBCheckBox;
     dbePreOrder_2: TDBEdit;
     dbcPreOrder_3_Check: TDBCheckBox;
-    dbePreOrder_3: TDBEdit;
     dbcPreOrder_4_Check: TDBCheckBox;
-    dbePreOrder_4: TDBEdit;
     dbcPreOrder_5_Check: TDBCheckBox;
     dbePreOrder_5: TDBEdit;
-    GroupBox14: TGroupBox;
+    Group_Profit: TGroupBox;
     Label65: TLabel;
     dbcProfit_Check: TDBCheckBox;
     dbeProfit_Rate: TDBEdit;
@@ -286,7 +284,7 @@ type
     dbeProfit_3_5_1: TDBEdit;
     dbeProfit_3_5_2: TDBEdit;
     Label78: TLabel;
-    GroupBox15: TGroupBox;
+    Group_Special_2: TGroupBox;
     Label105: TLabel;
     Label106: TLabel;
     Label107: TLabel;
@@ -296,7 +294,7 @@ type
     dbeSpec_2_2: TDBEdit;
     dbeSpec_2_3: TDBEdit;
     dbeSpec_2_Rate: TDBEdit;
-    GroupBox11: TGroupBox;
+    Group_InventAnti: TGroupBox;
     Label79: TLabel;
     dbcInventAnti_Check: TDBCheckBox;
     dbeInventAnti_Rate: TDBEdit;
@@ -311,7 +309,7 @@ type
     dbeInventAnti_4: TDBEdit;
     dbcInventAnti_5_Check: TDBCheckBox;
     dbeInventAnti_5: TDBEdit;
-    GroupBox12: TGroupBox;
+    Group_Float: TGroupBox;
     Label80: TLabel;
     dbcFloat_Check: TDBCheckBox;
     dbeFloat_Rate: TDBEdit;
@@ -321,15 +319,15 @@ type
     dbeFloat_2_1: TDBEdit;
     dbcFloat_3_Check: TDBCheckBox;
     dbeFloat_3_2: TDBEdit;
-    GroupBox13: TGroupBox;
+    Group_Internal: TGroupBox;
     Label81: TLabel;
     dbcInternal_Check: TDBCheckBox;
     dbeInternal_Rate: TDBEdit;
-    GroupBox16: TGroupBox;
+    Group_Engine: TGroupBox;
     Label82: TLabel;
     dbcEngine_Check: TDBCheckBox;
     dbeEngine_Rate: TDBEdit;
-    GroupBox17: TGroupBox;
+    Group_KeepOrder: TGroupBox;
     Label83: TLabel;
     dbcKeepOrder_Check: TDBCheckBox;
     dbeKeepOrder_Rate: TDBEdit;
@@ -386,7 +384,7 @@ type
     dbcFloat_5_Check: TDBCheckBox;
     dbeFloat_5_1: TDBEdit;
     Label99: TLabel;
-    DBCheckBox28: TDBCheckBox;
+    dbcFloat_6_Check: TDBCheckBox;
     dbcInternal_1_Check: TDBCheckBox;
     dbeInternal_1_1: TDBEdit;
     Label100: TLabel;
@@ -585,7 +583,7 @@ type
 
 var
   fmChungYi: TfmChungYi;
-  SignalList, DateList: TStringList;
+  SignalList: TStringList;
   FileName, CurrDir: String;
   BuySellSum: Integer;
   Userid, PassWord: AnsiString;
@@ -601,7 +599,8 @@ implementation
 
 uses Registry, RegistryGetSet, DMRecord, DataParsing, Quote,
      String_Form, Quote_uSKQ, Stock_OptionOrder, Strategy, StringList_Fun, SetParameter,
-     DB_Handle, DB_Type, getK_Value, AdjustField, Calculate_Grid;
+     DB_Handle, DB_Type, getK_Value, AdjustField, Calculate_Grid, TopValue, Strategy_Special,
+     K_Line_Save, GeneralValue, SystemFun;
 
 {$R *.dfm}
 
@@ -635,6 +634,7 @@ end;
 procedure TfmChungYi.FormCreate(Sender: TObject);
 var NowStock, NowQty: String;
 begin
+
  ShowMainTable();
  TempList:= TStringList.Create;
  TempList.LoadFromFile('Account.txt');
@@ -662,7 +662,6 @@ begin
  PageControl_Main.ActivePageIndex := 0;
  OpenInterestQty:= 0;
   SignalList:= TStringList.Create;
-  DateList:= TStringList.Create;
   BalanceList:= TStringList.Create;
 
   CurrDir:= GetCurrentDir();
@@ -690,15 +689,24 @@ end;
 procedure TfmChungYi.GetDateTimerTimer(Sender: TObject);
 var SystemTime: String;
 begin // 先取得交易日期
+
+// ConvertObj('fmChungYi.dbcEngine_', '1' + '_Check', clRed);
+
  SystemTime:= FormatDateTime('hh:mm:ss', Time);
 
  if SystemTime >= Public_Variant.StartTime then begin
-  GetDateTimer.Enabled:= False;
- // WebBrowser1.Navigate('http://tw.futures.finance.yahoo.com/future/l/future_1.html');
-  ThisTradeDate:= DateToStr(Date);
-  if DayOfWeek(Date)= 1 then ThisTradeDate:= DateToStr(Date - 2);
-  if DayOfWeek(Date)= 7 then ThisTradeDate:= DateToStr(Date - 1);
-  btnLogOn.Click;
+   GetDateTimer.Enabled:= False;
+  // WebBrowser1.Navigate('http://tw.futures.finance.yahoo.com/future/l/future_1.html');
+   ThisTradeDate:= DateToStr(Date);
+   if DayOfWeek(Date)= 1 then ThisTradeDate:= DateToStr(Date - 2);
+   if DayOfWeek(Date)= 7 then ThisTradeDate:= DateToStr(Date - 1);
+   btnLogOn.Click;
+
+   if(Public_Variant.UserNM= 'MrHuang') then begin
+     StrategyBegin();
+     if(IsSpecial_OrderToday) and GoStrategy_Special_1 then
+       Special_1_Active(cbbCommNO.Text);
+   end;
  end;
 end;
 
@@ -746,7 +754,6 @@ end;
 procedure TfmChungYi.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  if Assigned(SignalList) then FreeAndNil(SignalList);
- if Assigned(DateList) then FreeAndNil(DateList);
  if Assigned(BalanceList) then FreeAndNil(BalanceList);
  if Assigned(HtmlFileList) then FreeAndNil(HtmlFileList);
  if Assigned(TempList) then FreeAndNil(TempList);
@@ -1058,6 +1065,8 @@ begin
 
   IsShowA4:= DataModule1.asq_Option.FieldByName('Option5').AsString= 'T';
   MoveField(dbg_TradeRecord);
+  if(not ChkNumStr(dbe_X.Text) or not ChkNumStr(dbe_Y.Text) or not ChkNumStr(dbe_Z.Text)) then
+    abort;
   RunTable_1st(dbg_TradeRecord, grid_Calculate, grid_2nd, grid_3rd,
     StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text), StrToFloat(dbe_Z.Text), IsShowA4);
   MoveField(dbg_TradeRecord);
@@ -1222,7 +1231,7 @@ begin
   if(UserNM= 'JackyChou') then begin
     tsAutoOrder.TabVisible:= false;
     tsParam_New.TabVisible:= false;
-    tsOrderRecord.TabVisible:= false;
+  //  tsOrderRecord.TabVisible:= false;
     tsOpenInterest.TabVisible:= false;
   end else if(UserNM= 'MrHuang') then begin
     tsTableDDE.TabVisible:= false;

@@ -2,7 +2,6 @@ object DataModule1: TDataModule1
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 425
-  HorizontalOffset = 5
   Width = 1037
   object asqDB_StockRecord: TASQLite3DB
     TimeOut = 0
@@ -10,10 +9,8 @@ object DataModule1: TDataModule1
     Database = 'FutureParam.db3'
     DefaultExt = '.db3'
     Version = '3.7.4'
-    DriverDLL = 
-      'E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\bin\sqlite' +
-      '3.dll'
-    Connected = True
+    DriverDLL = 'sqlite3.dll'
+    Connected = False
     MustExist = False
     ExecuteInlineSQL = True
     Left = 120
@@ -1210,11 +1207,12 @@ object DataModule1: TDataModule1
     RawSQL = False
     SQL.Strings = (
       
-        'Create table IF not EXISTS RecordMsg(SN Integer , TradeDate varc' +
+        'CREATE TABLE IF not EXISTS RecordMsg(SN Integer , TradeDate varc' +
         'har(10) , TradeTime Time , Account varchar(20) , StockNM varchar' +
         '(20) , BuySell varchar(4) , Criteria varchar(20) , Price float ,' +
         ' Qty Integer , TradeSN varchar(10) , Msg varchar(20), TestMode v' +
-        'archar(1), LeftQty Integer, NO_K varchar(1) );')
+        'archar(1), LeftQty Integer, NO_K varchar(1), OrderStrategy varch' +
+        'ar(10) );')
     UpdateSQL = asqUpSQL_Record
     Left = 336
     Top = 104
@@ -1582,7 +1580,8 @@ object DataModule1: TDataModule1
     InsertSQL.Strings = (
       'insert into tbNewParam *')
     UpdateSQL.Strings = (
-      'Update tbNewParam * ')
+      'Update tbNewParam * where SN=:SN'
+      '')
     DeleteSQL.Strings = (
       'Delete from tbNewParam where SN=:SN')
     Left = 864
@@ -1624,8 +1623,8 @@ object DataModule1: TDataModule1
     RawSQL = False
     SQL.Strings = (
       
-        'CREATE TABLE tbNewParam(SN Integer Primary Key Autoincrement, Mo' +
-        'duleNM varchar(20) , Desc varchar(20) , '
+        'CREATE TABLE IF not EXISTS tbNewParam(SN Integer Primary Key Aut' +
+        'oincrement, ModuleNM varchar(20) , Desc varchar(20) , '
       
         '  Spec_1_Check varchar(1), Spec_1_1 varchar(10), Spec_1_2 varcha' +
         'r(10), Spec_1_3 varchar(10), Spec_1_Rate varchar(10),'
@@ -1740,5 +1739,69 @@ object DataModule1: TDataModule1
     UpdateSQL = asqUpSQL_Option
     Left = 848
     Top = 112
+  end
+  object cds_Temp: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'SN'
+        DataType = ftInteger
+      end
+      item
+        Name = 'StockNO'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'TradeDate'
+        DataType = ftDate
+      end
+      item
+        Name = 'TickTime'
+        DataType = ftTime
+      end
+      item
+        Name = 'BuyPrice'
+        DataType = ftFloat
+      end
+      item
+        Name = 'SellPrice'
+        DataType = ftFloat
+      end
+      item
+        Name = 'TradePrice'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Qty'
+        DataType = ftInteger
+      end
+      item
+        Name = 'AveP'
+        DataType = ftFloat
+      end
+      item
+        Name = 'BuyQty'
+        DataType = ftFloat
+      end
+      item
+        Name = 'SellQty'
+        DataType = ftFloat
+      end
+      item
+        Name = 'TickQty'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'Provider_Temp'
+    StoreDefs = True
+    Left = 584
+    Top = 40
+  end
+  object Provider_Temp: TDataSetProvider
+    DataSet = asqQU_TradeRecord
+    Left = 488
+    Top = 40
   end
 end

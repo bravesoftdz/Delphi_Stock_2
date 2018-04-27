@@ -32,6 +32,7 @@ begin
   DataModule1.Cre_StartEnd.ExecSQL;
   DataModule1.Cre_Inventory.ExecSQL;
   DataModule1.Cre_Option.ExecSQL;
+  DataModule1.Cre_NewParam.ExecSQL;
 end;
 
 procedure PrepareConnect();
@@ -128,7 +129,7 @@ begin
   InputSQL_query.ExecSQL;
   InputSQL_query.SQL.Text:= 'ALTER TABLE tbOption RENAME TO back_tbOption';
   InputSQL_query.ExecSQL;
-  InputSQL_query.SQL.Text:= 'ALTER TABLE tbOption RENAME TO back_tbNewParam';
+  InputSQL_query.SQL.Text:= 'ALTER TABLE tbNewParam RENAME TO back_tbNewParam';
   InputSQL_query.ExecSQL;
 
 end;

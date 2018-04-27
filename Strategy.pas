@@ -16,7 +16,6 @@ uses Windows, Messages, SysUtils, Controls, Classes, DBClient, DB, Dialogs,
  procedure Trigger_E_Strategy();
  procedure LastPhase();
  procedure WeightLight();
- procedure KeepListData();
  function GetBalance(): Extended; // 取得今日損益
  procedure A4_Module();
  procedure ReSetK(U_or_D: String);  // K 觸均 Reset
@@ -29,34 +28,7 @@ uses Quote, Public_Variant, ChungYi_Main, DMRecord, StringList_Fun, DB_Handle, g
 function B1_Strategy(): String;
 var I, StartNO, EndNO: Integer;
 begin
- SetData.P_Lowest:= 0;
- // 取得 B1 高低點      // 取得前幾最高低價 非任意點
- if (fmChungYi.dbeB1.Text <> '')
-    and (DateList.Count >= StrToInt(fmChungYi.dbeB1.Text)) then
- begin
-  if DMRecord.IndexNO= 61 then // 盤後
-  begin
-   StartNO:= HistoryKList.Count - StrToInt(fmChungYi.dbeB1.Text)-1;
-   EndNO:= HistoryKList.Count - 2;
-  end else begin  // 盤中
-   StartNO:= HistoryKList.Count - StrToInt(fmChungYi.dbeB1.Text);
-   EndNO:= HistoryKList.Count - 1;
-  end;
 
-  for I := StartNO to EndNO do
-  begin
-   TempList.Text:= HistoryKList.Strings[I];
-   TempList.Delimiter:= ',';
-   TempList.DelimitedText:= TempList.Text;
-   if SetData.P_Highest < StrToFloat(TempList.Strings[2])/100 then
-    SetData.P_Highest:= StrToFloat(TempList.Strings[2])/100;
-   if (SetData.P_Lowest <> 0) then begin
-    if (SetData.P_Lowest > StrToFloat(TempList.Strings[3])/100) then
-     SetData.P_Lowest := StrToFloat(TempList.Strings[3])/100;
-   end else SetData.P_Lowest := StrToFloat(TempList.Strings[3])/100;
-  end;
-
- end;
 end;
 
 procedure B1_Strategy_Assign(); // 觸發條件成立則 高點範圍: Sell, 低點範圍: Buy
@@ -638,10 +610,7 @@ begin
    // E8                                                    // 從 8:50:00 開始
    if (fmChungYi.dbeE8.Text <> '') and (TickTime > '08:50:00') and ((StrToTime(TickTime)- 53/144)/(1/288) <= StrToInt(fmChungYi.dbeE8.Text)) then
     if CloseP < ThisOpen then sStrategy.E4_3_Weight:= 1 else sStrategy.E4_3_Weight:= 0;
-   // E9                                                 // 從 8:50:00 開始
-   if (fmChungYi.dbeE9.Text <> '') and (TickTime > '08:50:00') and ((StrToTime(TickTime)- 53/144)/(1/288) <= StrToInt(fmChungYi.dbeE9.Text)) then
-    if FirstLow > CloseP then
-     sStrategy.E4_4_Weight:= 1 else sStrategy.E4_4_Weight:= 0;
+
    // E11 (LastInventory) 解除第二要件
    if CloseP >= StrToFloat(fmChungYi.ListV_Interest.Items[0].SubItems.strings[3]) then
     LastInventory:= False;
@@ -657,10 +626,7 @@ begin
    // E8
    if (fmChungYi.dbeE8.Text <> '') and ((StrToTime(TickTime)- 53/144)/(1/288) <= StrToInt(fmChungYi.dbeE8.Text)) then
     if CloseP > ThisOpen then sStrategy.E4_3_Weight:= 1 else sStrategy.E4_3_Weight:= 0;
-   // E9
-   if (fmChungYi.dbeE9.Text <> '') and ((StrToTime(TickTime)- 53/144)/(1/288) <= StrToInt(fmChungYi.dbeE8.Text)) then
-    if FirstHigh < CloseP then
-     sStrategy.E4_4_Weight:= 1 else sStrategy.E4_4_Weight:= 0;
+   
    // E11 (LastInventory) 解除第二要件
    if CloseP <= StrToFloat(fmChungYi.ListV_Interest.Items[0].SubItems.strings[3]) then
     LastInventory:= False;
@@ -1184,20 +1150,4 @@ begin
  end;
 end;
 
-procedure KeepListData();
-begin
-  AveList.SaveToFile('AveList.txt');
-  HighList.SaveToFile('HighList.txt');
-  LowList.SaveToFile('LowList.txt');
-  K_List.SaveToFile('K_List.txt');
-  K_OpenList.SaveToFile('K_OpenList.txt');
-  K_CloseList.SaveToFile('K_CloseList.txt');
-  sK_LineList.OrderList.SaveToFile('OrderList.txt');
-  sK_LineList.Order_TimeList.SaveToFile('Order_TimeList.txt');
-  sK_LineList.K_5_MinuteList.SaveToFile('K_5_MinuteList.txt');
-  DateList.SaveToFile('DateList.txt');
-  MinuteQtyList.SaveToFile('MinuteQtyList.txt');
-  BuyQtyList.SaveToFile('BuyQtyList.txt');
-  SellQtyList.SaveToFile('SellQtyList.txt');
-end;
 end.

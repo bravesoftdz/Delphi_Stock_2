@@ -81,10 +81,23 @@
 			<DCCReference Include="GeneralFun\CheckNetwork.pas"/>
 			<DCCReference Include="K_Value\K_Calculate.pas"/>
 			<DCCReference Include="K_Value\getK_Value.pas"/>
-			<DCCReference Include="Strategy\Strategy_Special.pas"/>
+			<DCCReference Include="Strategy\Strategy_Special_2.pas"/>
 			<DCCReference Include="Thread_Handle\ThreadHandle.pas"/>
 			<DCCReference Include="MrChou\AdjustField.pas"/>
 			<DCCReference Include="MrChou\Calculate_Grid.pas"/>
+			<DCCReference Include="Strategy\TopValue.pas"/>
+			<DCCReference Include="Strategy\Strategy_Profit.pas"/>
+			<DCCReference Include="Strategy\Strategy_Float.pas"/>
+			<DCCReference Include="Strategy\Strategy_Special.pas"/>
+			<DCCReference Include="Strategy\Strategy_Engine.pas"/>
+			<DCCReference Include="Strategy\Strategy_Internal.pas"/>
+			<DCCReference Include="K_Value\K_Line_Save.pas"/>
+			<DCCReference Include="Strategy\Strategy_KeepOrder.pas"/>
+			<DCCReference Include="Strategy\Strategy_PreOrder.pas"/>
+			<DCCReference Include="Strategy\GeneralValue.pas"/>
+			<DCCReference Include="Strategy\Strategy_InventAnti.pas"/>
+			<DCCReference Include="K_Value\Initial_K.pas"/>
+			<DCCReference Include="..\..\Functions\SystemFun.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

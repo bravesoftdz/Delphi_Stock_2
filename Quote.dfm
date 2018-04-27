@@ -634,6 +634,7 @@ object fmQuote: TfmQuote
     ConnectKind = ckRunningOrNew
     OnConnection = SKQuoteLib1Connection
     OnNotifyTicks = SKQuoteLib1NotifyTicks
+    OnNotifyBest5 = SKQuoteLib1NotifyBest5
     OnNotifyKLineData = SKQuoteLib1NotifyKLineData
     OnNotifyServerTime = SKQuoteLib1NotifyServerTime
     Left = 432
