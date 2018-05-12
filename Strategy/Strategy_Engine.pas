@@ -16,32 +16,16 @@ uses DB_GetData, DMRecord, DB_Type, DB_Handle, getK_Value, ChungYi_Main, TopValu
      StringList_Fun, GeneralValue;
 
 function GoStrategy_Engine(): boolean;  // Strategy is created
+var i: Integer;
 begin
   if (DataModule1.asq_NewParam.RecordCount = 0) or (not GetEngine_Check) then begin
       Result:= false ;
 
       fmChungYi.Group_Engine.Color:= clBtnFace;
-      fmChungYi.dbcEngine_1_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_2_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_3_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_4_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_5_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_6_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_7_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_8_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_9_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_10_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_11_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_12_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_13_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_14_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_15_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_16_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_17_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_18_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_19_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_20_Check.Color:= clWindow;
-      fmChungYi.dbcEngine_21_Check.Color:= clWindow;
+      fmChungYi.dbcEngine_Check.Color:= clWindow;
+      for i := 1 to 21 do begin
+        ConvertObj('dbcEngine_', IntToStr(i) + '_Check', clWindow);
+      end;
 
   end else
     Result:= true;
@@ -61,18 +45,34 @@ begin
   SellQty:= 0;
   BuyQty:= 0;
   InvenResult:= DB_Handle.CheckInventory(CommNO);
+  DB_Rate:= DataModule1.asq_NewParam.FieldByName('Engine_Rate').AsInteger;
   if InvenResult.LeftQty > 0 then begin
     if (InvenResult.LastBuySell='B') then begin
-      SellQty:= Engine_Active_UnderBuy();
+      SellQty:= Engine_Active_UnderSell();
     end else begin
-      BuyQty:= Engine_Active_UnderSell();
+      BuyQty:= Engine_Active_UnderBuy();
     end;
+
+    if(SellQty >= DB_Rate) or (BuyQty >= DB_Rate) then begin
+      if(SellQty >= DB_Rate) then
+        Result:= 'S'
+      else
+        Result:= 'B';
+      fmChungYi.Group_Engine.Color:= clRed;
+    end else
+      fmChungYi.Group_Engine.Color:= clBtnFace;
+
   end else begin
     SellQty:= Engine_Active_UnderBuy();
     BuyQty:= Engine_Active_UnderSell();
+    if(BuyQty > SellQty) and (BuyQty >= DB_Rate) then begin
+      Result:= 'B';
+    end else if(SellQty > BuyQty) and (SellQty >= DB_Rate) then begin
+      Result:= 'S';
+    end else
+      fmChungYi.Group_Engine.Color:= clBtnFace;
   end;
 
-  DB_Rate:= DataModule1.asq_NewParam.FieldByName('Engine_Rate').AsInteger;
   if(SellQty >= DB_Rate) or (BuyQty >= DB_Rate) then begin
     if(SellQty >= DB_Rate) then
       Result:= 'S'
@@ -88,7 +88,7 @@ var InvenResult: TInventory_Stock;
     Rule_A: array of boolean;
     Engine_Rate: Integer;
     D09: Extended;
-    K_Qty: Integer;
+    i, K_Qty: Integer;
     Fa, Fb: Extended;
 begin
   Engine_Rate:= 0;
@@ -195,36 +195,13 @@ begin
     Rule_A[21]:= (sStrategy_new.J02_NowCloseAve < sStrategy_new.D01_K_NowClose)
           and (sStrategy_new.D01_K_NowClose < sStrategy_new.D43_K_PreHigh - DataModule1.asq_NewParam.FieldByName('Engine_21_1').AsFloat);
 
-
-  if Rule_A[1] then begin
-    Engine_Rate:= Engine_Rate + 1;
-    fmChungYi.dbcEngine_1_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcEngine_1_Check.Color:= clWindow;
-
-  if Rule_A[1] then begin
-    Engine_Rate:= Engine_Rate + 1;
-    fmChungYi.dbcEngine_2_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcEngine_2_Check.Color:= clWindow;
-
-  if Rule_A[1] then begin
-    Engine_Rate:= Engine_Rate + 1;
-    fmChungYi.dbcEngine_3_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcEngine_3_Check.Color:= clWindow;
-
-  if Rule_A[1] then begin
-    Engine_Rate:= Engine_Rate + 1;
-    fmChungYi.dbcEngine_4_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcEngine_4_Check.Color:= clWindow;
-
-  if Rule_A[1] then begin
-    Engine_Rate:= Engine_Rate + 1;
-    fmChungYi.dbcEngine_5_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcEngine_5_Check.Color:= clWindow;
+  for i := 1 to 21 do begin
+    if Rule_A[i] then begin
+      Engine_Rate:= Engine_Rate + 1;
+      ConvertObj('dbcEngine_', IntToStr(i) + '_Check', clRed);
+    end else
+      ConvertObj('dbcEngine_', IntToStr(i) + '_Check', clWindow);
+  end;
 
 end;
 
@@ -233,7 +210,7 @@ var InvenResult: TInventory_Stock;
     Rule_B: array of boolean;
     Engine_Rate: Integer;
     D09: Extended;
-    K_Qty: Integer;
+    i, K_Qty: Integer;
     Fa, Fb: Extended;
 begin
   Engine_Rate:= 0;
@@ -341,6 +318,14 @@ begin
   if(DataModule1.asq_NewParam.FieldByName('Engine_21_Check').AsString= 'T') then
     Rule_B[21]:= (sStrategy_new.J02_NowCloseAve > sStrategy_new.D01_K_NowClose)
           and (sStrategy_new.D01_K_NowClose > sStrategy_new.D43_K_PreHigh + DataModule1.asq_NewParam.FieldByName('Engine_21_1').AsFloat);
+
+  for i := 1 to 21 do begin
+    if Rule_B[i] then begin
+      Engine_Rate:= Engine_Rate + 1;
+      ConvertObj('dbcEngine_', IntToStr(i) + '_Check', clYellow);
+    end else
+      ConvertObj('dbcEngine_', IntToStr(i) + '_Check', clWindow);
+  end;
 
 end;
 

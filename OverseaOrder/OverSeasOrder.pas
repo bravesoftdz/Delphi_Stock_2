@@ -8,13 +8,14 @@ uses Windows, Messages, SysUtils, Variants, Classes, Controls, Forms,
   procedure OverseasFutureOrder(OderPrice: Extended; LeftQty: Integer; IsBuySell: String; BuySellQty: Integer);
   function ConvertOrderDate(Year_Str, Month_Str: String): String;
   function getProductNO(Comm_Str: String): String;
-  procedure AfterInventoryOverseaOrder(OderPrice: Extended; BuySellQty: Integer; BuySellType: Integer);
+  procedure AfterInventoryOverseaOrder(OderPrice: Extended; BuySellQty: Integer;
+   BuySellType: Integer);
 
 
 implementation
 
 uses ChungYi_Main, Quote_uSKQ, SQLFunc, Public_Variant, StringList_Fun, DMRecord,
-     Quote, Strategy, Stock_OptionOrder, DB_Handle, DB_Type;
+     Quote, Strategy, Stock_OptionOrder, DB_Handle, DB_Type, OrderHandle;
 
 // overseas ´Á³f¤U³æ
 procedure OverseasFutureOrder(OderPrice: Extended; LeftQty: Integer; IsBuySell: String; BuySellQty: Integer);
@@ -140,7 +141,8 @@ begin
   Result:= StrMiddle(Comm_Str, 1, Position - 1);
 end;
 
-procedure AfterInventoryOverseaOrder(OderPrice: Extended; BuySellQty: Integer; BuySellType: Integer);
+procedure AfterInventoryOverseaOrder(OderPrice: Extended; BuySellQty: Integer;
+   BuySellType: Integer);
 var
    Item, ListItem, ListItem1 : TListItem;
    iCode : integer;

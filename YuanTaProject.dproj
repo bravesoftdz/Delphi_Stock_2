@@ -98,6 +98,10 @@
 			<DCCReference Include="Strategy\Strategy_InventAnti.pas"/>
 			<DCCReference Include="K_Value\Initial_K.pas"/>
 			<DCCReference Include="..\..\Functions\SystemFun.pas"/>
+			<DCCReference Include="MrChou\ChouRule.pas"/>
+			<DCCReference Include="Strategy\First_Check_Strategy.pas"/>
+			<DCCReference Include="Order\OrderHandle.pas"/>
+			<DCCReference Include="MrChou\Initial_Setting.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

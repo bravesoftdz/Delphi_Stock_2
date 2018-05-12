@@ -3,48 +3,34 @@ unit AdjustField;
 interface
 
 uses Classes, DBCtrls, DBGrids, SKCOMLib_TLB, SysUtils, DMRecord, Public_Variant, MIDAS,
-    DBClient, Forms;
+    DBClient, Forms, Grids, ChouRule;
+
+type
+  TIntegerArray = array of Integer;
 
 procedure MoveField(mdbGrid: TDBGrid);
 procedure AddChou_Field(var InputStr: String; SK: SKSTOCK; iDot: Double; IsInsert: boolean;
-    LastSN: Integer);
-// function TransferField(mdbCombo: TDBComboBox): Integer;
+    LastSN: Integer; TK: SKTICK; TickNO: Integer);
 function FindField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid): Integer;
+function MoveField_GridList(mdbGrid: TDBGrid): TIntegerArray;
+function FindField_Grid(mdbCombo: TDBComboBox): Integer;
 
 implementation
 
 uses Quote, ChungYi_Main;
 
 procedure AddChou_Field(var InputStr: String; SK: SKSTOCK; iDot: Double; IsInsert: boolean;
-    LastSN: Integer);
+    LastSN: Integer; TK: SKTICK; TickNO: Integer);
 var SQL_Str, temp_str: String;
     i: Integer;
 begin
-//  InputStr:= IntToStr(LastSN) + ',' + InputStr + ',' + FloatToStr(SK.nBc) + ',' + FloatToStr(SK.nAc)
-//    + ',' + FloatToStr(SK.nTickQty);
+  if not TimeLimit(TickTime) then begin
+    TotalTickQty:= TotalTickQty + TK.nQty;
+  end else
+    TK.nQty:= 0;
+
   InputStr:= InputStr + ',' + FloatToStr(SK.nBc) + ',' + FloatToStr(SK.nAc)
-    + ',' + FloatToStr(SK.nTickQty);
-
-  if(IsInsert) then begin
-    TempList.Text:= InputStr;
-    TempList.Delimiter:= ',';
-    TempList.DelimitedText:= TempList.Text;
-    for i := 0 to TempList.Count - 1 do begin
-      if i < TempList.Count - 1 then
-        temp_str:= temp_str + '"' + TempList.Strings[i] + '",'
-      else
-        temp_str:= temp_str + '"' + TempList.Strings[i] + '"';
-    end;
-
-//    DataModule1.asqQU_Temp.Active:= false;
-    SQL_Str:= 'insert into TradeRecord (StockNO, TradeDate, TickTime, BuyPrice, SellPrice, '
-     + ' TradePrice, Qty, AveP, BuyQty, SellQty, TickQty) values (' + temp_str + ') ';
-//    SQL_Str:= 'insert into TradeRecord values (' + temp_str + ') ';
-    DataModule1.asqQU_Temp.SQL.Text:= SQL_Str;
-    DataModule1.asqQU_Temp.ExecSQL;
-
-    AllSQLList.Clear;
-  end;
+    + ',' + FloatToStr(TK.nQty) + ','  + FloatToStr(TotalTickQty) + ',' + FloatToStr(TickNO);
 
 end;
 
@@ -72,29 +58,14 @@ begin
   mdbGrid.Columns[3].Visible:= true;
 end;
 
-{
-function TransferField(mdbCombo: TDBComboBox): Integer;
+function MoveField_GridList(mdbGrid: TDBGrid): TIntegerArray;
 begin
-  if(mdbCombo.Text= 'A. 時間') then
-    Result:= 2
-  else if(mdbCombo.Text= 'B. 買進') then
-    Result:= 4
-  else if(mdbCombo.Text= 'C. 賣出') then
-    Result:= 5
-  else if(mdbCombo.Text= 'D. 成交') then
-    Result:= 6
-  else if(mdbCombo.Text= 'E. 單量') then
-    Result:= 11
-  else if(mdbCombo.Text= 'F. 總量') then
-    Result:= 7
-  else if(mdbCombo.Text= 'G. 委買') then
-    Result:= 9
-  else if(mdbCombo.Text= 'H. 委賣') then
-    Result:= 10
-  else if(mdbCombo.Text= 'I. 均價') then
-    Result:= 8;
+  SetLength(Result, 4);
+  Result[0]:= FindField_Grid(fmChungYi.dbcb_1st_Item);
+  Result[1]:= FindField_Grid(fmChungYi.dbcb_2nd_Item);
+  Result[2]:= FindField_Grid(fmChungYi.dbcb_3rd_Item);
+  Result[3]:= FindField_Grid(fmChungYi.dbcb_4th_Item);
 end;
-}
 
 function FindField(mdbCombo: TDBComboBox; mdbGrid: TDBGrid): Integer;
 var i: Integer;
@@ -116,7 +87,7 @@ begin
     end else if((mdbGrid.Columns.Items[i].FieldName= 'TickQty') and (mdbCombo.Text= 'E. 單量')) then begin
         Result:= i;
         break;
-    end else if((mdbGrid.Columns.Items[i].FieldName= 'Qty') and (mdbCombo.Text= 'F. 總量')) then begin
+    end else if((mdbGrid.Columns.Items[i].FieldName= 'AllQty') and (mdbCombo.Text= 'F. 總量')) then begin
         Result:= i;
         break;
     end else if((mdbGrid.Columns.Items[i].FieldName= 'BuyQty') and (mdbCombo.Text= 'G. 委買')) then begin
@@ -133,19 +104,30 @@ begin
   end;
 end;
 
-{
-procedure CreateCDS();
-var table: TClientDataset;
+function FindField_Grid(mdbCombo: TDBComboBox): Integer;
 begin
+//  for i := 0 to mdbGrid.Columns.Count - 1 do begin
+    if(mdbCombo.Text= 'A. 時間') then begin
+        Result:= 2;
+    end else if(mdbCombo.Text= 'B. 買進') then begin
+        Result:= 4;
+    end else if(mdbCombo.Text= 'C. 賣出') then begin
+        Result:= 5;
+    end else if(mdbCombo.Text= 'D. 成交') then begin
+        Result:= 6;
+    end else if(mdbCombo.Text= 'E. 單量') then begin
+        Result:= 11;
+    end else if(mdbCombo.Text= 'F. 總量') then begin
+        Result:= 12;
+    end else if(mdbCombo.Text= 'G. 委買') then begin
+        Result:= 9;
+    end else if(mdbCombo.Text= 'H. 委賣') then begin
+        Result:= 10;
+    end else if(mdbCombo.Text= 'I. 均價') then begin
+        Result:= 8;
+    end;
 
 end;
- }
-{
-DataModule1.SQLEmployee.Close;
-  DataModule1.ClientEmployee.Close;
-  DataModule1.ClientEmployee.CommandText := 'select * from employee';
-  DataModule1.ClientEmployee.open;
-}
 {
 A. 時間
 B. 買進

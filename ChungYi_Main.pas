@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, OleCtrls, Grids, DBGrids, ComCtrls,
   ExtCtrls, ToolWin, DBCtrls, Mask, SHDocVw, mshtml, ShellAPI, Public_Variant,
-  SKCOMLib_TLB, ComObj, OleServer, StockHandle, OverSeasOrder, String_Handle;
+  SKCOMLib_TLB, ComObj, OleServer, StockHandle, OverSeasOrder, String_Handle,
+  SQLFunction;
 
 type
   TfmChungYi = class(TForm)
@@ -358,15 +359,14 @@ type
     dbe_Z: TDBEdit;
     dbnOption: TDBNavigator;
     grid_Calculate: TStringGrid;
-    grid_2nd: TStringGrid;
+    grid_test: TStringGrid;
     Label90: TLabel;
-    grid_3rd: TStringGrid;
+    grid_3rd_1: TStringGrid;
     dtpChouEnd: TDateTimePicker;
     Label89: TLabel;
     dtpChouStart: TDateTimePicker;
     dbcShowA4: TDBCheckBox;
-    btnTable2: TButton;
-    btnTable3: TButton;
+    btnOuputTable: TButton;
     ChouTimer: TTimer;
     dbeFloat_1_1: TDBEdit;
     Label91: TLabel;
@@ -430,7 +430,6 @@ type
     Label117: TLabel;
     dbeInternal_11_1_2: TDBEdit;
     Label118: TLabel;
-    dbcEngine_1_Check: TDBCheckBox;
     dbeEngine_1_1: TDBEdit;
     Label119: TLabel;
     dbcEngine_2_Check: TDBCheckBox;
@@ -494,19 +493,28 @@ type
     dbeEngine_21_1: TDBEdit;
     Label138: TLabel;
     Label139: TLabel;
+    tsDDE_Result: TTabSheet;
+    Panel9: TPanel;
+    grid_3rd: TStringGrid;
+    cbToLast: TCheckBox;
+    tableToLast: TCheckBox;
+    grid_2nd: TStringGrid;
+    SKReplyLib1: TSKReplyLib;
+    dbeTimeShit: TDBEdit;
+    Label140: TLabel;
+    radiog_Period: TRadioGroup;
+    dbcEngine_1_Check: TDBCheckBox;
     procedure btnLogOnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnAutoBuyClick(Sender: TObject);
     procedure btnOpenInterestClick(Sender: TObject);
-    procedure btnCreditClick(Sender: TObject);
     procedure btnBalanceClick(Sender: TObject);
     procedure cbAutoBalanceClick(Sender: TObject);
     procedure BalanceTimerTimer(Sender: TObject);
     procedure BackupBuyTimerTimer(Sender: TObject);
-    procedure OpenInterestTimerTimer(Sender: TObject);
     procedure dbnaviParamClick(Sender: TObject; Button: TNavigateBtn);
-    procedure NormalOrder(OrderType: String; BuySell: String; OrderParam: String='');
+ //   procedure NormalOrder(OrderType: String; BuySell: String; OrderParam: String='');
     procedure cbbDateClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnDeleteOrderClick(Sender: TObject);
@@ -529,6 +537,18 @@ type
     procedure ShowMainTable();
     procedure Num_Only_KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+    procedure tsTableDDEExit(Sender: TObject);
+    procedure UpdateGridTable(UpdateOnly: boolean);
+    procedure tsDDE_ResultShow(Sender: TObject);
+    procedure SKReplyLib1Connect(ASender: TObject; const bstrUserID: WideString;
+      nErrorCode: Integer);
+    procedure SKReplyLib1Data(ASender: TObject; const bstrUserID,
+      bstrData: WideString);
+    procedure btnOuputTableClick(Sender: TObject);
+    procedure radiog_PeriodClick(Sender: TObject);
+    procedure PageControl_MainChange(Sender: TObject);
+    procedure SKReplyLib1SolaceReplyDisconnect(ASender: TObject;
+      const bstrUserID: WideString; nErrorCode: Integer);
 
 
   private
@@ -538,69 +558,30 @@ type
     procedure AddAccount(strAccount: String);
   end;
 
-  function SKOrderLib_Initialize( Name: PAnsiChar; Password: PAnsiChar) : integer; stdcall; external Public_Variant.SKOrderLib;
-  function RegisterOnAccountCallBack( CallBack : Pointer) : integer; stdcall; external Public_Variant.SKOrderLib;
-  function GetUserAccount() : integer; stdcall; external Public_Variant.SKOrderLib;
-  function SKOrderLib_ReadCertByID( ID: PAnsiChar) : integer; stdcall; external Public_Variant.SKOrderLib;
-  // 期貨委託
-  function SendFutureOrder( Account: PAnsiChar; Symbol : PAnsiChar; TradeType : Smallint;
-       DayTrade : Smallint; BuySell : Smallint; Price : PAnsiChar; iQty: Integer;
-       Msg : PAnsiChar; MsgLen : PInt) : integer; stdcall; external Public_Variant.SKOrderLib;
-  // 證券委託
-  function SendStockOrder( Account: PAnsiChar; Symbol : PAnsiChar; intPeriod : Smallint;
-       intFlag : Smallint; BuySell : Smallint; Price : PAnsiChar; iQty: Integer;
-       Msg : PAnsiChar; MsgLen : PInt) : integer; stdcall; external Public_Variant.SKOrderLib;
-  // 選擇權委託
-  function SendOptionOrder( Account: PAnsiChar; Symbol : PAnsiChar; TradeType : Smallint;
-       DayTrade : Smallint; BuySell : Smallint; Price : PAnsiChar; iQty: Integer;
-       Msg : PAnsiChar; MsgLen : PInt) : integer; stdcall; external Public_Variant.SKOrderLib;
-  function CancelOrderBySeqNo( Account: PAnsiChar; OrderNo: PAnsiChar): integer; stdcall; external Public_Variant.SKOrderLib;
-  function CancelOrderByStockNo( Account: PAnsiChar; Symbol: PAnsiChar): integer; stdcall; external Public_Variant.SKOrderLib;
-
-  // 查詢傳入帳號目前的未平倉內容
-  function GetOpenInterest(Account: PAnsiChar): integer; stdcall; external Public_Variant.SKOrderLib;
-  function RegisterOnOpenInterestCallBack(CallBack : Pointer) : integer; stdcall; external Public_Variant.SKOrderLib;
-  // 查詢證券即時庫存內容
-  function GetRealBalanceReport(Account: PAnsiChar): integer; stdcall; external Public_Variant.SKOrderLib;
-  function RegisterOnRealBalanceReportCallBack(CallBack : Pointer) : integer; stdcall; external Public_Variant.SKOrderLib;
-
-  // 停損單處理
-  function RegisterOnStopLossReportCallBack( CallBack : Pointer) : integer; stdcall; external Public_Variant.SKOrderLib;
-  function GetStopLossReport(Account: PAnsiChar; RequestType:integer; Kind: PAnsiChar) : integer; stdcall; external Public_Variant.SKOrderLib;
-  function SendFutureStopLoss( Account: PAnsiChar; Symbol : PAnsiChar; TradeType : Smallint;
-       DayTrade : Smallint; BuySell : Smallint; Price : PAnsiChar; iQty: Integer;
-       TriggerPrice : PAnsiChar; Msg : PAnsiChar; MsgLen : PInt) : integer; stdcall; external Public_Variant.SKOrderLib;
-  // 根據查詢回來的停損單內容做取消
-  function CancelFutureStopLoss( Account, BookNo, Symbol, BuySell, Price, Qty,
-       TriggerPrice, TradeType, DayTrade:PAnsiChar;  Msg: PAnsiChar; MsgLen: PInt) : integer; stdcall; external Public_Variant.SKOrderLib;
-
- // 回報部分
-  function SKReplyLib_Initialize( Name: PAnsiChar; Password: PAnsiChar) : integer; stdcall; external Public_Variant.SKReplyLib;
-  function SKReplyLib_ConnectByID(Name: PAnsiChar) : integer; stdcall; external Public_Variant.SKReplyLib;
-  function SKReplyLib_CloseByID(Name: PAnsiChar) : integer; stdcall; external Public_Variant.SKReplyLib;
-  function RegisterOnConnectCallBack(CallBack : Pointer) : integer; stdcall; external Public_Variant.SKReplyLib;
-  function RegisterOnDataCallBack(CallBack : Pointer) : integer; stdcall; external Public_Variant.SKReplyLib;
-
 var
   fmChungYi: TfmChungYi;
   SignalList: TStringList;
   FileName, CurrDir: String;
   BuySellSum: Integer;
   Userid, PassWord: AnsiString;
-  TradeQty: Integer= 0; // 下單口數
+//  TradeQty: Integer= 0; // 下單口數
   StockAccount, FutureAccount: AnsiString; // 證券帳號
   TimeGate: Integer= 0; // 控制計時只能執行一次
   BalanceGate: Boolean; // 是否手動平倉, 控制 TradeQty
 
   hSKQ: THandle = 0;
   InsertMode: boolean;
+  ShiftTime: Extended;
+  HisTable_List: TStringList; // for ras data table
+
+  CheckTimer: Integer;
 
 implementation
 
 uses Registry, RegistryGetSet, DMRecord, DataParsing, Quote,
      String_Form, Quote_uSKQ, Stock_OptionOrder, Strategy, StringList_Fun, SetParameter,
      DB_Handle, DB_Type, getK_Value, AdjustField, Calculate_Grid, TopValue, Strategy_Special,
-     K_Line_Save, GeneralValue, SystemFun;
+     K_Line_Save, GeneralValue, SystemFun, OrderHandle, Initial_Setting;
 
 {$R *.dfm}
 
@@ -620,21 +601,10 @@ begin
   RealReport(WideString( bstrReport), 'Interest');
 end;
 
-// 回報部分, 連接
-Procedure OnConnect(bstrReport: PWideChar; ErrorCode: Integer); stdcall;
-begin
- GetAccount_Error(WideString(bstrReport), ErrorCode);
-end;
-
-Procedure OnData(bstrReport: PWideChar); stdcall;
-begin
-   TradeReportParsing(WideString(bstrReport));
-end;
-
 procedure TfmChungYi.FormCreate(Sender: TObject);
 var NowStock, NowQty: String;
 begin
-
+ fmChungYi.Caption:= '群益下單介面  ' + Public_Variant.Version_Str;
  ShowMainTable();
  TempList:= TStringList.Create;
  TempList.LoadFromFile('Account.txt');
@@ -678,7 +648,7 @@ begin
  dtpChouEnd.Date:= Date;
 
  // 取得目前產品
- GetNowStock(NowStock, NowQty);
+ GetNowStock(NowStock, NowQty, ShiftTime);
  cbbCommNO.Text:= NowStock;
  edtQty.Text:= NowQty;
  StockHandle.GetStockStartEnd_Str(cbbCommNO.Text);
@@ -690,24 +660,27 @@ procedure TfmChungYi.GetDateTimerTimer(Sender: TObject);
 var SystemTime: String;
 begin // 先取得交易日期
 
-// ConvertObj('fmChungYi.dbcEngine_', '1' + '_Check', clRed);
+// if(Public_Variant.UserNM= 'MrHuang') then begin
+   SystemTime:= FormatDateTime('hh:mm:ss', Time);
+   if SystemTime >= Public_Variant.StartTime then begin
+     GetDateTimer.Enabled:= False;
 
- SystemTime:= FormatDateTime('hh:mm:ss', Time);
+    ThisTradeDate:= DateToStr(Date);
+    if(Public_Variant.UserNM<> 'JackyChou') then begin
+      if DayOfWeek(Date)= 1 then ThisTradeDate:= DateToStr(Date - 2);
+      if DayOfWeek(Date)= 7 then ThisTradeDate:= DateToStr(Date - 1);
+    end;
 
- if SystemTime >= Public_Variant.StartTime then begin
-   GetDateTimer.Enabled:= False;
-  // WebBrowser1.Navigate('http://tw.futures.finance.yahoo.com/future/l/future_1.html');
-   ThisTradeDate:= DateToStr(Date);
-   if DayOfWeek(Date)= 1 then ThisTradeDate:= DateToStr(Date - 2);
-   if DayOfWeek(Date)= 7 then ThisTradeDate:= DateToStr(Date - 1);
-   btnLogOn.Click;
+    btnLogOn.Click;
 
-   if(Public_Variant.UserNM= 'MrHuang') then begin
-     StrategyBegin();
-     if(IsSpecial_OrderToday) and GoStrategy_Special_1 then
-       Special_1_Active(cbbCommNO.Text);
+    if(Public_Variant.UserNM= 'MrHuang') then begin
+      StrategyBegin();
+      if(IsSpecial_OrderToday) and GoStrategy_Special_1 then
+        Special_1_Active(cbbCommNO.Text);
+    end;
    end;
- end;
+// end;
+
 end;
 
 procedure TfmChungYi.AddAccount( strAccount : String);
@@ -766,44 +739,27 @@ var iCode : integer;
     LogInfo: String;
  //   SKCenterLib: SKCenterLib_Class;
 begin
-   Userid:= Trim(AnsiString(edUserid.Text));
-   PassWord:= Trim(AnsiString(edPassword.Text));
-   // 下單初始化
+   Userid:= Trim(WideString(edUserid.Text));
+   PassWord:= Trim(WideString(edPassword.Text));
+ {  // 下單初始化
    iCode := SKOrderLib_Initialize(PAnsiChar(Userid) , PAnsiChar(PassWord));
    // 回報初始化, 指定回報連線的使用者登入帳號
    iCode := SKReplyLib_Initialize(PAnsiChar(Userid) , PAnsiChar(PassWord));
    iCode:= RegisterOnConnectCallBack(@OnConnect); // 此時 iCode應 = 1
    iCode := SKReplyLib_ConnectByID(PAnsiChar(Userid));
+   }
    // 報價單開啟
    Application.CreateForm(TfmQuote, fmQuote);
    fmQuote.Show;
    fmQuote.edtLogID.Text:= Userid;
    fmQuote.edtPass.Text:= PassWord;
-   fmQuote.btnLogin.Click;
 
+   iCode:= 0;
    if iCode <> SK_SUCCESS then
     ShowMessage( '初始失敗, 代碼: ' + IntToStr( iCode))
    else begin
-       if(ResultCode<> 0) then
-         ShowMessage( '初始失敗, 代碼: ' + IntToStr( ResultCode));
 
-
-      // ShowMessage('帳號初始成功!');
-       RegisterOnAccountCallBack(@OnAccount);
-       // 讀取帳號
-       GetUserAccount;
-       // 讀取憑證
-       btnCreditClick(nil);
-
-       // 委託回報
-       iCode:= RegisterOnDataCallBack(@OnData); // 此時 iCode應 = 1
-       // 註冊未平倉及證券庫存
-    //   iCode:= RegisterOnOpenInterestCallBack(@OnOpenInterest);
-    //   iCode:= iCode + RegisterOnRealBalanceReportCallBack(@OnRealBalanceReport);
-       // 獲取未平倉內容
-     //  fmChungYi.OpenInterestTimer.Enabled:= True;
-     //  GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
-       fmChungYi.Caption:= '輸入註冊的帳號密碼 (目前 ID 為: ' + edUserid.Text + ')';
+       fmChungYi.Caption:= '輸入註冊的帳號密碼 (目前 ID 為: ' + edUserid.Text + ')  ' + Public_Variant.Version_Str;
        edUserid.Enabled:= False;
        edPassword.Enabled:= False;
 
@@ -816,6 +772,8 @@ begin
        ResultCode:= fmQuote.SKOrderLib1.SKOrderLib_Initialize();
        iCode:= fmQuote.SKOrderLib1.GetUserAccount;
        iCode := fmQuote.SKOrderLib1.ReadCertByID(PAnsiChar(Userid));
+       SKReplyLib1.Connect();
+    //   iCode := SKReplyLib1.SKReplyLib_ConnectByID(Userid);
 
        if(Public_Variant.FuturOrderType= '期貨') then begin
           fmQuote.SKQuoteLib1.SKQuoteLib_EnterMonitor();
@@ -830,26 +788,20 @@ begin
 
    end;
 end;
+
 // 依商品代號取消委託單
 procedure TfmChungYi.btnCancelByNOClick(Sender: TObject);
 var iCode : integer;
+    msg_response: PWideString;
 begin
-   iCode := CancelOrderByStockNo( PAnsiChar(AnsiString(cbAccount.Text)), PAnsiChar(AnsiString(cbbCommNO.Text)));
+  if(Public_Variant.FuturOrderType= '期貨') then begin
+ //   iCode := fmQuote.SKOrderLib1.CancelOrderByStockNo(WideString(Userid), false, WideString(FutureAccount), StrockNM_W_Comma, PWideString(msg_response));
+  end else begin
+ //   fmQuote.SKOrderLib1.OverSeaCancelOrderBySeqNo(Userid, false, WideString(FutureAccount), WideString(StrockNM_W_Comma), msg_response);
+  end;
+
    if iCode <> SK_SUCCESS then
     ShowMessage( '取消失敗, Code: ' + IntToStr( iCode));
-end;
-
-procedure TfmChungYi.btnCreditClick(Sender: TObject);
-var iCode : integer;
-begin
-   iCode := SKOrderLib_ReadCertByID(PAnsiChar(Userid));
-
-   if iCode <> SK_SUCCESS then
-   begin
-    ShowMessage('憑證讀取失敗, 代碼: ' + IntToStr( iCode));
-   end else begin
-   // ShowMessage('憑證讀取成功!');
-   end;
 end;
 
 // 刪除原始記錄
@@ -897,84 +849,7 @@ end;
 procedure TfmChungYi.btnBalanceClick(Sender: TObject);
 var InvenResult: TInventory_Stock;
 begin
-
- OrderType:= 'Balance';
- InvenResult:= DB_Handle.CheckInventory(cbbCommNO.Text);
-
- if InvenResult.LeftQty > 0 then begin
-  if InvenResult.LastBuySell = 'B' then fmChungYi.NormalOrder('Balance', 'S', 'Manual')
-  else fmChungYi.NormalOrder('Balance', 'B', 'Manual');
- end else begin
-   ShowMessage('無留倉單');
- end;
-end;
-
-// 下單參數
-procedure TfmChungYi.NormalOrder(OrderType: String; BuySell: String; OrderParam: String='');
-var J: Integer;
-    InvenResult: TInventory_Stock;
-    LeftQty: Integer;
-begin
-   if(edtQty.Text= '') then
-     edtQty.Text:= '1';
-   InvenResult:= DB_Handle.CheckInventory(cbbCommNO.Text);
-
-//   if TickTime < '13:44:01' then begin// 13:44:01 以後不下單
-   if TickTime < Public_Variant.EndTime then begin// 13:44:01 以後不下單
-     KeepListData(); // 保留檢查資料
-     if (edtQty.Text= '0') or (edtQty.Text= '') then edtQty.Text:= '1';
-
-     if BuySell= 'B' then begin
-       rgBuySell.ItemIndex:= 0;
-       NowBuySell:= 'B';
-      end;
-     if BuySell= 'S' then begin
-       rgBuySell.ItemIndex:= 1;
-       NowBuySell:= 'S';
-      end;
-   end else
-     exit;
-
-    OrderParamList.Add(TickTime + ',' + BuySell + ',' + FloatToStr(CloseP) + ',' + OrderParam);
-    OrderParamList.SaveToFile('OrderParamList.txt');
-
-
-    if InvenResult.LeftQty > 0 then begin// 有庫存
-      if OrderType= 'Balance' then begin// 平倉 // NowBuySell 表目前庫存
-        TradeQty:= InvenResult.LeftQty;
-      //  NowBuySell:= ''; // 平倉時, NowBuySell 清空, 新倉則在下面註記
-      end;
-
-      if OrderType= 'Order' then begin  // 反向單
-        TradeQty:= StrToInt(edtQty.Text) + InvenResult.LeftQty;
-      end;
-
-      if(InvenResult.LastBuySell='S') then begin
-        rgBuySell.ItemIndex:= 0;
-        NowBuySell:= 'B'
-      end else if(InvenResult.LastBuySell='B') then begin
-        rgBuySell.ItemIndex:= 1;
-        NowBuySell:= 'S';
-      end;
-
-    end else begin   // 無庫存, 只能新倉
-      cbbCommNO.Text:= cbbCommNO.Text;
-      TradeQty:= StrToInt(edtQty.Text);
-      NowBuySell:= BuySell;
-    end;
-
-    LeftQty:= TradeQty - InvenResult.LeftQty;
-    if(Public_Variant.FuturOrderType= '期貨') then
-      FutureOrder(LeftQty, NowBuySell, TradeQty)
-    else if(Public_Variant.FuturOrderType= '外期') then
-      OverSeasOrder.OverseasFutureOrder(CloseP, LeftQty, NowBuySell, TradeQty);
-
-    BreakLoop:= True; // 下完單後, 下單跳離設為 True
-    A13LowReturn:= False;
-    A13HighReturn:= False;
-    B_OrderOK:= False; // 一下單後, B_OrderOK 立刻轉為 false, 反反向不可下單
-
-    Get_D53_D53(6);
+ OrderHandle.btnBalance();
 end;
 
 procedure TfmChungYi.cbAutoBalanceClick(Sender: TObject);
@@ -1010,19 +885,32 @@ begin
  OrderType:= 'Order';
  fmChungYi.lbFail.Visible:= False;
  if rgBuySell.ItemIndex= 0 then
-   NormalOrder('Order', 'B')
+   OrderHandle.NormalOrder('Order', 'B')
  else if rgBuySell.ItemIndex= 1 then
-   NormalOrder('Order', 'S');
+   OrderHandle.NormalOrder('Order', 'S');
 end;
 
 // 未平倉部位
 procedure TfmChungYi.btnOpenInterestClick(Sender: TObject);
 begin
-// GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
   if(Public_Variant.FuturOrderType= '期貨') then
     fmQuote.SKOrderLib1.GetOpenInterest(WideString(Userid), WideString(FutureAccount))
   else if(Public_Variant.FuturOrderType= '外期') then
     fmQuote.SKOrderLib1.GetOverSeaFutureOpenInterest(WideString(Userid), WideString(FutureAccount)) ;
+end;
+
+procedure TfmChungYi.btnOuputTableClick(Sender: TObject);
+var  Table2_List, Table3_List: TStringList;
+begin
+  Table2_List:= TStringList.Create;
+  Table3_List:= TStringList.Create;
+  getAll_Grid(grid_2nd, Table2_List);
+  getAll_Grid(grid_3rd, Table3_List);
+
+  Table2_List.SaveToFile(Public_Variant.PathDir + 'table\Table2.txt');
+  Table3_List.SaveToFile(Public_Variant.PathDir + 'table\Table3.txt');
+  FreeAndNil(Table2_List);
+  FreeAndNil(Table3_List);
 end;
 
 // 重新下單 timer
@@ -1032,10 +920,13 @@ begin
  btnAutoBuy.Click;
 end;
 
-// 獲取未平倉內容 timer
-procedure TfmChungYi.OpenInterestTimerTimer(Sender: TObject);
+
+procedure TfmChungYi.PageControl_MainChange(Sender: TObject);
 begin
- GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
+{  if(PageControl_Main.ActivePageIndex <> 8)
+    and (PageControl_Main.ActivePageIndex <> 9) then
+    if Assigned(HisTable_List) then FreeAndNil(HisTable_List);
+    }
 end;
 
 procedure TfmChungYi.PageControl_MainChanging(Sender: TObject; var AllowChange: Boolean);
@@ -1044,37 +935,92 @@ begin
   ChouTimer.Enabled:= false;
 end;
 
-procedure TfmChungYi.tsTableDDEShow(Sender: TObject);
-var IsShowA4: boolean;
+procedure TfmChungYi.radiog_PeriodClick(Sender: TObject);
 begin
-  InsertMode:= true;
-  DataModule1.asq_Option.Active:= True;
-  DataModule1.asq_Option.Open;
-  DataModule1.asqQU_TradeRecord.Active:= True;
+  if(radiog_Period.ItemIndex= 0) then begin
+    dtpChouStart.Date:= Date;
+    dtpChouEnd.Date:= Date;
+    dtpChouStart.Enabled:= false;
+    dtpChouEnd.Enabled:= false;
+  end else begin
+    dtpChouStart.Enabled:= true;
+    dtpChouEnd.Enabled:= true;
+  end;
+  tsTableDDEShow(nil);
+end;
 
-{  DataModule1.asqQU_TradeRecord.SQL.Text:=
+procedure TfmChungYi.tsTableDDEExit(Sender: TObject);
+begin
+  GridClear(grid_test);
+  grid_test.RowCount:= 2;
+end;
+
+procedure TfmChungYi.tsTableDDEShow(Sender: TObject);
+var i: Integer;
+begin
+  DataModule1.asq_Option.Active:= true;
+  InsertMode:= true;
+  HisTable_List:= TStringList.Create;
+  if(radiog_Period.ItemIndex= -1) then begin
+    radiog_Period.ItemIndex:= 0;
+  end;
+
+  if(radiog_Period.ItemIndex= 0) then begin   // on time
+    HisTable_List:= AllSQLList;
+  end else begin  // history
+    DataModule1.asq_Option.Active:= True;
+    DataModule1.asq_Option.Open;
+    DataModule1.asqQU_TradeRecord.Active:= True;
+{
+ DataModule1.asqQU_TradeRecord.SQL.Text:=
    'select * from TradeRecord where StockNO="' + cbbCommNO.Text + '" '
    + ' and TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) +  '"'
    + ' order by SN asc limit 100000';
- }
-  DataModule1.asqQU_TradeRecord.SQL.Text:=
-   'select ("TradeDate" || " " || "TickTime") AS TradeDate_new, * from TradeRecord where StockNO="' + cbbCommNO.Text + '" '
-   + ' and TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) +  '"'
-   + ' order by SN asc limit 100000';
   DataModule1.asqQU_TradeRecord.Open;
+ }
 
+    QuickSqliteOutput(DataModule1.asqQU_TradeRecord, 'TableRawData_' + cbbCommNO.Text + '.Txt',
+    'select * from TradeRecord where TradeDate between "' +  DateToStr(dtpChouStart.Date) + '" and "' + DateToStr(dtpChouEnd.Date) + '" and StockNO="' + cbbCommNO.Text + '"', ',', True);
+    HisTable_List.LoadFromFile('TableRawData_' + cbbCommNO.Text + '.Txt');
+  end;
+
+
+  // Table adjust
+  grid_Calculate.ColWidths[0]:= 50;
+  grid_2nd.ColWidths[0]:= 50;
+  grid_3rd.ColWidths[0]:= 50;
+  for i := 1 to grid_Calculate.ColCount - 1 do
+    grid_Calculate.ColWidths[i]:= 50;
+  for i := 1 to grid_2nd.ColCount - 1 do
+    grid_2nd.ColWidths[i]:= 50;
+  for i := 1 to grid_3rd.ColCount - 1 do
+    grid_3rd.ColWidths[i]:= 50;
+
+  grid_Calculate.ColWidths[1]:= 130; // DateTime
+  grid_2nd.ColWidths[1]:= 130;
+  grid_3rd.ColWidths[1]:= 130;
+
+
+
+  MoveField_GridList(dbg_TradeRecord);
+  Initial_StringGrid(grid_test, dbcb_1st_Item, dbcb_2nd_Item, dbcb_3rd_Item, dbcb_4th_Item);
+  UpdateGridTable(false);
+  ChouTimer.Enabled:= true;
+end;
+
+procedure TfmChungYi.UpdateGridTable(UpdateOnly: boolean);
+var IsShowA4: boolean;
+begin
   IsShowA4:= DataModule1.asq_Option.FieldByName('Option5').AsString= 'T';
-  MoveField(dbg_TradeRecord);
-  if(not ChkNumStr(dbe_X.Text) or not ChkNumStr(dbe_Y.Text) or not ChkNumStr(dbe_Z.Text)) then
-    abort;
-  RunTable_1st(dbg_TradeRecord, grid_Calculate, grid_2nd, grid_3rd,
-    StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text), StrToFloat(dbe_Z.Text), IsShowA4);
-  MoveField(dbg_TradeRecord);
+  RunTable_1st_fromList(grid_Calculate, grid_2nd, grid_3rd,  StrToFloat(dbe_X.Text), StrToFloat(dbe_Y.Text),
+      StrToFloat(dbe_Z.Text), IsShowA4, grid_test, UpdateOnly, tableToLast.Checked);
+end;
 
-  dbg_TradeRecord.Columns[0].Title.Caption:= dbcb_1st_Item.Text;
-  dbg_TradeRecord.Columns[1].Title.Caption:= dbcb_2nd_Item.Text;
-  dbg_TradeRecord.Columns[2].Title.Caption:= dbcb_3rd_Item.Text;
-  dbg_TradeRecord.Columns[3].Title.Caption:= dbcb_4th_Item.Text;
+procedure TfmChungYi.tsDDE_ResultShow(Sender: TObject);
+begin
+//  MoveField_GridList(dbg_TradeRecord);
+//  Initial_StringGrid(grid_test, dbcb_1st_Item, dbcb_2nd_Item, dbcb_3rd_Item, dbcb_4th_Item);
+  UpdateGridTable(true);
   ChouTimer.Enabled:= true;
 end;
 
@@ -1164,10 +1110,11 @@ begin
     DataModule1.asq_StartEnd.RecNo:= nowRecordNO;
 
     // 取得目前產品
-    GetNowStock(NowStock, NowQty);
+    GetNowStock(NowStock, NowQty, ShiftTime);
     cbbCommNO.Text:= NowStock;
     edtQty.Text:= NowQty;
-    StockHandle.GetStockStartEnd_Str(cbbCommNO.Text);
+    // Must re-start
+ //   StockHandle.GetStockStartEnd_Str(cbbCommNO.Text);
  end;
 
 end;
@@ -1212,8 +1159,22 @@ begin
 end;
 
 procedure TfmChungYi.ChouTimerTimer(Sender: TObject);
+var SQL_Str, temp_str: String;
+    Filed_Index: TIntegerArray;
 begin
-  tsTableDDEShow(nil);
+
+ Filed_Index:= MoveField_GridList(dbg_TradeRecord);
+
+ if(HisTable_List= nil) then
+   Abort;
+
+  if(not ChkNumStr(stringreplace(dbe_X.Text, '-', '', [rfReplaceAll, rfIgnoreCase]))
+     or not ChkNumStr(stringreplace(dbe_Y.Text, '-', '', [rfReplaceAll, rfIgnoreCase]))
+     or not ChkNumStr(stringreplace(dbe_Z.Text, '-', '', [rfReplaceAll, rfIgnoreCase]))) then
+    abort;
+  InsertData_Grid(grid_test, HisTable_List, Filed_Index, cbToLast.Checked);
+
+  UpdateGridTable(true);
 end;
 
 procedure TfmChungYi.cbbDateClick(Sender: TObject);
@@ -1228,15 +1189,28 @@ end;
 
 procedure TfmChungYi.ShowMainTable();
 begin
-  if(UserNM= 'JackyChou') then begin
-    tsAutoOrder.TabVisible:= false;
-    tsParam_New.TabVisible:= false;
-  //  tsOrderRecord.TabVisible:= false;
-    tsOpenInterest.TabVisible:= false;
-  end else if(UserNM= 'MrHuang') then begin
-    tsTableDDE.TabVisible:= false;
-  end;
+  Initial_Setting.Initial_UI();
 
+end;
+
+// 回報部分, 連接
+procedure TfmChungYi.SKReplyLib1Connect(ASender: TObject;
+  const bstrUserID: WideString; nErrorCode: Integer);
+begin
+//  ShowMessage( '代碼: ' + IntToStr(nErrorCode)) ;
+end;
+
+// 委託回報
+procedure TfmChungYi.SKReplyLib1Data(ASender: TObject; const bstrUserID,
+  bstrData: WideString);
+begin
+  TradeReportParsing(WideString(bstrData));
+end;
+
+procedure TfmChungYi.SKReplyLib1SolaceReplyDisconnect(ASender: TObject;
+  const bstrUserID: WideString; nErrorCode: Integer);
+begin
+  DB_Handle.UpdateRestart('1');
 end;
 
 end.

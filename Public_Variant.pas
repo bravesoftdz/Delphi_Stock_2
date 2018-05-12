@@ -96,9 +96,10 @@ type  // 傳遞執行緒參數
   end;
 
 var
+ Version_Str: String;
  PathDir: String;
 
- SystemTime: Integer; // 系統時間
+// SystemTime: Integer; // 系統時間
  TradePrice: String; // 成交價
  OpenInterestQty: Integer; // 控制下單後要取得未平倉內容幾次
  TriggerInternal: Boolean; // 成交函數是否經由內部觸發, 控制 IE / 策略王下單觸發狀況
@@ -110,7 +111,7 @@ var
  sStrategy: TStrategy;
 
  TempList: TStringList;
- StartTime, EndTime, FuturOrderType: String;
+ StartTime, EndTime, LastMiniute, FuturOrderType: String;
 
  SQLStr, TickTime: String;
  DateList: TStringList; //  擷取目前資料庫的日期序列
@@ -125,7 +126,7 @@ var
  Last_K: Extended; // 最近一根 K 值
  LastSN, LastIndexSN, FigureSN: Integer; // 記錄 traderecord, Indextable, 圖形的最後一筆序號
  StopGate: Boolean; // 持續下載時, 先擋住後面送進來資料
- TotalQty: Integer; // 目前總共下載筆數
+// TotalQty: Integer; // 目前總共下載筆數
 
  // K 線資料
  // 目前時間 (分鐘)

@@ -292,6 +292,8 @@ type
     Cre_NewParam: TASQLite3Query;
     cds_Temp: TClientDataSet;
     Provider_Temp: TDataSetProvider;
+    ds_cdsTemp: TDataSource;
+    asq_StartEndShitTime: TStringField;
 
 
     function AssignSN(TableNM: String): Integer;
@@ -312,7 +314,7 @@ type
 var
   DataModule1: TDataModule1;
 
-  DB_Ver: String= '12';
+  DB_Ver: String= '16';
 
 implementation
 
@@ -378,6 +380,8 @@ begin
  DataModule1.asq_Configu.Open;
  DataModule1.asq_NewParam.Active:= True;
  DataModule1.asq_NewParam.Open;
+
+// DataModule1.asqQU_TradeRecord.Active:= True;
 end;
 
 procedure TDataModule1.asqQU_RecordSNGetText(Sender: TField; var Text: string;

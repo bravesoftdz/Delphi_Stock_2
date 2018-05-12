@@ -40,7 +40,7 @@ object fmQuote: TfmQuote
       Caption = #23494#30908
     end
     object Label3: TLabel
-      Left = 311
+      Left = 301
       Top = 19
       Width = 48
       Height = 13
@@ -78,15 +78,6 @@ object fmQuote: TfmQuote
       PasswordChar = '*'
       TabOrder = 0
     end
-    object btnLogin: TButton
-      Left = 228
-      Top = 14
-      Width = 75
-      Height = 25
-      Caption = #30331#20837
-      TabOrder = 2
-      OnClick = btnLoginClick
-    end
     object dtpDate: TDateTimePicker
       Left = 370
       Top = 13
@@ -94,7 +85,7 @@ object fmQuote: TfmQuote
       Height = 21
       Date = 40788.496454895830000000
       Time = 40788.496454895830000000
-      TabOrder = 3
+      TabOrder = 2
       OnChange = dtpDateChange
     end
   end
@@ -169,7 +160,6 @@ object fmQuote: TfmQuote
       Caption = #32362#35069'K'#32218
       TabOrder = 4
       Visible = False
-      OnClick = btnHistoryKLineClick
     end
     object edtStart: TEdit
       Left = 301
@@ -221,12 +211,7 @@ object fmQuote: TfmQuote
     BottomAxis.LabelStyle = talValue
     BottomAxis.Maximum = 0.999305555555555600
     BottomAxis.Minimum = 0.250000000000000000
-    LeftAxis.Automatic = False
-    LeftAxis.AutomaticMaximum = False
-    LeftAxis.AutomaticMinimum = False
     LeftAxis.LabelsFont.Color = clYellow
-    LeftAxis.Maximum = 449.016152343749800000
-    LeftAxis.Minimum = 1.673437500000015000
     LeftAxis.Title.Caption = #25104#20132#20729
     Pages.AutoScale = True
     RightAxis.Automatic = False
@@ -588,21 +573,11 @@ object fmQuote: TfmQuote
     Left = 704
     Top = 65528
   end
-  object SencondTimer: TTimer
-    OnTimer = SencondTimerTimer
-    Left = 576
-    Top = 32
-  end
   object LastTimer: TTimer
     Enabled = False
     Interval = 5000
     OnTimer = LastTimerTimer
     Left = 648
-    Top = 32
-  end
-  object A4Timer: TTimer
-    Enabled = False
-    Left = 704
     Top = 32
   end
   object TimerSystem: TTimer
@@ -633,6 +608,7 @@ object fmQuote: TfmQuote
     AutoConnect = False
     ConnectKind = ckRunningOrNew
     OnConnection = SKQuoteLib1Connection
+    OnNotifyHistoryTicks = SKQuoteLib1NotifyHistoryTicks
     OnNotifyTicks = SKQuoteLib1NotifyTicks
     OnNotifyBest5 = SKQuoteLib1NotifyBest5
     OnNotifyKLineData = SKQuoteLib1NotifyKLineData

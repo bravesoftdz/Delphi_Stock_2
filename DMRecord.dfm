@@ -721,6 +721,10 @@ object DataModule1: TDataModule1
       FieldName = 'FuterOrderType'
       Size = 255
     end
+    object asq_StartEndShitTime: TStringField
+      FieldName = 'ShitTime'
+      Size = 255
+    end
   end
   object asqUpSQL_StartEnd: TASQLite3UpdateSQL
     InsertSQL.Strings = (
@@ -754,7 +758,8 @@ object DataModule1: TDataModule1
         'Create table IF not EXISTS TradeRecord(SN Integer Primary Key Au' +
         'toincrement, StockNO varchar(5) , TradeDate Date , TickTime Time' +
         ' , BuyPrice Float , SellPrice Float , TradePrice Float , Qty Int' +
-        'eger , AveP Float, BuyQty Float,  SellQty Float, TickQty Float);'
+        'eger , AveP Float, BuyQty Float,  SellQty Float, TickQty Float, ' +
+        'AllQty Float, TickNO Integer);'
       
         'CREATE INDEX  IF not EXISTS StockNO ON TradeRecord (SN, StockNO,' +
         ' TradeDate,  TickTime );')
@@ -1359,7 +1364,8 @@ object DataModule1: TDataModule1
         'Create table IF not EXISTS tbStartEnd(SN Integer Primary Key Aut' +
         'oincrement, StockNO varchar(32), StartTime varchar(8), EndTime v' +
         'archar(8), BuySellQty Integer, BuySellType varchar(6), Enable va' +
-        'rchar(1), Flag varchar(1), FuterOrderType varchar(16));')
+        'rchar(1), Flag varchar(1), FuterOrderType varchar(16), ShitTime ' +
+        'varchar(5));')
     UpdateSQL = asqUpSQL_StartEnd
     Left = 512
     Top = 104
@@ -1802,6 +1808,11 @@ object DataModule1: TDataModule1
   object Provider_Temp: TDataSetProvider
     DataSet = asqQU_TradeRecord
     Left = 488
+    Top = 40
+  end
+  object ds_cdsTemp: TDataSource
+    DataSet = cds_Temp
+    Left = 672
     Top = 40
   end
 end

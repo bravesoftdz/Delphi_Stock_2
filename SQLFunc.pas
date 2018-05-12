@@ -26,7 +26,7 @@ begin
     isBuySell:= ListItem.SubItems.Strings[2];
 
   SQLStr:= 'insert into RecordMsg (SN, TradeDate, TradeTime, Account, '
-      + ' StockNM, BuySell, Criteria, Price, Qty, TradeSN, Msg, TestMode, LeftQty) values("'
+      + ' StockNM, BuySell, Criteria, Price, Qty, TradeSN, Msg, TestMode, LeftQty, OrderStrategy) values("'
       + IntToStr(DataModule1.AssignSN('RecordMsg')) + '", "'
       + ThistradeDate + '","'
       + ListItem.SubItems.Strings[0] + '","'
@@ -39,7 +39,7 @@ begin
       + ListItem.SubItems.Strings[6] + '","'
       + ListItem.SubItems.Strings[7] + '","'
       + IsTestMode + '",'
-      + IntToStr(LeftQty)
+      + IntToStr(LeftQty) 
       + ')' ;
   DataModule1.asqQU_Record.SQL.Text:= SQLStr;
   DataModule1.asqQU_Record.Open;

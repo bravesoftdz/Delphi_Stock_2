@@ -8,7 +8,7 @@ procedure DrawLastDate();
 implementation
 
 uses Quote, Quote_uSKQ, Public_Variant, SysUtils, Math, GeneralFunction, Strategy,
-     ChungYi_Main, StringList_Fun, DMRecord, Graphics, getK_Value;
+     ChungYi_Main, StringList_Fun, DMRecord, Graphics, getK_Value, ChouRule;
 
 procedure GetOriginalData();
 var LastTicktime: String;
@@ -26,12 +26,14 @@ begin
   SubAllList.DelimitedText:= SubAllList.Text;
   if SubAllList.Strings[2]= ThisTradeDate then
   begin
-   for I:= 0 to AllSQLList.Count - 1 do
-   begin
+   for I:= 0 to AllSQLList.Count - 1 do begin
     SubAllList.Text:= AllSQLList.Strings[I];
     SubAllList.Delimiter:= ',';
     SubAllList.DelimitedText:= SubAllList.Text;
     TickTime:= SubAllList.Strings[3];
+
+      if(I= AllSQLList.Count - 1) and (not TimeLimit(TickTime)) then
+        TotalTickQty:= StrToFloat(SubAllList.Strings[12]);
 
       // 每分鐘
       if Copy(FormatDateTime('hh:mm:ss', CurrMin), 1, 5) <> Copy(TickTime, 1, 5) then begin
@@ -50,8 +52,7 @@ begin
        // 判定是否留倉  13:44:00 ----> 0.5722222222
        if ((CurrMin - 0.5722222222)> 0) and ((CurrMin - 0.5722222222)< 1/8640) and LastTime then
        begin
-        LastPhase();  // E1_3 圖形趨勢
-        Strategy.Trigger_E_Strategy();  // E1_1, E1_2, E1_4, E1_5
+
         LastTime:= False;
        end;
       end;
@@ -132,8 +133,6 @@ begin
       MinuteQty:= MinuteQty + StrToInt(SubAllList.Strings[7]); // 每分鐘累積成交量
 
       Ave5P:= (Ave5P_4Total + CloseP) / 5;
-  //    Ave10P:= Round((Ave10P_4Total + CloseP) / 10);
-  //    Ave20P:= Round((Ave20P_4Total + CloseP) / 20);
 
       if UpDown = '' then  // 判斷K棒當收在均線上 or下方
       begin

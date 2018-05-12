@@ -35,14 +35,10 @@ var InvenResult: TInventory_Stock;
     Rule_1, Rule_2, Rule_3: boolean;
     Profit_Rate: Integer;
     D09: Extended;
-    K_Qty: Integer;
 begin
   Profit_Rate:= 0;
   InvenResult:= DB_Handle.CheckInventory(CommNO);
   D09:= InvenResult.LastPrice;
-  K_Qty:= DataModule1.asq_NewParam.FieldByName('PreOrder_1').AsInteger;
-  if(K_Qty = 0) then
-    exit;
 
   if InvenResult.LeftQty > 0 then begin
     if (InvenResult.LastBuySell='B') then begin

@@ -44,5 +44,8 @@
     <Transaction>2018/04/26 09:30:19.934.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Unit1.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Strategy\GeneralValue.pas</Transaction>
     <Transaction>2018/04/26 13:26:05.967.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Strategy\Strategy_InventAnti.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Strategy\Strategy_KeepOrder.pas</Transaction>
     <Transaction>2018/04/26 16:20:11.279.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Unit1.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\K_Value\Initial_K.pas</Transaction>
+    <Transaction>2018/05/06 23:17:29.818.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Unit1.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\MrChou\ChouRule.pas</Transaction>
+    <Transaction>2018/05/10 10:05:26.040.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Unit1.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Order\OrderHandle.pas</Transaction>
+    <Transaction>2018/05/11 18:13:58.420.pas,E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\Unit1.pas=E:\Delphi\Delphi\YuanTa_Future\YuanTa_Delphi_Official\MrChou\Initial_Setting.pas</Transaction>
   </Transactions>
 </BorlandProject>

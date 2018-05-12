@@ -16,7 +16,6 @@ type
     Label2: TLabel;
     edtPass: TEdit;
     edtLogID: TEdit;
-    btnLogin: TButton;
     GroupBox2: TGroupBox;
     btnDownLoad: TButton;
     Memo1: TMemo;
@@ -36,9 +35,7 @@ type
     lbOpen: TLabel;
     jedfMainQuote: TJvEmbeddedFormLink;
     lbHigh: TLabel;
-    SencondTimer: TTimer;
     LastTimer: TTimer;
-    A4Timer: TTimer;
     lbLow: TLabel;
     lbClose: TLabel;
     lbTickTime: TLabel;
@@ -65,7 +62,6 @@ type
     SKOSQuoteLib1: TSKOSQuoteLib;
     SKQuoteLib1: TSKQuoteLib;
     SKOrderLib1: TSKOrderLib;
-    procedure btnLoginClick(Sender: TObject);
     procedure btnDownLoadClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnDataBaseClick(Sender: TObject);
@@ -80,21 +76,15 @@ type
 
     procedure ClearNowData();
     procedure cbbStockNOChange(Sender: TObject);
-    procedure SencondTimerTimer(Sender: TObject);
     procedure dtpDateChange(Sender: TObject);
     procedure LastTimerTimer(Sender: TObject);
     procedure btnKLineClick(Sender: TObject);
-    procedure btnHistoryKLineClick(Sender: TObject);
+ //   procedure btnHistoryKLineClick(Sender: TObject);
     procedure SaveIndexTable();
     procedure TimerSystemTimer(Sender: TObject);
     procedure DownLoadTimerTimer(Sender: TObject);
-//    procedure SKOSQuoteLib1NotifyHistoryTicks(ASender: TObject;
-//      sStockIdx: SmallInt; nPtr, nTime, nClose, nQty: Integer);
     procedure SKOSQuoteLib1NotifyTicks(ASender: TObject; sStockIdx: SmallInt;
       nPtr, nTime, nClose, nQty: Integer);
- //   procedure SKQuoteLib1NotifyHistoryTicks(ASender: TObject; sMarketNo,
- //     sStockIdx: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk,
- //     nClose, nQty, nSimulate: Integer);
     procedure SKQuoteLib1NotifyTicks(ASender: TObject; sMarketNo,
       sIndex: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk, nClose,
       nQty, nSimulate: Integer);
@@ -102,7 +92,7 @@ type
       bstrData: WideString);
 
     procedure InputTicks(sMarket: SmallInt; iPtr: Integer; SK: SKSTOCK; TK: SKTICK;
-  StockNO, StockName: String; sIndex: SmallInt);
+  StockNO, StockName: String; sIndex: SmallInt; IsHistory: boolean);
     procedure cbbStockNODropDown(Sender: TObject);
     procedure SKOrderLib1OverseaFutureOpenInterest(ASender: TObject;
       const bstrData: WideString);
@@ -134,6 +124,9 @@ type
       nExtendBid, nExtendBidQty, nBestAsk1, nBestAskQty1, nBestAsk2,
       nBestAskQty2, nBestAsk3, nBestAskQty3, nBestAsk4, nBestAskQty4, nBestAsk5,
       nBestAskQty5, nExtendAsk, nExtendAskQty, nSimulate: Integer);
+    procedure SKQuoteLib1NotifyHistoryTicks(ASender: TObject; sMarketNo,
+      sStockIdx: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk,
+      nClose, nQty, nSimulate: Integer);
 
   private
     { Private declarations }
@@ -166,100 +159,18 @@ var
   StrockNM_W_Comma: String;
   StockList: TStringList;
   Dialog: TForm;
+  SpeedTime: boolean;
 
-//~~策略王 報價 回報與連線 procedure ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-procedure OnConnection(iKind: Integer; iCode: Integer); stdcall; export;
-procedure OnQuote(sMarket: SmallInt; sIndex: SmallInt); stdcall; export;
-procedure OnTicks(sMarket: SmallInt; sIndex: SmallInt; iPtr: Integer); stdcall; export;
-procedure OnDetailTicks(sMarket, sIndex: SmallInt; iPtr, nTime, nBid, nAsk, nClose, nQty: Integer); stdcall; export;
-procedure GetTime(HH, MM, SS, Total: Integer); stdcall; export; // Server time 系統時間
-
-  // 最佳五檔
-  procedure OnBest5(sMarket: SmallInt; sIndex: SmallInt); stdcall; export;
-//  function CancelOrderBySeqNo( Account: PAnsiChar; OrderNo: PAnsiChar): integer; stdcall; external SKQuoteLib;
-  function SKQuoteLib_GetKLine(StockNO: PChar; StockType: Integer): integer; stdcall; external Public_Variant.SKQuoteLib;
-  function SKQuoteLib_AttachKLineDataCallBack(CallBack : Pointer) : integer; stdcall; external Public_Variant.SKQuoteLib;
+  TotalTickQty: Extended;   // total tick qty
 
 implementation
 
 uses DMRecord, GeneralFunction, Strategy, ChungYi_Main, DataDownLoad, StringList_Fun,
      SQLFunction, Stock_OptionOrder, CheckNetwork, DB_Handle, DB_GetData, getK_Value,
-     AdjustField, K_Line_Save, K_Calculate, Initial_K;
+     AdjustField, K_Line_Save, K_Calculate, Initial_K, ChouRule, Strategy_PreOrder,
+     First_Check_Strategy, OrderHandle;
 
 {$R *.dfm}
-procedure TfmQuote.btnLoginClick(Sender: TObject);
-begin
-
-{
-  Tran_Time:=  StrToDateTime('2018/04/06 21:10:00');
-  timeDiff:= (Now - Tran_Time) * 24 * 60;
-  sK_LineList.OrderList.Add(FloatToStr(timeDiff));
- }
-
- {
-  if (Edit1.Text = '') or (Edit2.Text = '') then Exit;
-  try
-    if hSKQ <> 0 then
-      FreeLibrary(hSKQ);
-    hSKQ := LoadLibrary(Public_Variant.SKQuoteLib);
-    if hSKQ <> 0 then
-    begin
-      @SKQuoteLib_Initialize := GetProcAddress(hSKQ, 'SKQuoteLib_Initialize');
-      @SKQuoteLib_AttachConnectionCallBack := GetProcAddress(hSKQ, 'SKQuoteLib_AttachConnectionCallBack');
-      @SKQuoteLib_AttachQuoteCallBack := GetProcAddress(hSKQ, 'SKQuoteLib_AttachQuoteCallBack');
-      @SKQuoteLib_AttachTicksCallBack := GetProcAddress(hSKQ, 'SKQuoteLib_AttachTicksCallBack');
-      @SKQuoteLib_AttachBest5CallBack := GetProcAddress(hSKQ, 'SKQuoteLib_AttachBest5CallBack');
-      @SKQuoteLib_EnterMonitor := GetProcAddress(hSKQ, 'SKQuoteLib_EnterMonitor');
-      @SKQuoteLib_LeaveMonitor := GetProcAddress(hSKQ, 'SKQuoteLib_LeaveMonitor');
-      @SKQuoteLib_RequestStocks := GetProcAddress(hSKQ, 'SKQuoteLib_RequestStocks');
-      @SKQuoteLib_RequestTicks := GetProcAddress(hSKQ, 'SKQuoteLib_RequestTicks');
-      @SKQuoteLib_GetStockByNo := GetProcAddress(hSKQ, 'SKQuoteLib_GetStockByNo');
-      @SKQuoteLib_GetStockByIndex := GetProcAddress(hSKQ, 'SKQuoteLib_GetStockByIndex');
-      @SKQuoteLib_GetTick := GetProcAddress(hSKQ, 'SKQuoteLib_GetTick');
-      @SKQuoteLib_GetBest5 := GetProcAddress(hSKQ, 'SKQuoteLib_GetBest5');
-      @SKQuoteLib_AttachFutureTradeInfoCallBack := GetProcAddress( hSKQ, 'SKQuoteLib_AttachFutureTradeInfoCallBack');
-      // 細部資料測試
-      @SKQuoteLib_AttachTicksGetCallBack:= GetProcAddress(hSKQ, 'SKQuoteLib_AttachTicksGetCallBack');
-      @SKQuoteLib_AttchServerTimeCallBack := GetProcAddress(hSKQ, 'SKQuoteLib_AttchServerTimeCallBack');
-      @SKQuoteLib_GetServerTime := GetProcAddress(hSKQ, 'SKQuoteLib_GetServerTime');
-      @SKQuoteLib_RequestServerTime := GetProcAddress(hSKQ, 'SKQuoteLib_RequestServerTime');
-
-      if (@SKQuoteLib_Initialize <> nil) and (@SKQuoteLib_AttachConnectionCallBack <> nil) and
-        (@SKQuoteLib_AttachQuoteCallBack <> nil) and (@SKQuoteLib_AttachTicksCallBack <> nil) and
-        (@SKQuoteLib_AttachBest5CallBack <> nil) and (@SKQuoteLib_EnterMonitor <> nil) and
-        (@SKQuoteLib_RequestStocks <> nil) and (@SKQuoteLib_RequestTicks <> nil) and
-        (@SKQuoteLib_GetStockByNo <> nil) and (@SKQuoteLib_GetStockByIndex <> nil) and
-        (@SKQuoteLib_GetTick <> nil) and (@SKQuoteLib_GetBest5 <> nil) and ( @SKQuoteLib_AttachFutureTradeInfoCallBack <> nil)
-        and (@SKQuoteLib_AttachTicksGetCallBack<> nil) then
-      begin
-        iSKQStatus := SKQuoteLib_Initialize(PChar(AnsiString(Edit1.Text)), PChar(AnsiString(Edit2.Text)));
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttachConnectionCallBack(Integer(@OnConnection));
-
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttachQuoteCallBack(Integer(@OnQuote));
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttachTicksCallBack(Integer(@OnTicks));
-
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttachBest5CallBack(Integer(@OnBest5));
-        // 細部資料測試
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttachTicksGetCallBack(Integer(@OnDetailTicks));
-        iSKQStatus := iSKQStatus + SKQuoteLib_EnterMonitor;
-        // 傳送系統時間
-        iSKQStatus := iSKQStatus + SKQuoteLib_AttchServerTimeCallBack(Integer(@GetTime));
-
-      end;
-      if iSKQStatus <> 0 then
-      begin
-        FreeLibrary(hSKQ);
-        Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + '-> ' + '策略王 報價 登入有誤 !! ');
-      end else
-      begin
-       btnLogin.Enabled := False;
-      end;
-    end;
-  except
-    FreeLibrary(hSKQ);
-  end;
-    }
-end;
 
 procedure OnConnection(iKind, iCode: Integer);
 //~~策略王 報價 連線成功
@@ -267,82 +178,8 @@ begin
   fmQuote.Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + '-> ' + '報價 連線成功 !! (iKind = ' + IntToStr(iKind) + ', iCode = ' + IntToStr(iCode));
 end;
 
-procedure GetTime(HH, MM, SS, Total: Integer);  // 都擷取 total 值
-var sHour, sMinute, sSecond: Integer;
-begin
- // 第一個, SKQuoteLib_RequestServerTime() 後觸發 GetTime
- SystemTime:= Total;
-end;
-
-procedure OnQuote(sMarket, sIndex: SmallInt);
-//~~策略王 報價 成交價量回報
-var iSt, j: integer;
-  iDot: double;
-  Page: Smallint;
-begin
-  iSt := SKQuoteLib_GetStockByIndex(sMarket, sIndex, SK);
-  if iSt = 0 then
-  begin
-  //  iDot := Power(10, SK.Decimal);
-    fmQuote.Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + 'TickTime: ' + TickTime + '-> Quote : ' +
-      intToStr(SK.Stockidx) + ', ' +  intToStr(SK.Decimal) + ', ' +  intToStr(SK.TypeNo) + ', ' +
-      intToStr(SK.MarketNo) + ', ' +  SK.StockNo + ', ' +  SK.StockName + ', ' +
-      FormatFloat('0.000', SK.Open / 100) + ', ' +  FormatFloat('0.000', SK.High / 100) + ', ' +
-      FormatFloat('0.000', SK.Low / 100) + ', ' +   FormatFloat('0.000', SK.Close / 100) + ', ' +
-      FormatFloat('0', SK.TickQty) + ', ' +   FormatFloat('0.000', SK.Ref / 100) + ', ' + FormatFloat('0', SK.TQty));
-  end;
-end;
-
-procedure OnBest5(sMarket, sIndex: SmallInt);  // 最佳五檔回報
-var iSt: integer;
-begin
-  iSt := SKQuoteLib_GetStockByIndex(sMarket, sIndex, SK);
-  iSt := iSt + SKQuoteLib_GetBest5(sMarket, sIndex, B5);
-  if iSt = 0 then
-  begin
-    A2_BestBuyQty:= (B5.BidQty1 + B5.BidQty2 + B5.BidQty3 + B5.BidQty4 + B5.BidQty5);
-    A2_BestSellQty:= (B5.AskQty1 + B5.AskQty2 + B5.AskQty3 + B5.AskQty4 + B5.AskQty5);
-  end;
-end;
-
-procedure OnDetailTicks(sMarket, sIndex: SmallInt; iPtr, nTime, nBid, nAsk, nClose, nQty: Integer);
-var iSt, I: Integer;
-    SQLStr: String;
-    TK: TTick;
-begin
-end;
-
-procedure On_KLine(StockNO: PAnsiChar; K_Data: PAnsiChar); stdcall;
-var i: Integer;
-    getText: String;
-    Offset: Integer;
-begin
- TempList.Text:= K_Data;
- TempList.Delimiter:= ',';
- TempList.DelimitedText:= TempList.Text;
-
- Offset:= 0;
- if(TempList.Count= 6) then  // minute K line has 7 column (time coloumn), the others have 6 columns
-   Offset:= 1;
-
- TempList.Strings[0]:= Copy(TempList.Strings[0], 7, 4) + '/' + Copy(TempList.Strings[0], 1, 5);
- for i := 2 - Offset to 5 - Offset do begin
-   TempList.Strings[i]:= Copy(TempList.Strings[i], 1, Length(TempList.Strings[i])-2);
- end;
-
-
- for i := 0 to TempList.Count - 1 do begin
-     if(i > 0) then
-       getText:= getText + ',' + TempList.Strings[i]
-     else getText:= TempList.Strings[i];
- end;
-
- K_LineList_Min.Add(getText);
-end;
-
-
 procedure TfmQuote.InputTicks(sMarket: SmallInt; iPtr: Integer; SK: SKSTOCK; TK: SKTICK;
-  StockNO, StockName: String; sIndex: SmallInt);
+  StockNO, StockName: String; sIndex: SmallInt; IsHistory: boolean);
 var // iSt: integer;
   iDot: Double;
   sID, stmp: string;
@@ -352,12 +189,13 @@ var // iSt: integer;
   LockTimeStr: String; // 第一次下載時, 不需進入計算的時間. 如08:45, 09:00
   Time20: String;
   TK_Forering:SKFOREIGNTICK;
+  WriteFile: boolean;
+  TotalQty: Integer; // 目前總共下載筆數
 begin
 
-  iSt := SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarket, sIndex, SK);
+//  iSt := SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarket, sIndex, SK);
   sID := Trim(StockNO);
   iDot := Power(10, SK.sDecimal);
-  GetQty:= TotalQty;   // 判斷共有幾筆, 從哪一點開始下載
   ToQty:= iPtr;
 
   if PrepareData then begin // 是否處理之前下載資料
@@ -368,8 +206,18 @@ begin
  //  sStrategy_new.D66_TodayOpen:= SK.nOpen / 100;
 
    GetOriginalData();
+  end else
+    TotalQty:= 0;
+
+  if(AllSQLList <> nil) and (AllSQLList.Count > 0) then begin
+    SubAllList.Text:= AllSQLList.Strings[AllSQLList.Count - 1];
+    SubAllList.Delimiter:= ',';
+    SubAllList.DelimitedText:= SubAllList.Text;
+    TotalQty:= StrToInt(SubAllList.Strings[13]);
+ //   TotalQty:= AllSQLList.Count;
   end;
 
+  GetQty:= TotalQty;   // 判斷共有幾筆, 從哪一點開始下載
   for I:= GetQty to ToQty do begin
    iSt:= 0;
 
@@ -394,11 +242,20 @@ begin
         sStrategy_new.D68_TodayLowest:=  TK.nClose / iDot;
 
       TickTime:= TimeTransfer(IntToStr(TK.nTimehms));
+      if TimeLimit(TickTime) then
+        continue;
+
+      if(ShiftTime <> 0) then
+        TickTime:= TimeToStr(StrToTime(TickTime) + ShiftTime / 24);
+
+  //    TotalTickQty:= TotalTickQty + TK.nQty;
+
       // 每分鐘
       if Copy(FormatDateTime('hh:mm:ss', CurrMin), 1, 5) <> Copy(TickTime, 1, 5) then begin
+       WriteFile:= true;
+
        CurrMin:= StrTotime(TickTime);  // 更新時間
-       if FirstTime then
-       begin
+       if FirstTime then begin
         LockTimeStr:= TickTime;
         FirstTime:= False;
        end;
@@ -407,22 +264,7 @@ begin
        if ((Copy(TickTime, 5, 1)= '5') or (Copy(TickTime, 5, 1)= '0')) and (TickTime <> StartTime) then begin
         AddStrTrue:= True;
         Curr5Min:= CurrMin;
-        {
-        // 圖形判定的時間 XX:45:00
-       // if (Round(CurrMin* 86400) mod 3600 <= 10) and ((CurrMin - PhotoTime) > 1/8640) then
-        if ((Copy(TickTime, 4, 2)= '45') or (Copy(TickTime, 1, 5)= '09:15') or (Copy(TickTime, 1, 5)= '13:40'))
-           and (Copy(TickTime, 1, 5)<> '13:45') then begin
-         PhotoTime:= CurrMin; // 記錄目前圖形擷取時間
-      //   if CloseP > LastClose then
-      //    FigureStr:= FigureStr + ':' + IntToStr(Trunc((CloseP - LastClose)/25) + 1)
-      //   else FigureStr:= FigureStr + ':' + IntToStr(Trunc((CloseP - LastClose)/25) - 1);
 
-         HourHigh:= 0;
-         HourLow:= 0;
-         HourHTime:= '';
-         HourLTime:= '';
-        end;
-        }
        end;
 
        // 判定是否留倉  13:44:00 ----> 0.5722222222
@@ -470,11 +312,6 @@ begin
   //     SQLList.SaveToFile('IndexTable_' + fmQuote.cbbStockNO.Text + '.Txt');
   //     AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
 
-    {   if StrToTime(TickTime) < StartTime + 310/86400 then begin // 第一根K棒高低點
-        FirstLow:= NowLow;
-        FirstHigh:= NowHigh;
-       end;
-       }
 
        // 本日前一根收盤價
        if (sStrategy_new.D69_TodayClose = 0) and (StrToTime(TickTime) >= StrToTime(EndTime) - 300/86400) then begin // 最後一根根K棒高低點
@@ -505,25 +342,39 @@ begin
        CloseP:= 0;
        getK_Value.NowBuyQty:= 0;
        getK_Value.NowSellQty:= 0;
+
+       KeepListData();
       end;
    //======================================================================================
+
+    //  if(SpeedTime) then begin
+        if(Copy(TickTime, 1, 2)= '00') then begin
+          SpeedTime:= false;
+          ThisTradeDate:= DateToStr(Date);
+          fmQuote.dtpDate.Date:= StrToDate(ThisTradeDate);
+        end;
+   //   end;
+
        // 下載所有資料
       AllSQL:= fmQuote.cbbStockNO.Text + ',' + DateToStr(fmQuote.dtpDate.Date) + ',' + TickTime + ','
         + FormatFloat('0.000', TK.nBid / iDot) + ', ' +
         FormatFloat('0.000', TK.nAsk / iDot) + ', ' + FormatFloat('0.000', TK.nClose / iDot) + ', ' +
         IntToStr(TK.nQty) + ', ' + FloatToStr(Ave5P);
 
+
+
       LastSN:= LastSN + 1;
-      AddChou_Field(AllSQL, SK, iDot, InsertMode, LastSN);
+      AddChou_Field(AllSQL, SK, iDot, InsertMode, LastSN, TK, TotalQty);
 
       if(AllSQLList= nil) then
         Abort;
 
       AllSQLList.Add(IntToStr(LastSN) + ',' + AllSQL);
+
       if(AllSQLList.Count > 0) then begin
      //   AllSQLList.Add(IntToStr(LastSN) + ',' + AllSQL);
         // 最後一秒抓取資料的判讀
-        if Ticktime= '13:44:59' then begin
+        if Ticktime= LastMiniute then begin
           fmQuote.LastTimer.Enabled:= True;
           AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
           // 處理 IndexTable
@@ -582,26 +433,13 @@ begin
    // 已經過去的訊號不需觸發下單, 所以不設在迴圈內
 //  RunStrategey(CloseP, Ave5P);
 
+  if(not IsHistory) and WriteFile then begin
+    WriteFile:= false;
+    SQLList.SaveToFile('IndexTable_' + fmQuote.cbbStockNO.Text + '.Txt');
+    AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
+  end;
 
-  SQLList.SaveToFile('IndexTable_' + fmQuote.cbbStockNO.Text + '.Txt');
-  AllSQLList.SaveToFile('AllTXF00Data_' + fmQuote.cbbStockNO.Text + '.Txt');
   StopGate:= False;
-
-end;
-
-
-procedure OnTicks(sMarket, sIndex: SmallInt; iPtr: Integer);
-var iSt: integer;
-  iDot: Double;
-  SK: TStock;
-  TK: TTick;
-  sID, stmp: string;
-  RedGreen: String;
-  I: Integer;
-  AllSQL: String;
-  LockTimeStr: String; // 第一次下載時, 不需進入計算的時間. 如08:45, 09:00
-  Time20: String;
-begin
 
 end;
 
@@ -620,7 +458,6 @@ procedure TfmQuote.FormCreate(Sender: TObject);
 begin
   dtpDate.Date:= StrToDate(ThisTradeDate);
   StopGate:= False;
-  TotalQty:= 0;
 
   K_Line_Initial();
   Initial_K_Value();
@@ -642,6 +479,7 @@ begin
   // 填入 start / end time
   edtStart.Text:= StartTime;
   edtEnd.Text:= EndTime;
+  LastMiniute:= TimeToStr((StrToTime(EndTime) - 1/86400));
 end;
 
 procedure TfmQuote.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -660,12 +498,18 @@ procedure TfmQuote.btnDownLoadClick(Sender: TObject);
 var I: Integer;
     Page: Smallint;
 begin
+  TotalTickQty:= 0;
+  Check_Gate1(cbbStockNO.Text);
+  {
   GetOpenOrder();  // 以資料庫方式  獲取未平倉內容 (裡面會判斷是否為 TestMode)
+  if(GoStrategy_PreOrder()) then // 前倉單判讀
+    PreOrder_Active(cbbStockNO.Text);
+    }
   ClearVariable();
 
   btnKLine.Click; // 取得歷史K現序列, 及日期序列
 
-  B1_Strategy();
+//  B1_Strategy();
   sStrategy.E3_Light:= 1; // 13:44:00 時進行 E3 處理, 如 E3 = 0, 後面皆不進單
 
   if KLineGap= 0 then KLineGap:= 60;  // 如果沒有選擇, 以1分鐘現為準
@@ -674,8 +518,7 @@ begin
   LastIndexSN:= DataModule1.AssignSN('IndexTable');
 
   // 先判斷目前文字檔
-  if FileExists('AllTXF00Data_' + cbbStockNO.Text + '.Txt') then
-  begin
+  if FileExists('AllTXF00Data_' + cbbStockNO.Text + '.Txt') then begin
    AllSQLList.LoadFromFile('AllTXF00Data_' + cbbStockNO.Text + '.Txt');
 
    // 判斷是否已載入資料庫
@@ -689,14 +532,14 @@ begin
      fmQuote.btnDatabase.Click; // 點擊資料庫存入
      fmQuote.SaveIndexTable(); // 存入 IndexTable
     end;
-   end else TotalQty:= 0;
+   end ;
   end;
 
    // 將今日 TradeReocrd 資料輸出文字檔
   QuickSqliteOutput(DataModule1.asqQU_TradeRecord, 'AllTXF00Data_' + cbbStockNO.Text + '.Txt',
    'select * from TradeRecord where TradeDate="' + ThisTradeDate + '" and StockNO="' + cbbStockNO.Text + '"', ',', True);
   AllSQLList.LoadFromFile('AllTXF00Data_' + cbbStockNO.Text + '.Txt');
-  TotalQty:= AllSQLList.Count;
+
   // 將今日 IndexTable 輸出文字檔
   QuickSqliteOutput(DataModule1.asqQU_Index, 'IndexTable_' + cbbStockNO.Text + '.Txt',
    'select * from IndexTable where TradeDate="' + ThisTradeDate + '" and StockNO="' + cbbStockNO.Text + '"', ',', True);
@@ -716,21 +559,17 @@ begin
 
   if Trim(cbbStockNO.Text) <> '' then
   begin
-    // 要多檔報價 (舊 API這部分需與 btnLoginClick 裡的舊 API 配合)
-  //  iSKQStatus := SKQuoteLib_RequestStocks(Page, PChar(AnsiString(StrockNM_W_Comma)));
-    // 要一檔的成交明細
-  //  iSKQStatus := SKQuoteLib_RequestTicks(Page, PChar(AnsiString(StrockNM_W_Comma)));
-
 
     // New COM
+      // no hsitory ticks
+  //  iSKQStatus := SKQuoteLib1.SKQuoteLib_RequestLiveTick(Page, PChar(WideString(StrockNM_W_Comma)));
+
+
+
     // TX_MX
     // this must be added to get buy / sell qty
     iSKQStatus := SKOSQuoteLib1.SKOSQuoteLib_RequestStocks(Page, PChar(WideString(StrockNM_W_Comma)));
     iSKQStatus := SKQuoteLib1.SKQuoteLib_RequestStocks(Page, PChar(WideString(StrockNM_W_Comma)));
-
-      // no hsitory ticks
-    iSKQStatus := SKQuoteLib1.SKQuoteLib_RequestLiveTick(Page, PChar(WideString(StrockNM_W_Comma)));
-
 
   // with history ticks
     iSKQStatus := SKQuoteLib1.SKQuoteLib_RequestTicks(Page, PChar(WideString(StrockNM_W_Comma)));
@@ -744,7 +583,7 @@ begin
   StopGate:= False; // 立刻下載
 end;
 
-
+{
 //繪製歷史K線
 procedure TfmQuote.btnHistoryKLineClick(Sender: TObject);
 begin
@@ -762,15 +601,14 @@ begin
    'select * from IndexTable where TradeDate="' + ThisTradeDate + '" and StockNO="' + cbbStockNO.Text + '"', ',', True);
 
   // 針對歷史資料庫
-  if AllSQLList.Count > 0 then
-  begin
+  if AllSQLList.Count > 0 then begin
    TempList.Text:= AllSQLList.Strings[AllSQLList.Count - 1];
    TempList.Delimiter:= ',';
    TempList.DelimitedText:= TempList.Text;
    if ThisTradeDate = TempList.Strings[2] then GetOriginalData();
   end;
 end;
-
+ }
 
 procedure TfmQuote.btnKLineClick(Sender: TObject);
 var GiveStockNO: PChar;
@@ -816,7 +654,6 @@ end;
 
 procedure TfmQuote.TimerSystemTimer(Sender: TObject);
 var sql_str: String;
-//    Dialog: TForm;
 begin
   if(not InternetConnected) then begin
     DB_Handle.UpdateRestart('1');
@@ -825,11 +662,7 @@ begin
       FreeAndNil(Dialog);
     Dialog := CreateMessageDialog( '網路斷線, 初始失敗', mtInformation, [mbOK]);
     Dialog.Show;
-  {
-    ShowMessage( '網路斷線, 初始失敗');
-    ShellExecute(Handle, nil, PChar(Application.ExeName), nil, nil, SW_SHOWNORMAL);
-    Application.Terminate; // or, if this is the main form, simply Close;
-    }
+
   end else begin
     sql_str:= 'select * from tbConfigure ';
     DB_GetData.GetFree_Sql(sql_str, DataModule1.asqQU_Temp);
@@ -858,15 +691,6 @@ begin
 
 end;
 
-// 計算經過秒數
-procedure TfmQuote.SencondTimerTimer(Sender: TObject);
-begin
- NowSecond:= NowSecond + 1;
- if sStrategy.C3_Out_Start then sStrategy.C3_Out_Count:= sStrategy.C3_Out_Count + 1
- else sStrategy.C3_In_Count:= sStrategy.C3_In_Count + 1;
- sStrategy.C4_Count:= sStrategy.C4_Count + 1;
-end;
-
 // 清除現有資料
 procedure TfmQuote.ClearNowData();
 begin
@@ -883,7 +707,7 @@ procedure TfmQuote.cbbStockNOChange(Sender: TObject);
 //var getStartTime, getEndTime: String;
 begin
  fmChungYi.cbbCommNO.Text:= fmQuote.cbbStockNO.Text;
- TotalQty:= 0;
+ TotalTickQty:= 0;
  StrockNM_W_Comma:= stringreplace(cbbStockNO.Text, '__', ',', [rfReplaceAll, rfIgnoreCase]);
 
  StockHandle.GetStockStartEnd_Str(cbbStockNO.Text);
@@ -975,8 +799,8 @@ begin
      MainChart.LeftAxis.Minimum:= StrToFloat(LowValue) - 5;
  }
 
-  MainChart.LeftAxis.Maximum:= sStrategy_new.D67_TodayHighest + 5;
-  MainChart.LeftAxis.Minimum:= sStrategy_new.D68_TodayLowest - 5;
+//  MainChart.LeftAxis.Maximum:= sStrategy_new.D67_TodayHighest + 5;
+//  MainChart.LeftAxis.Minimum:= sStrategy_new.D68_TodayLowest - 5;
 
   MainChart.Series[3].AddXY(getDateTime, StrToFloat(OpenP));
   MainChart.Series[4].AddXY(getDateTime, StrToFloat(CloseP));
@@ -1134,58 +958,6 @@ begin  // Dos command: sqlite3 D:\Delphi\Stock_API\FutureOrder_2009\RecordMsg.db
     WaitForSingleObject(execinfo.hProcess,INFINITE);
 end;
 
- {
-procedure TfmQuote.SKQuoteLib1NotifyHistoryTicks(ASender: TObject; sMarketNo,
-  sStockIdx: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk, nClose,
-  nQty, nSimulate: Integer);
-var iSt: integer;
-    HistoryTickTime: String;
-    SK_Old: TStock;
-    TK_Old: TTick;
-begin
-
-  fmQuote.Memo2.Lines.Add(intToStr(nPtr));
-
-  HistoryTickTime:= TimeTransfer(IntToStr(nTimehms));
-  TQty_History:= TQty_History + nQty;
-  iSt := SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarketNo, sStockIdx, SK_New);
-  fmQuote.Memo1.Lines.Add('TickTime: ' + HistoryTickTime + '-> Quote : ' +
-      intToStr(SK_New.sStockIdx) + ', ' +  intToStr(SK_New.sDecimal) + ', ' +  intToStr(SK_New.sTypeNo) + ', ' +
-      SK_New.bstrMarketNo + ', ' +  SK_New.bstrStockNo + ', ' +  SK_New.bstrStockName + ', ' +
-      FormatFloat('0.000', SK_New.nOpen / 100) + ', ' +  FormatFloat('0.000', SK_New.nHigh / 100) + ', ' +
-      FormatFloat('0.000', SK_New.nLow / 100) + ', ' +   FormatFloat('0.000', nClose / 100) + ', ' +
-      FormatFloat('0', nQty) + ', ' +   FormatFloat('0.000', SK_New.nRef / 100) + ', ' + FormatFloat('0', TQty_History)
-          + ',' + intToStr(nPtr));
-   SK_Old.Stockidx:= sStockIdx;
-   SK_Old.Decimal:= SK_New.sDecimal;
-   SK_Old.TypeNo:= SK_New.sTypeNo;
-   SK_Old.MarketNo:= sMarketNo;
-   StrPLCopy(SK_Old.StockNo, SK_New.bstrStockNo, Length(SK_New.bstrStockNo));
-   StrPLCopy(SK_Old.StockName, SK_New.bstrStockNo, Length(SK_New.bstrStockNo));
-   SK_Old.Open:= SK_New.nOpen;
-   SK_Old.High:= SK_New.nHigh;
-   SK_Old.Low:= SK_New.nLow;
-   SK_Old.Close:= nClose;
-   SK_Old.TickQty:= nQty;
-   SK_Old.Ref:= SK_New.nRef;
-   SK_Old.Bid:= nBid;
-   SK_Old.TQty:= TQty_History;
-   SK_Old.Ask:= nAsk;
-
-   TK_Old.Ptr:= nPtr;
-   TK_Old.Time:= nTimehms;
-   TK_Old.Bid:= nBid;
-   TK_Old.Ask:= nAsk;
-   TK_Old.Close:= nClose;
-   TK_Old.Qty:= nQty;
-
-   SK:= SK_Old;
-   if(nClose > 0) then
-     InputTicks(sMarketNo, nPtr, SK_Old, TK_Old, SK_New.bstrStockNo, SK_New.bstrStockName);
-
-end;
-    }
-
 procedure TfmQuote.SKQuoteLib1Connection(ASender: TObject; nKind,
   nCode: Integer);
 begin
@@ -1240,6 +1012,39 @@ begin
  K_LineList_Min.Add(getText);
 end;
 
+procedure TfmQuote.SKQuoteLib1NotifyHistoryTicks(ASender: TObject; sMarketNo,
+  sStockIdx: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk, nClose,
+  nQty, nSimulate: Integer);
+var HistoryTickTime: String;
+    i, iSt: Integer;
+begin
+{
+  if(TotalQty > nPtr) then
+    exit;
+
+//  SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarketNo, sStockIdx, SK_New);
+//  SKQuoteLib1.SKQuoteLib_GetStockByNo(WideString(StrockNM_W_Comma), SK_New);
+
+  HistoryTickTime:= TimeTransfer(IntToStr(nTimehms));
+  TQty_History_OS:= TQty_History_OS + nQty;
+
+  fmQuote.Memo1.Lines.Add('TickTime: ' + HistoryTickTime + '-> Quote : ' +
+      intToStr(SK_New.sStockIdx) + ', ' +  intToStr(SK_New.sDecimal) + ', ' +  intToStr(SK_New.sTypeNo) + ', ' +
+      SK_New.bstrMarketNo + ', ' +  SK_New.bstrStockNo + ', ' +  SK_New.bstrStockName + ', ' +
+      FormatFloat('0.000', SK_New.nOpen / 100) + ', ' +  FormatFloat('0.000', SK_New.nHigh / 100) + ', ' +
+      FormatFloat('0.000', SK_New.nLow / 100) + ', ' +   FormatFloat('0.000', SK_New.nClose / 100) + ', ' +
+      FormatFloat('0', SK_New.nTickQty) + ', ' +  FormatFloat('0.000', SK_New.nBc / 100) + ', ' +  FormatFloat('0.000', SK_New.nAc / 100) + ', '
+      + FormatFloat('0', SK_New.nTQty) + ',' + FormatFloat('0', TQty_History) + ',' + intToStr(nPtr));
+
+
+  if(nClose > 0) then begin
+    getK_Value.NowBuyQty:= 0;
+    getK_Value.NowSellQty:= 0;
+    InputTicks(sMarketNo, nPtr, SK_New, TK_New, SK_New.bstrStockNo, SK_New.bstrStockName, sStockIdx, true);
+  end;
+ }
+end;
+
 procedure TfmQuote.SKQuoteLib1NotifyTicks(ASender: TObject; sMarketNo,
   sIndex: SmallInt; nPtr, nTimehms, nTimemillismicros, nBid, nAsk, nClose, nQty,
   nSimulate: Integer);
@@ -1247,26 +1052,12 @@ procedure TfmQuote.SKQuoteLib1NotifyTicks(ASender: TObject; sMarketNo,
 var HistoryTickTime: String;
     i, iSt: Integer;
 begin
- {
-   SK_New.sDecimal:= ForeingSK.sDecimal;
-   SK_New.nOpen:= ForeingSK.nOpen;
-   SK_New.nHigh:= ForeingSK.nHigh;
-   SK_New.nLow:= ForeingSK.nLow;
-   SK_New.nClose:= nClose;
-   SK_New.nTickQty:= nQty;
-   SK_New.nRef:= ForeingSK.nRef;
-   SK_New.nBid:= nBid;
-   SK_New.nTQty:= TQty_History;
-   SK_New.nAsk:= nAsk;
-   SK_New.nBc:= ForeingSK.nBc;
-   SK_New.nAc:= ForeingSK.nAc;
-  }
+  HistoryTickTime:= TimeTransfer(IntToStr(nTimehms));
 
   SKQuoteLib1.SKQuoteLib_GetStockByIndex(sMarketNo, sIndex, SK_New);
-//  InputTicks(sMarketNo, nPtr, SK_New, TK_New, SK_New.bstrStockNo, SK_New.bstrStockName, sIndex);
 //  SKQuoteLib1.SKQuoteLib_GetStockByNo(WideString(StrockNM_W_Comma), SK_New);
 
-  HistoryTickTime:= TimeTransfer(IntToStr(nTimehms));
+//  HistoryTickTime:= TimeTransfer(IntToStr(nTimehms));
   TQty_History_OS:= TQty_History_OS + nQty;
 
 
@@ -1275,70 +1066,17 @@ begin
       SK_New.bstrMarketNo + ', ' +  SK_New.bstrStockNo + ', ' +  SK_New.bstrStockName + ', ' +
       FormatFloat('0.000', SK_New.nOpen / 100) + ', ' +  FormatFloat('0.000', SK_New.nHigh / 100) + ', ' +
       FormatFloat('0.000', SK_New.nLow / 100) + ', ' +   FormatFloat('0.000', SK_New.nClose / 100) + ', ' +
-      FormatFloat('0', SK_New.nTickQty) + ', ' +   FormatFloat('0.000', SK_New.nRef / 100) + ', ' + FormatFloat('0', TQty_History)
-         + ',' + intToStr(nPtr));
+      FormatFloat('0', SK_New.nTickQty) + ', ' +  FormatFloat('0.000', SK_New.nBc / 100) + ', ' +  FormatFloat('0.000', SK_New.nAc / 100) + ', '
+      + FormatFloat('0', SK_New.nTQty) + ',' + FormatFloat('0', TQty_History) + ',' + intToStr(nPtr));
 
 
   if(nClose > 0) then begin
     getK_Value.NowBuyQty:= getK_Value.NowBuyQty + SK_New.nBc;
     getK_Value.NowSellQty:= getK_Value.NowSellQty + SK_New.nAc;
-    InputTicks(sMarketNo, nPtr, SK_New, TK_New, SK_New.bstrStockNo, SK_New.bstrStockName, sIndex);
+    InputTicks(sMarketNo, nPtr, SK_New, TK_New, SK_New.bstrStockNo, SK_New.bstrStockName, sIndex, false);
   end;
 
 end;
-
-{
-procedure SKOSQuoteLib1NotifyHistoryTicks(ASender: TObject;
-  sStockIdx: SmallInt; nPtr, nTime, nClose, nQty: Integer);
-var iSt: integer;
-    HistoryTickTime: String;
-    SK_2: SKSTOCK;
-    TK_2: SKTick;
-begin
-  iSt := SKOSQuoteLib1.SKOSQuoteLib_GetStockByIndex(sStockIdx, ForeingSK);
-
-   SK_2.sStockidx:= sStockIdx;
-   SK_2.sDecimal:= ForeingSK.sDecimal;
-//   StrPLCopy(SK_2.bstrStockNo, ForeingSK.bstrStockNo, Length(ForeingSK.bstrStockNo));
-//   StrPLCopy(SK_2.bstrStockName, ForeingSK.bstrStockNo, Length(ForeingSK.bstrStockNo));
-   SK_2.nOpen:= ForeingSK.nOpen;
-   SK_2.nHigh:= ForeingSK.nHigh;
-   SK_2.nLow:= ForeingSK.nLow;
-   SK_2.nClose:= ForeingSK.nClose;
-   SK_2.nTickQty:= nQty;
-   SK_2.nRef:= ForeingSK.nRef;
-   SK_2.nBid:= ForeingSK.nBid;
-   SK_2.nTQty:= TQty_History;
-   SK_2.nAsk:= ForeingSK.nAsk;
-
-   TK_2.nPtr:= nPtr;
-   TK_2.nTimehms:= nTime;
-   TK_2.nBid:= ForeingSK.nBid;
-   TK_2.nAsk:= ForeingSK.nAsk;
-   TK_2.nClose:= nClose;
-   TK_2.nQty:= nQty;
-
-  InputTicks(StrToInt(SK_2.bstrMarketNo), nPtr, SK_2, TK_2, SK_New.bstrStockNo, SK_New.bstrStockName, 0);
-
-
-
-  HistoryTickTime:= TimeTransfer(IntToStr(nTime));
-  TQty_History_OS:= TQty_History_OS + nQty;
-
-  fmQuote.Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + 'TickTime: ' + HistoryTickTime + '-> Quote : ' +
-      intToStr(ForeingSK.sStockIdx) + ', ' +  intToStr(ForeingSK.sDecimal) + ', ' +  intToStr(ForeingSK.nDenominator) + ', ' +
-      ForeingSK.bstrMarketNo + ', ' +  ForeingSK.bstrStockNo + ', ' +  ForeingSK.bstrStockName + ', ' +
-      FormatFloat('0.000', ForeingSK.nOpen / 100) + ', ' +  FormatFloat('0.000', ForeingSK.nHigh / 100) + ', ' +
-      FormatFloat('0.000', ForeingSK.nLow / 100) + ', ' +   FormatFloat('0.000', nClose / 100) + ', ' +
-      FormatFloat('0', nQty) + ', ' +   FormatFloat('0.000', ForeingSK.nRef / 100) + ', ' + FormatFloat('0', TQty_History_OS)
-        + ',' + intToStr(nPtr));
-
-
-   if(nClose > 0) then
-     InputTicks(StrToInt(SK_2.bstrMarketNo), nPtr, SK_2, TK_2, SK_New.bstrStockNo, SK_New.bstrStockName, 0);
-
-end;
-}
 
 // 取得帳號
 procedure TfmQuote.SKOrderLib1Account(ASender: TObject; const bstrLogInID,
@@ -1385,30 +1123,32 @@ end;
 
 procedure TfmQuote.GetServerTime(sHour, sMinute, sSecond: SmallInt);
 var Hr, MM, SS: Integer;
-    Today_Str, getDate, temp: String;
+    Today_Str, getDate: String;
+    nowSystemTime: Extended;
 begin
 
  try
-//  Hr:= SystemTime div 3600;
-//  MM:= (SystemTime - Hr * 3600) div 60;
-//  SS:= SystemTime - Hr * 3600 - MM * 60;
+
   Hr:= sHour;
   MM:= sMinute;
   SS:= sSecond;
   lbSystemTime.Caption:= IntToStr(Hr) + ':' + IntToStr(MM) + ':' + IntToStr(SS);
-  temp:= lbSystemTime.Caption;
+  nowSystemTime:= StrToTime(lbSystemTime.Caption);
    // 自動下載
-//  if not HasDone and (StrToTime(lbSystemTime.Caption) >= StrTotime('8:45:1')) and (StrToTime(lbSystemTime.Caption) <= StrTotime('13:45:0')) then
-  if not HasDone and (StrToTime(lbSystemTime.Caption) >= StrTotime(Public_Variant.StartTime)) and (StrToTime(lbSystemTime.Caption) <= StrTotime(Public_Variant.EndTime)) then
+  if not HasDone and (nowSystemTime >= StrTotime(Public_Variant.StartTime)) and (nowSystemTime <= StrTotime(Public_Variant.EndTime)) then
   begin
    HasDone:= True;
    DownLoadTimer.Enabled:= True;
   end;
 
-//  iSKQStatus := SKQuoteLib_GetServerTime(SerTime);
  except
   Sleep(1000);
  end;
+
+ if SpeedTime or ((Hr= 23) and (MM= 59)) then
+   SpeedTime:= true
+ else
+   SpeedTime:= false;
 
  Today_Str:= DateToStr(fmQuote.dtpDate.Date);
  getDate:= DateToStr(now);
@@ -1423,6 +1163,10 @@ var HistoryTickTime: String;
     TK_2: SKTick;
     MarketNO: Integer;
 begin
+  HistoryTickTime:= TimeTransfer(IntToStr(nTime));
+  if TimeLimit(HistoryTickTime) then
+    exit;
+
   SKOSQuoteLib1.SKOSQuoteLib_GetStockByIndex(sStockIdx, ForeingSK);
   SK_2.sStockidx:= sStockIdx;
    SK_2.sDecimal:= ForeingSK.sDecimal;
@@ -1451,10 +1195,10 @@ begin
      MarketNO:= StrToInt(ForeingSK.bstrMarketNo)
    else MarketNO:= 0;
 
-  InputTicks(MarketNO, nPtr, SK_2, TK_2, SK_New.bstrStockNo, ForeingSK.bstrStockName, sStockIdx);
 
-
-  HistoryTickTime:= TimeTransfer(IntToStr(nTime));
+//  HistoryTickTime:= TimeTransfer(IntToStr(nTime));
+  if(ShiftTime <> 0) then
+        HistoryTickTime:= TimeToStr(StrToTime(HistoryTickTime) + ShiftTime / 24);
   TQty_History_OS:= TQty_History_OS + nQty;
 
   fmQuote.Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + 'TickTime: ' + HistoryTickTime + '-> Quote : ' +
@@ -1469,7 +1213,7 @@ begin
      getK_Value.NowBuyQty:= getK_Value.NowBuyQty + SK_2.nBc;
      getK_Value.NowSellQty:= getK_Value.NowSellQty + SK_2.nAc;
 
-     InputTicks(MarketNO, nPtr, SK_2, TK_2, SK_New.bstrStockNo, ForeingSK.bstrStockName, sStockIdx);
+     InputTicks(MarketNO, nPtr, SK_2, TK_2, SK_New.bstrStockNo, ForeingSK.bstrStockName, sStockIdx, false);
    end;
 
 end;
@@ -1480,7 +1224,7 @@ procedure TfmQuote.SKOSQuoteLib1Connect(ASender: TObject; nCode,
   nSocketCode: Integer);
 begin
   fmQuote.Memo1.Lines.Add(FormatDateTime('hh:nn:ss:zzz ', now) + '-> ' + '外期報價 連線成功 !!' );
-  SystemTime:= SKOSQuoteLib1.SKOSQuoteLib_RequestServerTime();
+  SKOSQuoteLib1.SKOSQuoteLib_RequestServerTime();
 end;
 
 // Overseas K Line callback

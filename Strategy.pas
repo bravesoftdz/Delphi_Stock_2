@@ -4,7 +4,7 @@ interface
 
 uses Windows, Messages, SysUtils, Controls, Classes, DBClient, DB, Dialogs,
      Graphics, Forms, StdCtrls;
-
+ {
  function B1_Strategy(): String;
  procedure B1_Strategy_Any();
  procedure B1_Strategy_Assign();
@@ -19,11 +19,12 @@ uses Windows, Messages, SysUtils, Controls, Classes, DBClient, DB, Dialogs,
  function GetBalance(): Extended; // 取得今日損益
  procedure A4_Module();
  procedure ReSetK(U_or_D: String);  // K 觸均 Reset
-
+  }
 implementation
 
 uses Quote, Public_Variant, ChungYi_Main, DMRecord, StringList_Fun, DB_Handle, getK_Value;
 
+{
 // 前腳位 (先抓取高低點), 留給後面使用
 function B1_Strategy(): String;
 var I, StartNO, EndNO: Integer;
@@ -72,28 +73,6 @@ end;
 
 procedure B1_Order();
 begin
-{  if B_Order = 1 then
-  begin
-   if CloseP = sStrategy.B_HighU then
-   begin
-    B_Order:= B_Order + 1;
-    if NowBuySell = 'S' then
-     fmChungYi.NormalOrder('Order', 'B', 'B3')
-    else if NowBuySell = '' then
-     fmChungYi.NormalOrder('Balance', 'B', 'B3');
-   end;
-
-   if CloseP = sStrategy.B_LowU then
-   begin
-    B_Order:= B_Order + 1;
-    if NowBuySell = 'B' then
-     fmChungYi.NormalOrder('Order', 'S', 'B3')
-    else if NowBuySell = '' then
-     fmChungYi.NormalOrder('Balance', 'S', 'B3');
-   end;
-   if CloseP >= Ave5P then ReSetK('1') else ReSetK('-1');
-   B_OrderOK:= True;  // 此時可下反反單
-  end; }
 
   if B_Order = 0 then
   begin
@@ -188,18 +167,9 @@ begin
          CloseP) then
        A4_3Floated:= True;
 
-{      A4_2Max:= GetMax(HighList, StrToInt(fmChungYi.dbeA4_3_1.Text), 'End');
-      A4_2Min:= GetMin(LowList, StrToInt(fmChungYi.dbeA4_3_1.Text), 'End');
-      if A4_2Max - A4_2Min < StrToInt(fmChungYi.dbeA4_3_2.Text) then
-      begin
-       if (CloseP <= A4_2Max) and (CloseP >= A4_2Min) then
-        A4_3Floated:= True;
-       end;  }
      end;
     end;
 
-    // A4-2 高低差 模組
-    if fmChungYi.dbcbA4_23Check.Checked and (fmChungYi.dbrgA4_2or3.ItemIndex= 0) then
 
     // 高低差主引勤
     if not A4_3Floated and not A4_2Float and A4TimePass then  // A4TimePass 由 A4Timer 決定
@@ -254,20 +224,10 @@ begin
  if (U_or_D = '1') then
  begin
   UpDown:= '1';
-{  if (CloseP < Ave5P) then
-  begin
-   UpDown:= '-1';
-   StartOrder:= True
-  end; }
+
  end else
  begin
   UpDown:= '-1';
-{  if (U_or_D = '-1') then
-   if (CloseP > Ave5P) then
-   begin
-    UpDown:= '1';
-    StartOrder:= True;
-   end;    }
  end;
 
  if CloseP= Ave5P then StartOrder:= False;
@@ -572,30 +532,6 @@ begin
     end;
    end;
 
-{  // D 策略
-  if fmChungYi.dbcbD_Open.Checked and not BreakLoop then
-  begin
-   if (fmChungYi.dbeD6_1.Text <> '') and
-     ((sStrategy.D1_Weight + sStrategy.D2_Weight + sStrategy.D3_Weight + sStrategy.D4_Weight + sStrategy.D5_Weight + sStrategy.D6_Weight)
-     >= StrToInt(fmChungYi.dbeD6_1.Text)) then
-   begin
-    Floated:= True;
-    sStrategy.D6_1_AntiWeight:= 0;
-    sStrategy.D6_1_Weight:= 1;
-   end else begin
-    sStrategy.D6_1_AntiWeight:= 1;
-    sStrategy.D6_1_Weight:= 0;
-   end;
-
-   // D7 策略 (解除盤整)
-   if (fmChungYi.dbeD7.Text <> '' ) and
-     ((sStrategy.D1_AntiWeight + sStrategy.D5_AntiWeight + sStrategy.D6_1_AntiWeight)
-     >= StrToInt(fmChungYi.dbeD7.Text)) then
-   begin
-    Floated:= False;
-    D7_True:= True;
-   end;
-  end;  }
  end;
 
  if LastInventory then  // 有留倉, 尚未處理完
@@ -848,12 +784,7 @@ var E1_4G, E1_4R: Integer;
     I: Integer;
     R_Qty, G_Qty: Integer;
 begin
-{ // E1_1 今日損益
- if fmChungYi.dbeE1.Text <> '' then
- begin
-  sStrategy.E_Profit:= GetBalance();
-  if sStrategy.E_Profit >= StrToInt(fmChungYi.dbeE1.Text) then sStrategy.E1_1_Weight:= 1 else sStrategy.E1_1_Weight:= 0;
- end; }
+
 
  //E1_2
  if fmChungYi.cbOpen2.Checked then
@@ -1149,5 +1080,5 @@ begin
   if fmChungYi.dbckA2_1.Checked then fmChungYi.Label8.Font.Color:= clRed else fmChungYi.Label8.Font.Color:=clWindowText;
  end;
 end;
-
+ }
 end.

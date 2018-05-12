@@ -6,7 +6,9 @@ uses Classes, SysUtils, ASGSQLite3, StdCtrls, Graphics, Public_Variant;
 
 function GetInternal_Check(): boolean;
 function GoStrategy_Internal(): boolean;  // Strategy is created
-function Internal_Active(CommNO: String): boolean;
+function Initial_Internal(CommNO: String): String;
+function SellRate(): Integer;
+function BuyRate(): Integer;
 
 //function getFa(K_Qty): Extended;
 //function getFb(K_Qty): Extended;
@@ -19,15 +21,17 @@ uses DB_GetData, DMRecord, DB_Type, DB_Handle, getK_Value, ChungYi_Main, TopValu
      StringList_Fun, GeneralValue;
 
 function GoStrategy_Internal(): boolean;  // Strategy is created
+var i: Integer;
 begin
   if (DataModule1.asq_NewParam.RecordCount = 0) or (not GetInternal_Check) then begin
       Result:= false ;
+
       fmChungYi.Group_Internal.Color:= clBtnFace;
-      fmChungYi.dbcInternal_1_Check.Color:= clWindow;
-      fmChungYi.dbcInternal_2_Check.Color:= clWindow;
-      fmChungYi.dbcInternal_3_Check.Color:= clWindow;
-      fmChungYi.dbcInternal_4_Check.Color:= clWindow;
-      fmChungYi.dbcInternal_5_Check.Color:= clWindow;
+      fmChungYi.dbcInternal_Check.Color:= clWindow;
+      for i := 1 to 21 do begin
+        ConvertObj('dbcInternal_', IntToStr(i) + '_Check', clWindow);
+      end;
+
   end else
     Result:= true;
 end;
@@ -37,33 +41,70 @@ begin
   Result:= DataModule1.asq_NewParam.FieldByName('Internal_Check').AsString= 'T';
 end;
 
-function Internal_Active(CommNO: String): boolean;
+
+function Initial_Internal(CommNO: String): String;
 var InvenResult: TInventory_Stock;
-    Rule: array of boolean;
+    BuyQty, SellQty: Integer;
+    BuySell: String;
+    DB_Rate: Integer;
+begin
+  SellQty:= 0;
+  BuyQty:= 0;
+  InvenResult:= DB_Handle.CheckInventory(CommNO);
+  DB_Rate:= DataModule1.asq_NewParam.FieldByName('Internal_Rate').AsInteger;
+  if InvenResult.LeftQty > 0 then begin
+    if (InvenResult.LastBuySell='B') then begin
+      SellQty:= SellRate();
+    end else begin
+      BuyQty:= BuyRate();
+    end;
+
+    if(SellQty >= DB_Rate) or (BuyQty >= DB_Rate) then begin
+      if(SellQty >= DB_Rate) then
+        Result:= 'S'
+      else
+        Result:= 'B';
+      fmChungYi.Group_Internal.Color:= clRed;
+    end else
+      fmChungYi.Group_Internal.Color:= clBtnFace;
+
+  end else begin
+    SellQty:= SellRate();
+    BuyQty:= BuyRate();
+    if(BuyQty > SellQty) and (BuyQty >= DB_Rate) then begin
+      Result:= 'B';
+    end else if(SellQty > BuyQty) and (SellQty >= DB_Rate) then begin
+      Result:= 'S';
+    end else
+      fmChungYi.Group_Internal.Color:= clBtnFace;
+  end;
+
+  if(SellQty >= DB_Rate) or (BuyQty >= DB_Rate) then begin
+    if(SellQty >= DB_Rate) then
+      Result:= 'S'
+    else
+      Result:= 'B';
+    fmChungYi.Group_Internal.Color:= clRed;
+  end else
+    fmChungYi.Group_Internal.Color:= clBtnFace;
+end;
+
+function SellRate(): Integer;
+var InvenResult: TInventory_Stock;
+    Rule_A: array of boolean;
     Internal_Rate: Integer;
     D09: Extended;
-    K_Qty: Integer;
+    i, K_Qty: Integer;
     Fa, Fb: Extended;
     NO_Small: array of Integer;
 begin
-  Internal_Rate:= 0;
-  setLength(Rule, 12);
-  setLength(NO_Small, 5);
-  InvenResult:= DB_Handle.CheckInventory(CommNO);
-  D09:= InvenResult.LastPrice;
-
-  K_Qty:= DataModule1.asq_NewParam.FieldByName('Internal_1_1').AsInteger;
-
-  if(K_Qty = 0) then
-    exit;
-
-  if InvenResult.LeftQty > 0 then begin
-    if (InvenResult.LastBuySell='B') then begin
-      // #1
+    Internal_Rate:= 0;
+    setLength(Rule_A, 12);
+  // #1
       if(DataModule1.asq_NewParam.FieldByName('Internal_1_Check').AsString= 'T') then begin
         Fa:= getFa(K_Qty);
         Fb:= getFb(K_Qty);
-        Rule[1]:= (sStrategy_new.D01_K_NowClose < (Fb - Fa) * 0.0025 + Fa)
+        Rule_A[1]:= (sStrategy_new.D01_K_NowClose < (Fb - Fa) * 0.0025 + Fa)
            and ((sStrategy_new.J02_NowCloseAve < sStrategy_new.J03_PreCloseAve)
               or (sStrategy_new.D47_K_PreOpen - sStrategy_new.D45_K_PreLow < sStrategy_new.D43_K_PreHigh - sStrategy_new.D41_K_PreClose));
       end;
@@ -90,7 +131,7 @@ begin
                        and (sStrategy_new.D01_K_NowClose < sStrategy_new.D21_K_NowOpen) then
           NO_Small[5]:= 1;
 
-        Rule[2]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
+        Rule_A[2]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
       end;
       // #3
       if(DataModule1.asq_NewParam.FieldByName('Internal_3_Check').AsString= 'T') then begin
@@ -111,19 +152,19 @@ begin
         if (sStrategy_new.J12_NowHighAve + sStrategy_new.J17_NowLowAve) /2 < sStrategy_new.J03_PreCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[3]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_3_Rate').AsInteger;
+        Rule_A[3]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_3_Rate').AsInteger;
       end;
       // #4
       if(DataModule1.asq_NewParam.FieldByName('Internal_4_Check').AsString= 'T') then
-        Rule[4]:= (sStrategy_new.J28_PreAllQtyAve < sStrategy_new.D26_K_NowQty)
+        Rule_A[4]:= (sStrategy_new.J28_PreAllQtyAve < sStrategy_new.D26_K_NowQty)
             and (sStrategy_new.D01_K_NowClose < sStrategy_new.D21_K_NowOpen);
       // #5
       if(DataModule1.asq_NewParam.FieldByName('Internal_5_Check').AsString= 'T') then
-        Rule[5]:= (sStrategy_new.J32_BuyQtyAve < sStrategy_new.J37_SellQtyAve)
+        Rule_A[5]:= (sStrategy_new.J32_BuyQtyAve < sStrategy_new.J37_SellQtyAve)
             and (sStrategy_new.D01_K_NowClose < sStrategy_new.D21_K_NowOpen);
       // #6
       if(DataModule1.asq_NewParam.FieldByName('Internal_6_Check').AsString= 'T') then
-        Rule[6]:= (sStrategy_new.D61_BestBuyAve < sStrategy_new.D62_BestSellAve);
+        Rule_A[6]:= (sStrategy_new.D61_BestBuyAve < sStrategy_new.D62_BestSellAve);
       // #7
       if(DataModule1.asq_NewParam.FieldByName('Internal_7_Check').AsString= 'T') then begin
         if (sStrategy_new.J02_NowCloseAve) < (sStrategy_new.J03_PreCloseAve) then
@@ -137,7 +178,7 @@ begin
         if sStrategy_new.J02_NowCloseAve <  sStrategy_new.J59_NowCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[7]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_7_Rate').AsInteger;
+        Rule_A[7]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_7_Rate').AsInteger;
       end;
       // #8
       if(DataModule1.asq_NewParam.FieldByName('Internal_8_Check').AsString= 'T') then begin
@@ -152,7 +193,7 @@ begin
         if sStrategy_new.J02_NowCloseAve <  sStrategy_new.J22_NowOpenAve then
           NO_Small[5]:= 1;
 
-        Rule[8]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_8_Rate').AsInteger;
+        Rule_A[8]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_8_Rate').AsInteger;
       end;
       // #9
       if(DataModule1.asq_NewParam.FieldByName('Internal_9_Check').AsString= 'T') then begin
@@ -167,7 +208,7 @@ begin
         if sStrategy_new.J59_NowCloseAve <  sStrategy_new.J60_PreCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[9]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_9_Rate').AsInteger;
+        Rule_A[9]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_9_Rate').AsInteger;
       end;
       // #10
       if(DataModule1.asq_NewParam.FieldByName('Internal_10_Check').AsString= 'T') then begin
@@ -187,7 +228,7 @@ begin
         if sStrategy_new.J02_NowCloseAve < Fb then
           NO_Small[5]:= 1;
 
-        Rule[10]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_10_Rate').AsInteger;
+        Rule_A[10]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_10_Rate').AsInteger;
       end;
       // #11
       if(DataModule1.asq_NewParam.FieldByName('Internal_11_Check').AsString= 'T') then begin
@@ -207,14 +248,36 @@ begin
           and (sStrategy_new.J28_PreAllQtyAve < sStrategy_new.J27_NowAllQtyAve) then
           NO_Small[5]:= 1;
 
-        Rule[11]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_11_Rate').AsInteger;
+        Rule_A[11]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_11_Rate').AsInteger;
       end;
-    end else begin
-      // #1
+
+    for i := 1 to 21 do begin
+      if Rule_A[i] then begin
+        Internal_Rate:= Internal_Rate + 1;
+        ConvertObj('dbcInternal_', IntToStr(i) + '_Check', clRed);
+      end else
+        ConvertObj('dbcInternal_', IntToStr(i) + '_Check', clWindow);
+    end;
+
+end;
+
+function BuyRate(): Integer;
+var InvenResult: TInventory_Stock;
+    Rule_B: array of boolean;
+    Internal_Rate: Integer;
+    D09: Extended;
+    i, K_Qty: Integer;
+    Fa, Fb: Extended;
+    NO_Small: array of Integer;
+begin
+    Internal_Rate:= 0;
+    setLength(Rule_B, 12);
+
+  // #1
       if(DataModule1.asq_NewParam.FieldByName('Internal_1_Check').AsString= 'T') then begin
         Fa:= getFa(K_Qty);
         Fb:= getFb(K_Qty);
-        Rule[1]:= (sStrategy_new.D01_K_NowClose > (Fa - Fb) * 0.0025 + Fb)
+        Rule_B[1]:= (sStrategy_new.D01_K_NowClose > (Fa - Fb) * 0.0025 + Fb)
            and ((sStrategy_new.J02_NowCloseAve > sStrategy_new.J03_PreCloseAve)
               or (sStrategy_new.D47_K_PreOpen - sStrategy_new.D45_K_PreLow > sStrategy_new.D43_K_PreHigh - sStrategy_new.D41_K_PreClose));
       end;
@@ -241,7 +304,7 @@ begin
                        and (sStrategy_new.D01_K_NowClose > sStrategy_new.D21_K_NowOpen) then
           NO_Small[5]:= 1;
 
-        Rule[2]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
+        Rule_B[2]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
       end;
       // #3
       if(DataModule1.asq_NewParam.FieldByName('Internal_3_Check').AsString= 'T') then begin
@@ -262,19 +325,19 @@ begin
         if (sStrategy_new.J12_NowHighAve + sStrategy_new.J17_NowLowAve) /2 > sStrategy_new.J03_PreCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[3]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
+        Rule_B[3]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_2_Rate').AsInteger;
       end;
       // #4
       if(DataModule1.asq_NewParam.FieldByName('Internal_4_Check').AsString= 'T') then
-        Rule[4]:= (sStrategy_new.D26_K_NowQty > sStrategy_new.J28_PreAllQtyAve)
+        Rule_B[4]:= (sStrategy_new.D26_K_NowQty > sStrategy_new.J28_PreAllQtyAve)
             and (sStrategy_new.D01_K_NowClose > sStrategy_new.D21_K_NowOpen);
       // #5
       if(DataModule1.asq_NewParam.FieldByName('Internal_5_Check').AsString= 'T') then
-        Rule[5]:= (sStrategy_new.J32_BuyQtyAve > sStrategy_new.J37_SellQtyAve)
+        Rule_B[5]:= (sStrategy_new.J32_BuyQtyAve > sStrategy_new.J37_SellQtyAve)
             and (sStrategy_new.D01_K_NowClose > sStrategy_new.D21_K_NowOpen);
       // #6
       if(DataModule1.asq_NewParam.FieldByName('Internal_6_Check').AsString= 'T') then
-        Rule[6]:= (sStrategy_new.D61_BestBuyAve > sStrategy_new.D62_BestSellAve);
+        Rule_B[6]:= (sStrategy_new.D61_BestBuyAve > sStrategy_new.D62_BestSellAve);
       // #7
       if(DataModule1.asq_NewParam.FieldByName('Internal_7_Check').AsString= 'T') then begin
         if (sStrategy_new.J02_NowCloseAve) > (sStrategy_new.J03_PreCloseAve) then
@@ -288,7 +351,7 @@ begin
         if sStrategy_new.J02_NowCloseAve >  sStrategy_new.J59_NowCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[7]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_7_Rate').AsInteger;
+        Rule_B[7]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_7_Rate').AsInteger;
       end;
       // #8
       if(DataModule1.asq_NewParam.FieldByName('Internal_8_Check').AsString= 'T') then begin
@@ -303,7 +366,7 @@ begin
         if sStrategy_new.J02_NowCloseAve >  sStrategy_new.J22_NowOpenAve then
           NO_Small[5]:= 1;
 
-        Rule[8]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_8_Rate').AsInteger;
+        Rule_B[8]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_8_Rate').AsInteger;
       end;
        // #9
       if(DataModule1.asq_NewParam.FieldByName('Internal_9_Check').AsString= 'T') then begin
@@ -318,7 +381,7 @@ begin
         if sStrategy_new.J59_NowCloseAve >  sStrategy_new.J60_PreCloseAve then
           NO_Small[5]:= 1;
 
-        Rule[9]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_9_Rate').AsInteger;
+        Rule_B[9]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_9_Rate').AsInteger;
       end;
       // #10
       if(DataModule1.asq_NewParam.FieldByName('Internal_10_Check').AsString= 'T') then begin
@@ -338,7 +401,7 @@ begin
         if sStrategy_new.J02_NowCloseAve > Fb then
           NO_Small[5]:= 1;
 
-        Rule[10]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_10_Rate').AsInteger;
+        Rule_B[10]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_10_Rate').AsInteger;
       end;
       // #11
       if(DataModule1.asq_NewParam.FieldByName('Internal_11_Check').AsString= 'T') then begin
@@ -358,107 +421,16 @@ begin
           and (sStrategy_new.J28_PreAllQtyAve > sStrategy_new.J27_NowAllQtyAve) then
           NO_Small[5]:= 1;
 
-        Rule[11]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_11_Rate').AsInteger;
+        Rule_B[11]:= (NO_Small[1] + NO_Small[2] + NO_Small[3] + NO_Small[4] + NO_Small[5]) >= DataModule1.asq_NewParam.FieldByName('Internal_11_Rate').AsInteger;
       end;
-    end;
-  end else begin
-    Result:= false;
-    Exit;
-  end;
 
-  if Rule[1] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_1_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_1_Check.Color:= clWindow;
 
-  if Rule[2] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_2_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_2_Check.Color:= clWindow;
-
-  if Rule[3] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_3_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_3_Check.Color:= clWindow;
-
-  if Rule[4] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_4_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_4_Check.Color:= clWindow;
-
-  if Rule[5] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_5_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_5_Check.Color:= clWindow;
-
-  if Rule[6] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_6_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_6_Check.Color:= clWindow;
-
-  if Rule[7] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_7_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_7_Check.Color:= clWindow;
-
-  if Rule[8] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_8_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_8_Check.Color:= clWindow;
-
-  if Rule[9] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_9_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_9_Check.Color:= clWindow;
-
-  if Rule[10] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_10_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_10_Check.Color:= clWindow;
-
-  if Rule[11] then begin
-    Internal_Rate:= Internal_Rate + 1;
-    fmChungYi.dbcInternal_11_Check.Color:= clRed;
-  end else
-    fmChungYi.dbcInternal_11_Check.Color:= clWindow;
-
-  if(Internal_Rate >= DataModule1.asq_NewParam.FieldByName('Internal_Rate').AsInteger) then begin
-    Result:= true;
-    fmChungYi.Group_Internal.Color:= clRed;
-  end else
-    fmChungYi.Group_Internal.Color:= clBtnFace;
-
+      for i := 1 to 11 do begin
+        if Rule_B[i] then begin
+          Internal_Rate:= Internal_Rate + 1;
+          ConvertObj('dbcInternal_', IntToStr(i) + '_Check', clRed);
+        end else
+          ConvertObj('dbcInternal_', IntToStr(i) + '_Check', clWindow);
+      end;
 end;
-
-{
-function getFa(K_Qty): Extended;
-begin
-  Result:= GetMax_fromN(HighList, HighList.Count - 1 - K_Qty + 1, K_Qty);
-end;
-
-function getFb(K_Qty): Extended;
-begin
-  Result:= GetMin_fromN(LowList, LowList.Count - 1 - K_Qty + 1, K_Qty);
-end;
-
-function getAve_Max(K_Qty): Extended;
-begin
-  Result:= GetMax_fromN(AveList, AveList.Count - 1 - K_Qty + 1, K_Qty);
-end;
-
-function getAve_Min(K_Qty): Extended;
-begin
-  Result:= GetMin_fromN(AveList, AveList.Count - 1 - K_Qty + 1, K_Qty);
-end;
-}
 end.

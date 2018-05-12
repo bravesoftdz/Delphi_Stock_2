@@ -2,17 +2,25 @@ unit Calculate_Grid;
 
 interface
 
-uses Classes, DBCtrls, DBGrids, Grids, SysUtils, DMRecord, Public_Variant;
+uses Classes, DBCtrls, DBGrids, Grids, SysUtils, DMRecord, Public_Variant, ASGSQLite3,
+     DBClient, AdjustField;
 
 procedure RunTable_1st(mdbGrid: TDBGrid; mStringGrid: TStringGrid; m2ndGrid, m3rdGrid: TStringGrid;
-  X, Y, Z: Extended; ShowA4: boolean);
+  X, Y, Z: Extended; ShowA4: boolean; In_Query: TClientDataSet);
 procedure GridClear(mStringGrid: TStringGrid);
 procedure getAll_Grid(mStringGrid: TStringGrid; var mList: TStringList);
+procedure InsertData_Grid(mStringGrid: TStringGrid; mList: TStringList; Field_Index: TIntegerArray;
+   toLast: boolean);
+procedure Initial_StringGrid(mStringGrid: TStringGrid; cb_1: TDBComboBox; cb_2: TDBComboBox;
+  cb_3: TDBComboBox; cb_4: TDBComboBox);
+procedure RunTable_1st_fromList(mStringGrid: TStringGrid; m2ndGrid, m3rdGrid: TStringGrid;
+  X, Y, Z: Extended; ShowA4: boolean; mInput_Grid: TStringGrid; UpdateOnly: boolean; toLast: boolean);
 
 implementation
 
+
 procedure RunTable_1st(mdbGrid: TDBGrid; mStringGrid: TStringGrid; m2ndGrid, m3rdGrid: TStringGrid;
-  X, Y, Z: Extended; ShowA4: boolean);
+  X, Y, Z: Extended; ShowA4: boolean; In_Query: TClientDataSet);
 var List_2, List_4: array of TStringList;
     List_3: TStringList;
     Table2_List, Table3_List: TStringList;
@@ -23,6 +31,7 @@ var List_2, List_4: array of TStringList;
     table1_index, table2_index, table2_no: Integer;
     DataQty: Integer;
 begin
+{
   record_3:= false;
   record_4:= false;
   Table_2_Count:= 0;
@@ -50,14 +59,14 @@ begin
   List_3:= TStringList.Create;
 
 
-  mdbGrid.DataSource:= nil;
-  DataModule1.asqQU_TradeRecord.First;
-  for i := 0 to DataModule1.asqQU_TradeRecord.RecordCount - 2 do  begin
+ // mdbGrid.DataSource:= nil;
+  In_Query.First;
+  for i := 0 to In_Query.RecordCount - 2 do  begin
 
-    now_rowA:= DataModule1.asqQU_TradeRecord.Fields[0].AsDateTime;
-    next_rowB:= DataModule1.asqQU_TradeRecord.Fields[1].AsFloat;
-    now_rowC:= DataModule1.asqQU_TradeRecord.Fields[2].AsFloat;
-    now_rowD:= DataModule1.asqQU_TradeRecord.Fields[3].AsFloat;
+    now_rowA:= In_Query.Fields[0].AsDateTime;
+    next_rowB:= In_Query.Fields[1].AsFloat;
+    now_rowC:= In_Query.Fields[2].AsFloat;
+    now_rowD:= In_Query.Fields[3].AsFloat;
 
 
     if(record_4) then begin // record b4
@@ -97,12 +106,13 @@ begin
       end;
     end;
 
-    now_rowB:= DataModule1.asqQU_TradeRecord.Fields[1].AsFloat;
-    DataModule1.asqQU_TradeRecord.Next;
+    now_rowB:= In_Query.Fields[1].AsFloat;
+    In_Query.Next;
   end;
 
-  DataModule1.asqQU_TradeRecord.First;
-  mdbGrid.DataSource:= DataModule1.dsTradeRecord;
+  In_Query.First;
+//  mdbGrid.DataSource:= DataModule1.ds_cdsTemp;
+//  mdbGrid.DataSource:= DataModule1.dsTradeRecord;
 
 //  mStringGrid.Cells[0, 0]:= 'b2-b1';
   mStringGrid.Cells[0, 0]:= 'SN';
@@ -151,17 +161,6 @@ begin
       m2ndGrid.Cells[4, table2_no]:= List_2[4].Strings[i];
       m2ndGrid.Cells[5, table2_no]:= List_2[0].Strings[i];
 
-      {
-      // a4 to a2
-      if(not ShowA4 or (i >= List_2[1].Count - 2)) then
-        continue;
-      m3rdGrid.Cells[0, table2_no]:= IntToStr(table2_no);  // title
-      m3rdGrid.Cells[1, table2_no]:= List_4[1].Strings[i];
-      m3rdGrid.Cells[2, table2_no]:= List_4[2].Strings[i];
-      m3rdGrid.Cells[3, table2_no]:= List_4[3].Strings[i];
-      m3rdGrid.Cells[4, table2_no]:= List_4[4].Strings[i];
-      m3rdGrid.Cells[5, table2_no]:= List_4[0].Strings[i];
-      }
     end;
   end;
 
@@ -204,10 +203,6 @@ begin
   end;
 
   // Table adjust
-  mdbGrid.Columns[0].Width:= 130;
-  for i := 1 to 3 do
-    mdbGrid.Columns[i].Width:= 55;
-
   mStringGrid.ColWidths[0]:= 50;
   m2ndGrid.ColWidths[0]:= 50;
   m3rdGrid.ColWidths[0]:= 50;
@@ -221,6 +216,7 @@ begin
   mStringGrid.ColWidths[1]:= 130; // DateTime
   m2ndGrid.ColWidths[1]:= 130;
   m3rdGrid.ColWidths[1]:= 130;
+  }
 end;
 
 procedure GridClear(mStringGrid: TStringGrid);
@@ -247,9 +243,47 @@ begin
     temp_str:= '';
   end;
 end;
-{
+
+// for raw data
+procedure InsertData_Grid(mStringGrid: TStringGrid; mList: TStringList; Field_Index: TIntegerArray;
+   toLast: boolean);
+var i, j: Integer;
+    StartIndex: Integer;
+begin
+  if(mStringGrid.RowCount = 2) then
+    StartIndex:= 1
+  else
+    StartIndex:= mStringGrid.RowCount;
+
+  mStringGrid.Cells[0, 0]:= 'SN';
+  if mList.Count > 0 then begin
+    mStringGrid.RowCount:= mList.Count;
+
+    for i := StartIndex to mList.Count - 1 do begin
+      TempList.Text:= mList.Strings[i];
+      TempList.Delimiter:= ',';
+      TempList.DelimitedText:= TempList.Text;
+
+      mStringGrid.Cells[0, i]:= IntToStr(i + 1);
+      for j := 0 to Length(Field_Index) - 1 do begin
+        if Field_Index[j]= 2 then begin
+          mStringGrid.Cells[j + 1, i]:= TempList.Strings[2] + ' ' + TempList.Strings[3];;
+        end else
+          mStringGrid.Cells[j + 1, i]:= TempList.Strings[Field_Index[j]];
+      end;
+    end;
+
+  end;
+
+  if(toLast) then
+    mStringGrid.Row:= mStringGrid.RowCount - 1;
+  mStringGrid.FixedRows:= 1;
+end;
+
+
 procedure RunTable_1st_fromList(mStringGrid: TStringGrid; m2ndGrid, m3rdGrid: TStringGrid;
-  X, Y, Z: Extended; ShowA4: boolean);
+  X, Y, Z: Extended; ShowA4: boolean; mInput_Grid: TStringGrid; UpdateOnly: boolean;
+  toLast: boolean);
 var List_2, List_4: array of TStringList;
     List_3: TStringList;
     Table2_List, Table3_List: TStringList;
@@ -266,9 +300,12 @@ begin
   table1_index:= 0;
   table2_index:= 0;
   table2_no:= 0;
-  GridClear(mStringGrid);
-  GridClear(m2ndGrid);
-  GridClear(m3rdGrid);
+  if(not UpdateOnly) then begin
+    GridClear(mStringGrid);
+    GridClear(m2ndGrid);
+    GridClear(m3rdGrid);
+  end;
+
   if(not ShowA4) then
     m3rdGrid.Visible:= false
   else m3rdGrid.Visible:= true;
@@ -288,14 +325,14 @@ begin
   List_3:= TStringList.Create;
 
 
-  mdbGrid.DataSource:= nil;
-  DataModule1.asqQU_TradeRecord.First;
-  for i := 0 to DataModule1.asqQU_TradeRecord.RecordCount - 2 do  begin
+  for i := 0 to mInput_Grid.RowCount - 2 do  begin
+    if(mInput_Grid.Cells[1 ,i + 1]= '') then
+      break;
 
-    now_rowA:= DataModule1.asqQU_TradeRecord.Fields[0].AsDateTime;
-    next_rowB:= DataModule1.asqQU_TradeRecord.Fields[1].AsFloat;
-    now_rowC:= DataModule1.asqQU_TradeRecord.Fields[2].AsFloat;
-    now_rowD:= DataModule1.asqQU_TradeRecord.Fields[3].AsFloat;
+    now_rowA:= StrToDateTime(mInput_Grid.Cells[1 ,i + 1]);
+    next_rowB:= StrToFloat(mInput_Grid.Cells[2 ,i + 1]);
+    now_rowC:= StrToFloat(mInput_Grid.Cells[3 ,i + 1]);
+    now_rowD:= StrToFloat(mInput_Grid.Cells[4 ,i + 1]);
 
 
     if(record_4) then begin // record b4
@@ -318,8 +355,9 @@ begin
 
     if(i > 0) then begin
       Substrat_B1:= next_rowB - now_rowB;
-      List_2[0].Add(FloatToStr(Substrat_B1));
+    //  List_2[0].Add(FloatToStr(Substrat_B1));
       if((Substrat_B1 > X) or (Substrat_B1 < Y)) and (now_rowC > Z) then begin
+        List_2[0].Add(FloatToStr(Substrat_B1));
         List_2[1].Add(DateTimeToStr(now_rowA));
         List_2[2].Add(FloatToStr(next_rowB));
         List_2[3].Add(FloatToStr(now_rowC));
@@ -328,19 +366,17 @@ begin
         Table_2_Count:= Table_2_Count + 1 ;
         record_3:= true;
       end else begin
-        List_2[1].Add('-');
-        List_2[2].Add('-');
-        List_2[3].Add('-');
-        List_2[4].Add('-');
+    //      List_2[0].Add(FloatToStr(Substrat_B1));
+    //    List_2[1].Add('-');
+    //    List_2[2].Add('-');
+    //    List_2[3].Add('-');
+    //    List_2[4].Add('-');
       end;
     end;
 
-    now_rowB:= DataModule1.asqQU_TradeRecord.Fields[1].AsFloat;
-    DataModule1.asqQU_TradeRecord.Next;
+    now_rowB:= StrToFloat(mInput_Grid.Cells[2 ,i + 1]);
   end;
 
-  DataModule1.asqQU_TradeRecord.First;
-  mdbGrid.DataSource:= DataModule1.dsTradeRecord;
 
 //  mStringGrid.Cells[0, 0]:= 'b2-b1';
   mStringGrid.Cells[0, 0]:= 'SN';
@@ -393,29 +429,18 @@ begin
   end;
 
   table2_no:= 0;
-  for i := 0 to List_4[1].Count - 1 do begin
+  if(ShowA4) then begin
+    for i := 0 to List_4[1].Count - 1 do begin
       table2_no:= table2_no + 1;
     // a4 to a2
-      if(not ShowA4) then
-        continue;
       m3rdGrid.Cells[0, table2_no]:= IntToStr(table2_no);  // title
       m3rdGrid.Cells[1, table2_no]:= List_4[1].Strings[i];
       m3rdGrid.Cells[2, table2_no]:= List_4[2].Strings[i];
       m3rdGrid.Cells[3, table2_no]:= List_4[3].Strings[i];
       m3rdGrid.Cells[4, table2_no]:= List_4[4].Strings[i];
       m3rdGrid.Cells[5, table2_no]:= List_4[0].Strings[i];
+    end;
   end;
-
-
-  Table2_List:= TStringList.Create;
-  Table3_List:= TStringList.Create;
-  getAll_Grid(m2ndGrid, Table2_List);
-  getAll_Grid(m3rdGrid, Table3_List);
-
-  Table2_List.SaveToFile(Public_Variant.PathDir + 'table\Table2.txt');
-  Table3_List.SaveToFile(Public_Variant.PathDir + 'table\Table3.txt');
-  FreeAndNil(Table2_List);
-  FreeAndNil(Table3_List);
 
 
   for i := 0 to Length(List_2) - 1 do begin
@@ -430,11 +455,8 @@ begin
       FreeAndNil(List_4[i]);
   end;
 
+  {
   // Table adjust
-  mdbGrid.Columns[0].Width:= 130;
-  for i := 1 to 3 do
-    mdbGrid.Columns[i].Width:= 55;
-
   mStringGrid.ColWidths[0]:= 50;
   m2ndGrid.ColWidths[0]:= 50;
   m3rdGrid.ColWidths[0]:= 50;
@@ -448,6 +470,30 @@ begin
   mStringGrid.ColWidths[1]:= 130; // DateTime
   m2ndGrid.ColWidths[1]:= 130;
   m3rdGrid.ColWidths[1]:= 130;
+   }
+  if(m2ndGrid.RowCount > 1) then
+    m2ndGrid.FixedRows:= 1;
+  if(m3rdGrid.RowCount > 1) then
+    m3rdGrid.FixedRows:= 1;
+  if(toLast) then begin
+    m2ndGrid.Row:= m2ndGrid.RowCount - 1;
+    m3rdGrid.Row:= m3rdGrid.RowCount - 1;
+  end;
 end;
-}
+
+
+procedure Initial_StringGrid(mStringGrid: TStringGrid; cb_1: TDBComboBox; cb_2: TDBComboBox;
+  cb_3: TDBComboBox; cb_4: TDBComboBox);
+begin
+  mStringGrid.RowCount:= 2;
+  mStringGrid.ColCount:= 5;
+  mStringGrid.ColWidths[1]:= 130;
+
+  mStringGrid.Cells[1, 0]:= cb_1.Text;
+  mStringGrid.Cells[2, 0]:= cb_2.Text;
+  mStringGrid.Cells[3, 0]:= cb_3.Text;
+  mStringGrid.Cells[4, 0]:= cb_4.Text;
+
+
+end;
 end.

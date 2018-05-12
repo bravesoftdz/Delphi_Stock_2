@@ -13,7 +13,7 @@ procedure OverseasInventory(OverseasList: TStringList);
 implementation
 
 uses ChungYi_Main, Public_Variant, String_Form, SQLFunc, Stock_OptionOrder, DB_GetData,
-     OverSeasOrder, DB_Type, DB_Handle, DMRecord, getK_Value;
+     OverSeasOrder, DB_Type, DB_Handle, DMRecord, getK_Value, Quote;
 
 procedure GetAccount_Error(bstrReport: String; ErrorCode: Integer);
 begin
@@ -60,7 +60,10 @@ begin
   end;
 //  DataList.SaveToFile('回報資料.txt');
 
-  GetOpenInterest(PAnsiChar(AnsiString(FutureAccount)));
+  if(Public_Variant.FuturOrderType= '期貨') then
+    fmQuote.SKOrderLib1.GetOpenInterest(WideString(Userid), WideString(FutureAccount))
+  else if(Public_Variant.FuturOrderType= '外期') then
+    fmQuote.SKOrderLib1.GetOverSeaFutureOpenInterest(WideString(Userid), WideString(FutureAccount)) ;
   if Assigned(DataList) then FreeAndNil(DataList);
   if Assigned(SendList) then FreeAndNil(SendList);
  end;
@@ -91,7 +94,7 @@ begin
      ShowInterestStock();
      BalanceList.Clear;
    end;
-
+  {
    if(Order_AfterInventory) then begin   // before order, get Inventory, then order
      for i := 0 to fmChungYi.ListV_Interest.Items.Count - 1 do begin
        if(fmChungYi.ListV_Interest.Items[i].SubItems.strings[0]= fmChungYi.cbbCommNO.Text) then begin
@@ -113,7 +116,7 @@ begin
    end else begin  // after ordering or just get Inventory
 
    end;
-
+   }
 //  fmChungYi.tsOpenInterest.Caption:= '未平倉內容 (' + IntToStr(fmChungYi.ListV_Interest.Items.Count) + ')';
  end else if TypeNM= 'OverSeas' then begin
    if(AnsiContainsStr(DataStr, '##')) then begin  // 結束

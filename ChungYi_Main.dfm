@@ -3,7 +3,7 @@ object fmChungYi: TfmChungYi
   Top = 0
   Caption = #32676#30410#19979#21934#20171#38754
   ClientHeight = 711
-  ClientWidth = 774
+  ClientWidth = 845
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object fmChungYi: TfmChungYi
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 774
+    Width = 845
     Height = 59
     Align = alTop
     Caption = 'Panel1'
@@ -128,7 +128,6 @@ object fmChungYi: TfmChungYi
         ParentFont = False
         TabOrder = 5
         Visible = False
-        OnClick = btnCreditClick
       end
       object dbcTestMode: TDBCheckBox
         Left = 660
@@ -148,9 +147,9 @@ object fmChungYi: TfmChungYi
   object PageControl_Main: TPageControl
     Left = 0
     Top = 59
-    Width = 774
+    Width = 845
     Height = 652
-    ActivePage = tsAutoOrder
+    ActivePage = tsParam_New
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -159,13 +158,14 @@ object fmChungYi: TfmChungYi
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    OnChange = PageControl_MainChange
     OnChanging = PageControl_MainChanging
     object tsAccount: TTabSheet
       Caption = #24115#34399#31649#29702
       object ListView1: TListView
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         BevelInner = bvNone
@@ -204,21 +204,21 @@ object fmChungYi: TfmChungYi
       object CoolBar2: TCoolBar
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 146
         Bands = <
           item
             Control = Panel3
             ImageIndex = -1
             MinHeight = 166
-            Width = 764
+            Width = 835
           end>
         EdgeInner = esNone
         EdgeOuter = esNone
         object Panel3: TPanel
-          Left = 11
+          Left = 9
           Top = 0
-          Width = 755
+          Width = 828
           Height = 166
           Align = alClient
           BevelOuter = bvNone
@@ -406,7 +406,7 @@ object fmChungYi: TfmChungYi
       object ListView3: TListView
         Left = 0
         Top = 146
-        Width = 766
+        Width = 837
         Height = 475
         Align = alClient
         Columns = <
@@ -461,7 +461,7 @@ object fmChungYi: TfmChungYi
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 121
         Align = alTop
         TabOrder = 0
@@ -518,6 +518,19 @@ object fmChungYi: TfmChungYi
           Height = 16
           Caption = #26399#36008' / '#22806#26399
           Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBtnText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label140: TLabel
+          Left = 499
+          Top = 83
+          Width = 90
+          Height = 16
+          Caption = #26178#21312#24046#36317#26178#25976
+          Font.Charset = ANSI_CHARSET
           Font.Color = clBtnText
           Font.Height = -13
           Font.Name = 'Tahoma'
@@ -607,11 +620,20 @@ object fmChungYi: TfmChungYi
             #22806#26399)
           TabOrder = 7
         end
+        object dbeTimeShit: TDBEdit
+          Left = 596
+          Top = 80
+          Width = 59
+          Height = 24
+          DataField = 'ShitTime'
+          DataSource = DataModule1.dsStartEnd
+          TabOrder = 8
+        end
       end
       object dbgridStartEnd: TDBGrid
         Left = 0
         Top = 121
-        Width = 766
+        Width = 837
         Height = 500
         Align = alClient
         DataSource = DataModule1.dsStartEnd
@@ -720,6 +742,18 @@ object fmChungYi: TfmChungYi
             Title.Font.Height = -13
             Title.Font.Name = 'Tahoma'
             Title.Font.Style = []
+            Width = 91
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ShitTime'
+            Title.Caption = #26178#21312#30064#21205
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Tahoma'
+            Title.Font.Style = []
             Visible = True
           end>
       end
@@ -731,7 +765,7 @@ object fmChungYi: TfmChungYi
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 97
         Align = alTop
         TabOrder = 0
@@ -924,7 +958,7 @@ object fmChungYi: TfmChungYi
       object DBGrid_Record: TDBGrid
         Left = 0
         Top = 97
-        Width = 766
+        Width = 837
         Height = 524
         Align = alClient
         DataSource = DataModule1.dsRecord
@@ -1124,7 +1158,7 @@ object fmChungYi: TfmChungYi
       object StringGrid1: TStringGrid
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         FixedCols = 0
@@ -1139,7 +1173,7 @@ object fmChungYi: TfmChungYi
       object ListV_Interest: TListView
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         Columns = <
@@ -1180,7 +1214,7 @@ object fmChungYi: TfmChungYi
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         Caption = 'Panel2'
@@ -2351,7 +2385,7 @@ object fmChungYi: TfmChungYi
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 49
         Align = alTop
         TabOrder = 0
@@ -2410,7 +2444,7 @@ object fmChungYi: TfmChungYi
       object DBGrid_Figure: TDBGrid
         Left = 0
         Top = 49
-        Width = 766
+        Width = 837
         Height = 572
         Align = alClient
         DataSource = DataModule1.dsFigure
@@ -2511,7 +2545,7 @@ object fmChungYi: TfmChungYi
       object Panel7: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         Caption = 'Panel2'
@@ -4180,18 +4214,6 @@ object fmChungYi: TfmChungYi
             DataSource = DataModule1.dsNewParam
             TabOrder = 1
           end
-          object dbcEngine_1_Check: TDBCheckBox
-            Left = 126
-            Top = 16
-            Width = 70
-            Height = 17
-            Caption = '01'#30070#22343#25910
-            DataField = 'Engine_1_Check'
-            DataSource = DataModule1.dsNewParam
-            TabOrder = 2
-            ValueChecked = 'T'
-            ValueUnchecked = 'F'
-          end
           object dbeEngine_1_1: TDBEdit
             Left = 193
             Top = 14
@@ -4199,7 +4221,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_1_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 3
+            TabOrder = 2
           end
           object dbcEngine_2_Check: TDBCheckBox
             Left = 241
@@ -4209,7 +4231,7 @@ object fmChungYi: TfmChungYi
             Caption = '02'#21069#39640#20302#22343
             DataField = 'Engine_2_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 4
+            TabOrder = 3
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4220,7 +4242,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_2_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 5
+            TabOrder = 4
           end
           object dbcEngine_3_Check: TDBCheckBox
             Left = 367
@@ -4230,7 +4252,7 @@ object fmChungYi: TfmChungYi
             Caption = '03'#21069#22343#25490
             DataField = 'Engine_3_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 6
+            TabOrder = 5
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4241,7 +4263,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_3_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 7
+            TabOrder = 6
           end
           object dbeEngine_3_2: TDBEdit
             Left = 532
@@ -4250,7 +4272,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_3_2'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 8
+            TabOrder = 7
           end
           object dbcEngine_4_Check: TDBCheckBox
             Left = 580
@@ -4260,7 +4282,7 @@ object fmChungYi: TfmChungYi
             Caption = '04'#21069'K'#25490
             DataField = 'Engine_4_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 9
+            TabOrder = 8
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4271,7 +4293,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_4_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 10
+            TabOrder = 9
           end
           object dbcEngine_5_Check: TDBCheckBox
             Left = 12
@@ -4281,7 +4303,7 @@ object fmChungYi: TfmChungYi
             Caption = '05'
             DataField = 'Engine_5_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 11
+            TabOrder = 10
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4293,7 +4315,7 @@ object fmChungYi: TfmChungYi
             Caption = '06'#30070'K'#38283
             DataField = 'Engine_6_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 12
+            TabOrder = 11
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4304,7 +4326,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_6_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 13
+            TabOrder = 12
           end
           object dbcEngine_7_Check: TDBCheckBox
             Left = 164
@@ -4314,7 +4336,7 @@ object fmChungYi: TfmChungYi
             Caption = '07'#21069#39640#20302#22343
             DataField = 'Engine_7_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 14
+            TabOrder = 13
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4325,7 +4347,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_7_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 15
+            TabOrder = 14
           end
           object dbcEngine_8_Check: TDBCheckBox
             Left = 288
@@ -4335,7 +4357,7 @@ object fmChungYi: TfmChungYi
             Caption = '08{'#21069#39640#20302#22343
             DataField = 'Engine_8_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 16
+            TabOrder = 15
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4346,7 +4368,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_8_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 17
+            TabOrder = 16
           end
           object dbcEngine_9_Check: TDBCheckBox
             Left = 416
@@ -4356,7 +4378,7 @@ object fmChungYi: TfmChungYi
             Caption = '09'#30070#22343#25910'M2'
             DataField = 'Engine_9_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 18
+            TabOrder = 17
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4367,7 +4389,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_9_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 19
+            TabOrder = 18
           end
           object dbcEngine_10_Check: TDBCheckBox
             Left = 544
@@ -4377,7 +4399,7 @@ object fmChungYi: TfmChungYi
             Caption = '10'#21069#39640#20302#22343
             DataField = 'Engine_10_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 20
+            TabOrder = 19
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4388,7 +4410,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_10_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 21
+            TabOrder = 20
           end
           object dbcEngine_11_Check: TDBCheckBox
             Left = 13
@@ -4398,7 +4420,7 @@ object fmChungYi: TfmChungYi
             Caption = '11'#21069#39640#20302#22343
             DataField = 'Engine_11_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 22
+            TabOrder = 21
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4409,7 +4431,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_11_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 23
+            TabOrder = 22
           end
           object dbcEngine_12_Check: TDBCheckBox
             Left = 141
@@ -4419,7 +4441,7 @@ object fmChungYi: TfmChungYi
             Caption = '12'#21069#39640#20302#22343
             DataField = 'Engine_12_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 24
+            TabOrder = 23
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4430,7 +4452,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_12_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 25
+            TabOrder = 24
           end
           object dbcEngine_13_Check: TDBCheckBox
             Left = 268
@@ -4440,7 +4462,7 @@ object fmChungYi: TfmChungYi
             Caption = '13'
             DataField = 'Engine_13_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 26
+            TabOrder = 25
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4452,7 +4474,7 @@ object fmChungYi: TfmChungYi
             Caption = '14'#30070'K'#39640#20302
             DataField = 'Engine_14_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 27
+            TabOrder = 26
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4463,7 +4485,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_14_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 28
+            TabOrder = 27
           end
           object dbcEngine_15_Check: TDBCheckBox
             Left = 421
@@ -4473,7 +4495,7 @@ object fmChungYi: TfmChungYi
             Caption = '15'#21069'K'#39640#20302
             DataField = 'Engine_15_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 29
+            TabOrder = 28
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4484,7 +4506,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_15_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 30
+            TabOrder = 29
           end
           object dbcEngine_16_Check: TDBCheckBox
             Left = 544
@@ -4494,7 +4516,7 @@ object fmChungYi: TfmChungYi
             Caption = '16'#38283#39640#20302
             DataField = 'Engine_16_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 31
+            TabOrder = 30
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4505,7 +4527,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_16_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 32
+            TabOrder = 31
           end
           object dbcEngine_17_Check: TDBCheckBox
             Left = 13
@@ -4515,7 +4537,7 @@ object fmChungYi: TfmChungYi
             Caption = '17'#21069#39640#20302#22343
             DataField = 'Engine_17_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 33
+            TabOrder = 32
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4526,7 +4548,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_17_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 34
+            TabOrder = 33
           end
           object dbcEngine_18_Check: TDBCheckBox
             Left = 136
@@ -4536,7 +4558,7 @@ object fmChungYi: TfmChungYi
             Caption = '18'#21069#39640#20302#22343
             DataField = 'Engine_18_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 35
+            TabOrder = 34
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4547,7 +4569,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_18_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 36
+            TabOrder = 35
           end
           object dbcEngine_19_Check: TDBCheckBox
             Left = 259
@@ -4557,7 +4579,7 @@ object fmChungYi: TfmChungYi
             Caption = '19'#30070'K'#38283
             DataField = 'Engine_19_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 37
+            TabOrder = 36
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4568,7 +4590,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_19_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 38
+            TabOrder = 37
           end
           object dbcEngine_20_Check: TDBCheckBox
             Left = 382
@@ -4578,7 +4600,7 @@ object fmChungYi: TfmChungYi
             Caption = '20'#21069#38283#25910
             DataField = 'Engine_20_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 39
+            TabOrder = 38
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4589,7 +4611,7 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_20_1'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 40
+            TabOrder = 39
           end
           object dbcEngine_21_Check: TDBCheckBox
             Left = 505
@@ -4599,7 +4621,7 @@ object fmChungYi: TfmChungYi
             Caption = '21'#21069'K'#39640#20302
             DataField = 'Engine_21_Check'
             DataSource = DataModule1.dsNewParam
-            TabOrder = 41
+            TabOrder = 40
             ValueChecked = 'T'
             ValueUnchecked = 'F'
           end
@@ -4610,7 +4632,19 @@ object fmChungYi: TfmChungYi
             Height = 20
             DataField = 'Engine_21_1'
             DataSource = DataModule1.dsNewParam
+            TabOrder = 41
+          end
+          object dbcEngine_1_Check: TDBCheckBox
+            Left = 124
+            Top = 13
+            Width = 71
+            Height = 17
+            Caption = '01'#30070#22343#25910
+            DataField = 'Engine_1_Check'
+            DataSource = DataModule1.dsNewParam
             TabOrder = 42
+            ValueChecked = 'T'
+            ValueUnchecked = 'F'
           end
         end
         object Group_KeepOrder: TGroupBox
@@ -4776,11 +4810,12 @@ object fmChungYi: TfmChungYi
     object tsTableDDE: TTabSheet
       Caption = #32000#37636#21443#25976
       ImageIndex = 8
+      OnExit = tsTableDDEExit
       OnShow = tsTableDDEShow
       object Panel8: TPanel
         Left = 0
         Top = 0
-        Width = 766
+        Width = 837
         Height = 621
         Align = alClient
         TabOrder = 0
@@ -4806,21 +4841,21 @@ object fmChungYi: TfmChungYi
           Caption = 'Z:'
         end
         object Label90: TLabel
-          Left = 2
-          Top = 46
-          Width = 24
-          Height = 12
+          Left = 211
+          Top = 50
+          Width = 26
+          Height = 13
           Caption = #21312#38291
           Font.Charset = ANSI_CHARSET
           Font.Color = clBtnText
-          Font.Height = -12
+          Font.Height = -13
           Font.Name = #26032#32048#26126#39636
           Font.Style = []
           ParentFont = False
         end
         object Label89: TLabel
-          Left = 147
-          Top = 43
+          Left = 355
+          Top = 47
           Width = 9
           Height = 16
           Caption = '~'
@@ -4910,10 +4945,10 @@ object fmChungYi: TfmChungYi
           OnChange = dbcbItemChange
         end
         object dbg_TradeRecord: TDBGrid
-          Left = 0
-          Top = 72
+          Left = 418
+          Top = 520
           Width = 344
-          Height = 489
+          Height = 41
           DataSource = DataModule1.dsTradeRecord
           TabOrder = 4
           TitleFont.Charset = DEFAULT_CHARSET
@@ -4921,6 +4956,7 @@ object fmChungYi: TfmChungYi
           TitleFont.Height = -13
           TitleFont.Name = 'Tahoma'
           TitleFont.Style = []
+          Visible = False
         end
         object dbe_X: TDBEdit
           Left = 345
@@ -4962,36 +4998,45 @@ object fmChungYi: TfmChungYi
           TabOrder = 8
         end
         object grid_Calculate: TStringGrid
-          Left = 345
-          Top = 72
-          Width = 416
+          Left = 426
+          Top = 88
+          Width = 354
           Height = 161
           ColCount = 6
           TabOrder = 9
         end
-        object grid_2nd: TStringGrid
-          Left = 345
-          Top = 239
-          Width = 416
-          Height = 153
+        object grid_test: TStringGrid
+          Left = -1
+          Top = 93
+          Width = 421
+          Height = 452
           ColCount = 6
           TabOrder = 10
         end
-        object grid_3rd: TStringGrid
-          Left = 345
-          Top = 398
-          Width = 416
-          Height = 161
+        object grid_3rd_1: TStringGrid
+          Left = 418
+          Top = 567
+          Width = 342
+          Height = 35
           ColCount = 6
           TabOrder = 11
+          Visible = False
+          ColWidths = (
+            64
+            64
+            64
+            64
+            64
+            64)
         end
         object dtpChouEnd: TDateTimePicker
-          Left = 163
-          Top = 39
+          Left = 371
+          Top = 43
           Width = 105
           Height = 22
           Date = 40939.531195381950000000
           Time = 40939.531195381950000000
+          Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -5002,12 +5047,13 @@ object fmChungYi: TfmChungYi
           OnChange = dbcbItemChange
         end
         object dtpChouStart: TDateTimePicker
-          Left = 35
-          Top = 39
+          Left = 243
+          Top = 43
           Width = 105
           Height = 22
           Date = 40939.531195381950000000
           Time = 40939.531195381950000000
+          Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -5028,23 +5074,78 @@ object fmChungYi: TfmChungYi
           ValueChecked = 'T'
           ValueUnchecked = 'F'
         end
-        object btnTable2: TButton
-          Left = 345
+        object btnOuputTable: TButton
+          Left = 495
           Top = 41
-          Width = 75
+          Width = 82
           Height = 25
-          Caption = #36664#20986#34920'2'
+          Caption = #36664#20986#22577#34920
           TabOrder = 15
-          Visible = False
+          OnClick = btnOuputTableClick
         end
-        object btnTable3: TButton
-          Left = 429
-          Top = 41
-          Width = 75
-          Height = 25
-          Caption = #36664#20986#34920'3'
+        object cbToLast: TCheckBox
+          Left = 588
+          Top = 44
+          Width = 117
+          Height = 17
+          Caption = #31227#21040#26368#26032#32000#37636
           TabOrder = 16
-          Visible = False
+        end
+        object radiog_Period: TRadioGroup
+          Left = 2
+          Top = 38
+          Width = 187
+          Height = 43
+          Caption = #21312#38291#36984#38917
+          Columns = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Items.Strings = (
+            #21363#26178#36039#26009
+            #27511#21490#36039#26009)
+          ParentFont = False
+          TabOrder = 17
+          OnClick = radiog_PeriodClick
+        end
+      end
+    end
+    object tsDDE_Result: TTabSheet
+      Caption = #32000#37636#32080#26524
+      ImageIndex = 9
+      OnShow = tsDDE_ResultShow
+      object Panel9: TPanel
+        Left = 0
+        Top = 0
+        Width = 837
+        Height = 621
+        Align = alClient
+        TabOrder = 0
+        object grid_3rd: TStringGrid
+          Left = 418
+          Top = 40
+          Width = 418
+          Height = 497
+          ColCount = 6
+          TabOrder = 0
+        end
+        object tableToLast: TCheckBox
+          Left = 18
+          Top = 9
+          Width = 127
+          Height = 17
+          Caption = #31227#21040#26368#26032#32000#37636
+          TabOrder = 1
+        end
+        object grid_2nd: TStringGrid
+          Left = -1
+          Top = 40
+          Width = 413
+          Height = 497
+          ColCount = 6
+          TabOrder = 2
         end
       end
     end
@@ -5059,13 +5160,12 @@ object fmChungYi: TfmChungYi
     Enabled = False
     Interval = 10000
     OnTimer = BackupBuyTimerTimer
-    Left = 712
-    Top = 8
+    Left = 656
+    Top = 88
   end
   object OpenInterestTimer: TTimer
     Enabled = False
     Interval = 3000
-    OnTimer = OpenInterestTimerTimer
     Left = 440
     Top = 8
   end
@@ -5083,9 +5183,17 @@ object fmChungYi: TfmChungYi
   end
   object ChouTimer: TTimer
     Enabled = False
-    Interval = 60000
     OnTimer = ChouTimerTimer
     Left = 208
     Top = 8
+  end
+  object SKReplyLib1: TSKReplyLib
+    AutoConnect = False
+    ConnectKind = ckRunningOrNew
+    OnConnect = SKReplyLib1Connect
+    OnData = SKReplyLib1Data
+    OnSolaceReplyDisconnect = SKReplyLib1SolaceReplyDisconnect
+    Left = 736
+    Top = 96
   end
 end

@@ -42,6 +42,8 @@ begin
   PreOrder_Rate:= 0;
   InvenResult:= DB_Handle.CheckInventory(CommNO);
   D09:= InvenResult.LastPrice;
+  if(DataModule1.asq_NewParam.FieldByName('PreOrder_1').AsString= '') then
+    exit;
   K_Qty:= DataModule1.asq_NewParam.FieldByName('PreOrder_1').AsInteger;
   if(K_Qty = 0) then
     exit;

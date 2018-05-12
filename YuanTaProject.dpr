@@ -49,7 +49,11 @@ uses
   GeneralValue in 'Strategy\GeneralValue.pas',
   Strategy_InventAnti in 'Strategy\Strategy_InventAnti.pas',
   Initial_K in 'K_Value\Initial_K.pas',
-  SystemFun in '..\..\Functions\SystemFun.pas';
+  SystemFun in '..\..\Functions\SystemFun.pas',
+  ChouRule in 'MrChou\ChouRule.pas',
+  First_Check_Strategy in 'Strategy\First_Check_Strategy.pas',
+  OrderHandle in 'Order\OrderHandle.pas',
+  Initial_Setting in 'MrChou\Initial_Setting.pas';
 
 {$R *.res}
 
@@ -57,8 +61,9 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDataModule1, DataModule1);
-  Public_Variant.UserNM:= 'JackyChou';
-//  Public_Variant.UserNM:= 'MrHuang';
+  //  Public_Variant.UserNM:= 'JackyChou';
+  Public_Variant.Version_Str:= 'V2.7';
+  Public_Variant.UserNM:= 'MrHuang';
   Application.CreateForm(TfmChungYi, fmChungYi);
   //  Application.CreateForm(TFMD, FMD);
   Application.Run;

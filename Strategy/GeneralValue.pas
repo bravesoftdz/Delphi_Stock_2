@@ -2,7 +2,7 @@ unit GeneralValue;
 
 interface
 
-uses DBCtrls, Graphics, Classes, SysUtils;
+uses DBCtrls, Graphics, Classes, SysUtils, StdCtrls;
 
 function getFa(K_Qty: Integer): Extended;
 function getFb(K_Qty: Integer): Extended;
@@ -12,7 +12,7 @@ procedure ConvertObj(input_pre, input_last: String; color_no: Integer);
 
 implementation
 
-uses DB_GetData, getK_Value, StringList_Fun, Public_Variant, K_Line_Save;
+uses DB_GetData, getK_Value, StringList_Fun, Public_Variant, K_Line_Save, ChungYi_Main;
 
 function getFa(K_Qty: Integer): Extended;
 begin
@@ -39,7 +39,11 @@ var getNM: String;
     Obj: TDBCheckBox;
 begin
   getNM:= input_pre + input_last ;
-  Obj:= TDBCheckBox(getNM).Create(nil);
-  Obj.Color:= color_no;
+  Obj:= TDBCheckBox(fmChungYi.FindComponent(getNM));
+  If Obj <> nil then begin
+    Obj.Font.Color:= color_no;
+
+  end;
+
 end;
 end.

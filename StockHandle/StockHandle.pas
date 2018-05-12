@@ -6,13 +6,13 @@ uses Classes, StdCtrls, SysUtils, DMRecord, Public_Variant, String_Form, String_
 
  procedure GetStockStartEndList(var cbbStockNO: TComboBox);
  procedure GetStockStartEnd_Str(StockNO: String);
- procedure GetNowStock(var StockNO, BuySellQty: String);
+ procedure GetNowStock(var StockNO, BuySellQty: String; var ShiftTime: Extended);
 
 implementation
 
- uses ChungYi_Main;
+ uses ChungYi_Main, OrderHandle;
 
-procedure GetNowStock(var StockNO, BuySellQty: String);
+procedure GetNowStock(var StockNO, BuySellQty: String; var ShiftTime: Extended);
 begin
   DataModule1.asqQU_Temp.Close;
   DataModule1.asqQU_Temp.SQL.Text:= 'select * from tbStartEnd '
@@ -27,6 +27,10 @@ begin
 //    StartTime:= DataModule1.asqQU_Temp.FieldByName('StartTime').AsString;
 //    EndTime:= DataModule1.asqQU_Temp.FieldByName('StartTime').AsString;
     BuySellQty:= DataModule1.asqQU_Temp.FieldByName('BuySellQty').AsString;
+    if(DataModule1.asqQU_Temp.FieldByName('ShitTime').AsString= '') then
+      ShiftTime:= 0
+    else ShiftTime:= DataModule1.asqQU_Temp.FieldByName('ShitTime').AsFloat;
+
   end;
 end;
 
@@ -91,9 +95,9 @@ begin
 
   Public_Variant.FuturOrderType:= DataModule1.asqQU_Temp.FieldByName('FuterOrderType').Text;
   if(isnum(DataModule1.asqQU_Temp.FieldByName('BuySellQty').Text)) then
-    ChungYi_Main.TradeQty:= DataModule1.asqQU_Temp.FieldByName('BuySellQty').AsInteger
+    OrderHandle.TradeQty:= DataModule1.asqQU_Temp.FieldByName('BuySellQty').AsInteger
   else
-    ChungYi_Main.TradeQty:= 1;
+    OrderHandle.TradeQty:= 1;
 
 end;
 

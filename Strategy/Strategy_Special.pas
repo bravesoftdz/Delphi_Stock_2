@@ -68,6 +68,8 @@ begin
       // #2
       Rule_3:= (sStrategy_new.D11_K_NowHigh + sStrategy_new.D16_K_NowLow)/2 > (sStrategy_new.D43_K_PreHigh + sStrategy_new.D45_K_PreLow)/2 + DataModule1.asq_NewParam.FieldByName('Spec_1_3').AsFloat;
     end;
+  end else begin
+
   end;
 
   if Rule_1 then begin

@@ -88,5 +88,7 @@ begin
   if Assigned(sK_LineList.K_5_MinuteList_DateTime) then FreeAndNil(sK_LineList.K_5_MinuteList_DateTime);
   if Assigned(sK_LineList.K_5_J02_List) then FreeAndNil(sK_LineList.K_5_J02_List);
   if Assigned(sK_LineList.K_5_J03_List) then FreeAndNil(sK_LineList.K_5_J03_List);
+
+  if Assigned(HisTable_List) then FreeAndNil(HisTable_List);
 end;
 end.
